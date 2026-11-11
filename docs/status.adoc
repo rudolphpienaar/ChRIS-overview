@@ -36,27 +36,37 @@ uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme co
 cd talk && python3 -m http.server 8000
 ----
 
-The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-11 that count is 33. slidedown `main` was at `70b9f25` and the Pages workflow pins `0711397`; the two build this deck to identical output. An old slidedown checkout fails with an unknown theme, so pull it first.
+The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-11 that count is 37. slidedown `main` was at `70b9f25` and the Pages workflow pins `0711397`; the two build this deck to identical output. An old slidedown checkout fails with an unknown theme, so pull it first.
+
+A menu entry must read exactly as the heading of the slide it lands on, character for character. The author set this rule on 2026-11-11 after a menu said "A machine, not an endpoint" and landed on a slide headed "ChRIS as a Computer". When a slide is retitled, change its menu entry in the same edit. All twenty menu entries were checked against their headings that day.
 
 Unknown keys inside `.meta{}` are ignored silently, so a typo there shows up only in the rendered page. Check new slides in a browser. Figures are `<pre class="fig">` blocks styled in `.meta{css:}`; that rule sets `overflow: visible` because the theme's default drew a scrollbar on every figure.
 
 == Where the deck stands
 
-The outline has ten entries. The first, "The Unbearable Lightness of Defining", is new and is the only concept the author has dictated so far; `docs/notes.adoc` has its reasoning in full. It asks what an iPad is, shows that answers from experience fail when the UI changes, and carries the test over to ChRIS. Its "So What Is ChRIS?" slide lists five answers people give. Four are the author's wording and the fifth ("A workflow engine") is the agent's stand-in.
+The outline has eleven entries. The first, "The Unbearable Lightness of Defining", is new and is the only concept the author has dictated so far; `docs/notes.adoc` has its reasoning in full. It asks what an iPad is, shows that answers from experience fail when the UI changes, and carries the test over to ChRIS. Its "So What Is ChRIS?" slide lists five answers people give. Four are the author's wording and the fifth ("A workflow engine") is the agent's stand-in.
 
-The architecture section was corrected on 2026-11-11. `pman` is gone from it, since `pfcon` absorbed it in 2025. Two slides were added after "Who Owns What": "ChRIS as a Computer" and "Above CUBE", both drawn from the `mise` README.
+The architecture section was corrected on 2026-11-11. `pman` is gone from it, since `pfcon` absorbed it in 2025. `mise` has its own outline entry after "Architecture", a menu of five short runs. `docs/notes.adoc` describes it. Its claims were checked by the `mise` session on 2026-11-11 and corrected; the notes list what changed. The `mise` repository now lives at `HARBOR-Medical-AI/mise`.
 
 `chrs` is deprecated and must not appear. The current client stack is `mise`, with `chell` as its shell surface and ARGUS as its web surface. The HARBOR audience has already seen ARGUS.
 
 == Open points
 
-Apache Airflow is on the "What HARBOR Adds to ChRIS" slide as the top layer of the figure and in one bullet. The author objects to it. It entered the deck from the TDD's LaTeX source, where the name survives in places that an earlier pass to technology-neutral language missed, while the TDD's prose treats any scheduler as one candidate among several. The author's own position, written in the `mise` docs, is that no scheduler component is needed: a schedule is a `chell -c` line under cron, and retry policy belongs to the calling script. The proposed fix is to relabel the figure's top layer "orchestration" with no product name and drop the Airflow bullet. The author has not yet said yes.
+The HARBOR slides were first written from a LaTeX TDD that has since been retired. On 2026-11-11 the session that maintains the HARBOR milestones work checked twenty claims from those slides against the current authority, which is a spreadsheet the deck's agent cannot read. Seven held, eight had changed and five were no longer there. The five HARBOR slides ("Where ChRIS Sits in HARBOR", "The Boundary", "Ingestion as Apps", "What HARBOR Adds to ChRIS", "Governance and Standards") were rewritten to match, along with one line each on "Workflows and Provenance" and "What We Need to Agree". `docs/notes.adoc` records what changed and why. The author has not yet reviewed the rewrite.
 
-`pfdcm` is still on the "Architecture" slide as half of the PACS bridge. The author named only `pman` as deprecated. Confirm `pfdcm`.
+That session cleared nothing for public release; it said the decision is the author's. The rewrite therefore stays at the level of architecture, paraphrases throughout, cites sections of the document by name with no task numbers, and leaves out thresholds, dates, third parties and the performer structure. The author should confirm that this level is acceptable on a public page before the branch is pushed.
+
+The current authority does not mention `mise`, `chell`, ARGUS or berths. They belong in the architecture section as ChRIS engineering and must not be presented as HARBOR commitments.
+
+The word "plugin" appears across the deck. The current HARBOR authority says "app" or "ChRIS application" almost without exception. Only the HARBOR slides were changed to match.
+
+Apache Airflow must not appear. It was on the "What HARBOR Adds to ChRIS" slide as the top layer of the figure and in one bullet, and the author objected. It came from the retired LaTeX, where the name survived in a subtask title and in labels after a pass to technology-neutral language. The same session confirmed that the current authority does not name Airflow at all and treats ChRIS itself as the orchestration layer. The slide's figure now shows the Hub dispatching to a Spoke, with no scheduler product named.
+
+The author spoke of "berth triggers" as part of what replaces an external scheduler. The `mise` session found nothing by that name in code or docs. A schedule is `chell -c` under cron and nothing more. Do not put triggers on a slide unless the author says where they are.
 
 The pfcon bullet lists OpenShift among its compute environments. The `pfcon` README names Docker, Podman, Swarm, Kubernetes and SLURM.
 
-With ten outline entries, "Conclusions" is out of reach of the number keys, which stop at nine.
+With eleven outline entries, the last two are out of reach of the number keys, which stop at nine.
 
 The new "So What Is ChRIS?" slide and the older "What Is ChRIS?" section overlap. Both are kept for now.
 
@@ -73,9 +83,10 @@ These paths are on the author's workstation and may differ on another host.
 | `~/src/slidedown` | The slide compiler. Keep it level with `origin/main`.
 | `~/src/mise` | The `mise` monorepo: `chell`, `calypso`, ARGUS, `porter`. Its `README.md` and `docs/` are the source for everything the deck says about the POSIX-leaning side of ChRIS. `docs/bastion.adoc`, `docs/berths.adoc` and `docs/intent-kernel.adoc` hold the position on schedulers.
 | `~/src/pfcon` | Source for the retirement of `pman` and for the list of compute environments.
-| `~/Projects/HARBOR-planning` | The TDD source. Private. Its `oldtdd/` directory is superseded and must not be used as a source. Read `tdd/` with care: LaTeX labels and one subtask title there still carry technology names the prose has dropped.
+| `~/Projects/HARBOR-planning` | The retired LaTeX TDD. Private, and not a current source. The deck's HARBOR slides were written from its `tdd/` directory.
+| `~/Projects/HARBOR_TDD_MILESTONES` | The repository that generates the current HARBOR deliverables. Private. Its content authority is a spreadsheet, not a file in the repository.
 |===
 
 == Talking to other agents
 
-An agent on the same account can list the sessions it is able to message. On 2026-11-11 the only peer visible from the author's workstation was a session on the `musings` project; no `mise` session was running. When a question is about `mise` and a `mise` session is reachable, ask it instead of inferring from the docs, and record the answer here or in `docs/notes.adoc`.
+An agent on the same account can list the sessions it is able to message. Sessions on other machines appear only once the author has turned on remote control. Session titles do not say what a session works on, so ask. On 2026-11-11 there was a session in the `mise` checkout and one in the HARBOR milestones repository, and both answered. When a question is about `mise` or about what HARBOR currently commits to, ask the session that owns it instead of inferring from files on disk, and record the answer here or in `docs/notes.adoc`. Local copies of HARBOR planning material differ between machines and some are stale.

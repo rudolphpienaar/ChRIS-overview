@@ -93,7 +93,7 @@ Status: materialised in `talk.sd` on 2026-11-11, built against slidedown `071139
 
 === What it is
 
-A correction to the existing "Architecture" slide and two new slides after "Who Owns What". The correction removes `pman`. The figure used to show a `pfcon+pman` pair per compute environment and now shows `pfcon` alone, with `mise` added beside ChRIS_ui as a second client of CUBE's REST API. The new slides are "ChRIS as a Computer" (`architecture-posix`) and "Above CUBE" (`architecture-posix-2`).
+A correction to the existing "Architecture" slide and two new slides after "Who Owns What". The two slides were later moved into the mise section, described further down, under the addresses `mise-machine` and `mise-layers`. The correction removes `pman`. The figure used to show a `pfcon+pman` pair per compute environment and now shows `pfcon` alone, with `mise` added beside ChRIS_ui as a second client of CUBE's REST API. The new slides are "ChRIS as a Computer" (`architecture-posix`) and "Above CUBE" (`architecture-posix-2`).
 
 === Why
 
@@ -121,6 +121,70 @@ The slide's source line still cites `FNNDSC/CHRIS_docs`. The `miniChRIS-docker` 
 
 Status: materialised in `talk.sd` on 2026-11-11, built against slidedown `70b9f25`.
 
+== The mise section
+
+=== What it is
+
+A new outline entry, "mise: ChRIS as a Computer", placed after "Architecture". It opens a menu of five short runs: a machine and not an endpoint, the layers above CUBE, the intent kernel, one session with many surfaces, and the door and the berth. The first two are the slides that were added to the architecture section earlier the same day, moved here. The first was retitled from "ChRIS as a Computer" to "A Machine, Not an Endpoint", because the section itself took the former as its heading and a menu entry has to read the same as the slide it opens. The other three are new. The author asked for it on 2026-11-11 with the words "we need a part on mise too" and "where needed add more nexus spin offs".
+
+=== Why
+
+`mise` is the author's answer to the question the opening section raises. If ChRIS is defined by its app model and the UI is one way to meet it, then something has to make the other ways cheap to build, and that is what `mise` does. It also carries the author's position on scheduling, which is why it replaced the Airflow material.
+
+=== How it relates to the existing slides, and to HARBOR
+
+The current HARBOR authority does not mention `mise`, `chell`, ARGUS, `porter` or berths. The section therefore sits with the architecture, as ChRIS engineering, and none of its slides cite HARBOR. The architecture section now ends on "Who Owns What" and keeps `mise` only as a box beside ChRIS_ui in its component figure.
+
+=== How the claims are sourced
+
+All five slides are drawn from the `mise` repository <<mise>>, read from the author's checkout at `96ce597a`: the README for the first two, `docs/intent-kernel.adoc` for the kernel, `docs/calypso.adoc` for the session, and the README with `docs/berths.adoc` for the door and the berth. The repository has moved from the FNNDSC organisation to `HARBOR-Medical-AI/mise`, and citations were corrected to match.
+
+The session working in the `mise` repository checked thirteen claims from these slides on 2026-11-11 against `main` at `550b1d23`, reading code and docs without walking the lines on a live CUBE. Its corrections were applied the same day.
+
+The `/proc` path in the shell figure was wrong in shape. A job's node nests under its parent, and a plugin run from a plain folder hangs off `pl-dircopy`, so the path now reads `/proc/jobs/feed_123/pl-dircopy_456/pl-fshack_789/status`.
+
+The kernel slide's last bullet said loops and branches stay in the caller's script. The rule stands for loops and `if`, but `chell` gained `&&` and `||` lists that day, beside `;`, variables and `$(...)` capture. The bullet now says "no loops, no if". The receipt is real, with a caveat for the speaker: only a minority of commands return a typed model so far, and most receipts are still text.
+
+The kernel slide's takeaway said nothing above the kernel touches the raw API. That was wrong. `porter`, `stratus` and two places in `salsa` speak HTTP to CUBE directly. The documented rule is about surfaces, so the takeaway now reads "no surface touches the raw API".
+
+On the session slide, the claim that the engine sits where the data stays is a design property whose means are in place; a spoke deployment with egress policy is still design. The bullet now says the engine can sit there.
+
+Berths are partly shipped. A container per person behind `porter`, with `/incoming` and `/outgoing` mounted and a shell that is never the CUBE host's, exists where a deployment turns it on. The commands that anchor a node's output to `/incoming` and send results back to a feed are not built, so nothing flows through a berth yet. The slide says "shipping in stages".
+
+Three questions were settled along the way. There is no scheduler and no trigger of any kind in `mise`; the phrase "berth trigger" matches nothing in its code or docs. `pfdcm` is live and is CUBE's server-side query and retrieve service, so it stays on the "Architecture" slide. The two PACS paths are both current: `/net/pacs/queries` is the virtual tree of query results, and `/SERVICES/PACS` is where retrieved DICOM is stored.
+
+The layers figure is the docs' own four-line metaphor and is simpler than the code, where "mise" names the whole stack and the layers are `chell` and ARGUS, `porter`, `calypso`, `brasa`, the virtual filesystem, the CUBE driver, and CUBE.
+
+== HARBOR slides: re-checked against the current authority
+
+=== What it is
+
+A rewrite of the five HARBOR slides and of two stray HARBOR lines elsewhere in the deck, done on 2026-11-11.
+
+=== Why
+
+The author asked why Apache Airflow kept appearing. It traced to the LaTeX TDD the slides had been written from, which has been retired. The session that maintains the current HARBOR milestones work was asked to mark twenty claims from the slides as supported, changed, or absent. Its answers are the basis for every change below. The deck's agent did not read the authority itself, so this section reports a second-hand check, and the author is the one who can confirm it.
+
+=== What changed
+
+"Where ChRIS Sits in HARBOR". The Hub's role is wider than the old figure said: it is a marketplace and it orchestrates and audits, and it runs ChRIS too. ChRIS is in every Trusted Domain and not only in the Spokes. What flows back up is derived results, under permissions. The old third bullet, that policy belongs to HARBOR and ChRIS only supplies the record, was dropped because it no longer holds. The airport metaphor ("apps are aircraft: machinery flies in, no raw data flies out") came off the slide for length and is worth saying aloud.
+
+"The Boundary". The runtime now also enforces what an app may do beyond reading and writing its directories, so a line was added for that. The list of what ChRIS leaves alone is an inference from how the work is divided and is not stated anywhere as a list. The old line about what ChRIS hands the platform teams was not checked and was removed.
+
+"Ingestion as Apps", formerly "Ingestion as Plugins". The authority says "app". "Quarantine" is not its word: invalid images are rejected with a report, so the figure's failure branch now says that. A named embedding model and the phrase "three health systems" were removed, the first because it is now only an early benchmark and the second because it is not in the authority. The order of work is also reversed from what the slide said: the stages are composed into one workflow first and each app matures afterwards.
+
+"What HARBOR Adds to ChRIS". The old slide said today's runtime is synchronous and that the funded work is asynchronous execution for workflows of thousands of nodes. None of that is in the current authority. What is there: dispatch from the Hub to a named Spoke, telemetry with one record per run, handling of a Spoke that fails or stalls, and a baseline measured first and re-measured at volume. The figure's top layer is now the Hub. The takeaway changed from throughput to running the contract across a federation. A bullet the agent had added earlier that day about `chell` under cron was removed, because the authority says nothing about `mise`.
+
+"Governance and Standards". Data use agreements and quotas at the orchestration layer were removed: agreement rules live with security and compliance, and quotas are not in the authority. The lineage line now says "OpenLineage-compatible export", which is the authority's weaker wording. The three DICOMweb services are still right but belong to a different section of the document than the slide used to cite.
+
+"Workflows and Provenance". The line saying HARBOR's documents call the directory contract the "filesystem-bus" was replaced. That term is from the retired text. The current wording is that applications and workflows communicate through storage.
+
+"What We Need to Agree". "Policy hook points" became "App policy" and "Telemetry schema" became "Run record", to follow the changes above.
+
+=== Style
+
+These slides are the first written to the author's rule for word density, set the same day: short fragments, at most four to a slide, each with one highlighted word. "The Same Move, Reversed" was converted as a sample. The rest of the deck still uses full sentences.
+
 [bibliography]
 == References
 
@@ -130,4 +194,4 @@ Status: materialised in `talk.sd` on 2026-11-11, built against slidedown `70b9f2
 * [[[appleplatformsecurity]]] Apple Inc. "Security of runtime process in iOS, iPadOS, and visionOS". _Apple Platform Security_. https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web (read 2026-11-11).
 * [[[appleforum747499]]] Apple Developer Technical Support. "\"fork\" is no-no but why?" Apple Developer Forums, thread 747499, February 2024. https://developer.apple.com/forums/thread/747499 (read 2026-11-11).
 * [[[pfcon]]] FNNDSC. _pfcon: a controlling service that provides a unified web API to run containerized jobs on diverse compute environments_. https://github.com/FNNDSC/pfcon (read from the author's local checkout, 2026-11-11).
-* [[[mise]]] FNNDSC. _mise: ChRIS presented as a POSIX-like computer_. https://github.com/FNNDSC/mise (read from the author's local checkout, 2026-11-11).
+* [[[mise]]] HARBOR-Medical-AI. _mise: ChRIS presented as a POSIX-like computer_. https://github.com/HARBOR-Medical-AI/mise (read from the author's local checkout, 2026-11-11).

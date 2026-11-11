@@ -73,6 +73,7 @@
       .div{.jump{.target{contract} The App Contract}}
       .div{.jump{.target{workflows} Workflows and Provenance}}
       .div{.jump{.target{architecture} Architecture}}
+      .div{.jump{.target{mise} mise: ChRIS as a Computer}}
       .div{.jump{.target{clinic} ChRIS in the Clinic}}
       .div{.jump{.target{harbor} Where ChRIS Sits in HARBOR}}
       .div{.jump{.target{roadmap} What HARBOR Adds to ChRIS}}
@@ -92,10 +93,10 @@
     .term{
 .typewriter{$> whatis ipad}
     .nexus{.id{ipad-answers}
-      .div{.jump{.target{mobile-os} "It's a mobile OS."}}
-      .div{.jump{.target{pictures} "It's pictures you touch."}}
-      .div{.jump{.target{crippled-mac} "It's a crippled Mac."}}
-      .div{.jump{.target{so-chris} So what is ChRIS?}}
+      .div{.jump{.target{mobile-os} "It's a Mobile OS"}}
+      .div{.jump{.target{pictures} "It's Pictures You Touch"}}
+      .div{.jump{.target{crippled-mac} "It's a Crippled Mac"}}
+      .div{.jump{.target{so-chris} So What Is ChRIS?}}
     }
     }
   }
@@ -212,7 +213,7 @@
       .o{ChRIS_ui, ARGUS and chell are three surfaces. Swap one for another and it's still .bf{ChRIS}.}
     }
     .takeaway{DEFINE ChRIS THE WAY AN ARCHITECT DEFINES AN iPad.}
-    .source{github.com/FNNDSC/mise}
+    .source{github.com/HARBOR-Medical-AI/mise}
   }
 }
 
@@ -227,10 +228,10 @@
  <b>iPad</b>     [app]  │  [app]  │  [app]      <i>walls between apps: isolation</i>
  <b>ChRIS</b>    [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      <i>a directory handed on: composition</i>
 </pre>}
-      .o{An iPad is defined by what its apps are forbidden: no pipes, no shared files.}
-      .o{ChRIS is defined by a rule just as strict: read a directory, write a directory, exit.}
-      .o{The iPad restricts apps to keep them apart. ChRIS restricts them so they compose.}
-      .o{The iPad forbids the pipe between apps. ChRIS is the pipe.}
+      .o{iPad: apps .bf{forbidden} to share.}
+      .o{ChRIS: apps .bf{required} to hand on.}
+      .o{Same strictness. Opposite .bf{direction}.}
+      .o{ChRIS .bf{is} the pipe.}
     }
     .takeaway{THE APP MODEL IS THE DEFINITION. THE UI IS ONE WAY TO MEET IT.}
   }
@@ -349,7 +350,7 @@
           └─ embed         <i>ds   every node keeps its own output directory</i>
 </pre>}
       .o{A workflow is a tree of plugin runs. One node's output directory is the next node's input.}
-      .o{HARBOR's documents call this the .bf{filesystem-bus}.}
+      .o{In HARBOR's terms: apps talk through .bf{storage}.}
       .o{Every intermediate output stays where it was written, and stays inspectable.}
       .o{A .bf{feed} is one such tree, run on one dataset. A .bf{pipeline} is the reusable template for it.}
     }
@@ -420,7 +421,7 @@
       .o{.bf{pfcon} -- runs a plugin as a job on Docker, Kubernetes, OpenShift, or SLURM.}
       .o{.bf{pfdcm, oxidicom} -- the PACS bridge: query, retrieve, receive, register into CUBE.}
     }
-    .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/oxidicom · FNNDSC/mise}
+    .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/oxidicom · HARBOR-Medical-AI/mise}
   }
 }
 
@@ -447,29 +448,49 @@
 }
 
 .slide{
-  .id{architecture-posix}
-  .title{ChRIS as a Computer}
+  .id{mise}
+  .title{mise: ChRIS as a Computer}
   .body{
-    .h1{ChRIS as a Computer}
-    .h2{mise: drive ChRIS like a computer, not a web API}
+    .h1{mise: ChRIS as a Computer}
+    .h2{Drive ChRIS like a computer, not a web API}
     .term{
-.typewriter{$> chell}
-      .o{<pre class="fig">
- <b>cd</b> /home/chris/uploads/SAG-anon                <i>data is a filesystem</i>
- <b>ls</b> /bin                                        <i>plugins are executables</i>
- <b>pl-fshack-v1.2.0</b> --inputFile brain.mgz         <i>run an analysis by name</i>
- <b>cat</b> /proc/jobs/feed_123/pl-fshack_789/status   <i>a running job is a file</i>
-</pre>}
-      .o{One useful task used to be a long chain of dependent REST calls.}
-      .o{.bf{mise} builds that plumbing once. Nothing above it touches the raw API.}
+.typewriter{$> man mise}
+    .nexus{.id{mise-parts}
+      .div{.jump{.target{mise-machine} A Machine, Not an Endpoint}}
+      .div{.jump{.target{mise-layers} Above CUBE}}
+      .div{.jump{.target{mise-kernel} The Intent Kernel}}
+      .div{.jump{.target{mise-session} One Session, Many Surfaces}}
+      .div{.jump{.target{mise-door} The Door and the Berth}}
     }
-    .takeaway{A MACHINE INSTEAD OF AN ENDPOINT.}
-    .source{github.com/FNNDSC/mise}
+    }
+    .source{github.com/HARBOR-Medical-AI/mise}
   }
 }
 
 .slide{
-  .id{architecture-posix-2}
+  .id{mise-machine}
+  .title{A Machine, Not an Endpoint}
+  .body{
+    .h1{A Machine, Not an Endpoint}
+    .term{
+.typewriter{$> chell}
+      .o{<pre class="fig">
+ <b>cd</b> /home/chris/uploads/SAG-anon                               <i>data is a filesystem</i>
+ <b>ls</b> /bin                                                       <i>plugins are executables</i>
+ <b>pl-fshack-v1.2.0</b> --inputFile brain.mgz                        <i>run an analysis by name</i>
+ <b>cat</b> /proc/jobs/feed_123/pl-dircopy_456/pl-fshack_789/status   <i>a running job is a file</i>
+</pre>}
+      .o{One task was a .bf{chain} of REST calls.}
+      .o{mise builds that plumbing .bf{once}.}
+      .o{If you know a terminal, you know .bf{most} of it.}
+    }
+    .takeaway{YOUR DATA IS A FILESYSTEM. EVERY PLUGIN IS A COMMAND.}
+    .source{github.com/HARBOR-Medical-AI/mise}
+  }
+}
+
+.slide{
+  .id{mise-layers}
   .title{Above CUBE}
   .body{
     .h1{Above CUBE}
@@ -480,15 +501,79 @@
    <u>▲</u>
  <b>calypso</b>        who is there       one login, one live session
    <u>▲</u>
- <b>mise</b>           where things are   /home  /bin  /proc  /SERVICES/PACS
+ <b>mise</b>           where things are   /home  /bin  /proc
    <u>▲</u>
  <b>CUBE</b>           what is true       the objects and the laws between them
 </pre>}
-      .o{Two views, never two copies: type .bf{cd} in the terminal and the browser has already moved.}
-      .o{Below CUBE you can swap the cluster. Above it you can swap the surface.}
+      .o{Below CUBE, swap the .bf{cluster}.}
+      .o{Above CUBE, swap the .bf{surface}.}
     }
     .takeaway{CUBE SAYS WHAT IS TRUE. mise SAYS WHERE THINGS ARE.}
-    .source{github.com/FNNDSC/mise}
+    .source{github.com/HARBOR-Medical-AI/mise}
+  }
+}
+
+.slide{
+  .id{mise-kernel}
+  .title{The Intent Kernel}
+  .body{
+    .h1{The Intent Kernel}
+    .term{
+.typewriter{$> brasa --contract}
+      .o{<pre class="fig">
+ <b>intent</b>    ──<u>▶</u>  brasa  ──<u>▶</u>  validated actions  ──<u>▶</u>  CUBE
+ <b>receipt</b>   <u>◀</u>──  brasa  <u>◀</u>──  what actually happened
+</pre>}
+      .o{Say .bf{what} you want, not how.}
+      .o{A .bf{bounded} vocabulary. No arbitrary API calls.}
+      .o{The engine writes the .bf{receipt}, not the caller.}
+      .o{No loops, no .bf{if}. Those stay in your script.}
+    }
+    .takeaway{NO SURFACE TOUCHES THE RAW API.}
+    .source{github.com/HARBOR-Medical-AI/mise · docs/intent-kernel.adoc}
+  }
+}
+
+.slide{
+  .id{mise-session}
+  .title{One Session, Many Surfaces}
+  .body{
+    .h1{One Session, Many Surfaces}
+    .term{
+.typewriter{$> calypso --berths}
+      .o{<pre class="fig">
+ chell ──┐
+         ├──<u>▶</u> <b>calypso</b> ──<u>▶</u> CUBE
+ argus ──┘     <i>one login, one session</i>
+</pre>}
+      .o{Work .bf{outlives} its viewer.}
+      .o{Type .bf{cd} in the terminal. The browser moves.}
+      .o{Like tmux: close it, .bf{reattach} later.}
+      .o{The engine .bf{can} sit where the data stays.}
+    }
+    .takeaway{TWO VIEWS OF ONE SESSION. NEVER TWO COPIES.}
+    .source{github.com/HARBOR-Medical-AI/mise · docs/calypso.adoc}
+  }
+}
+
+.slide{
+  .id{mise-door}
+  .title{The Door and the Berth}
+  .body{
+    .h1{The Door and the Berth}
+    .term{
+.typewriter{$> porter}
+      .o{<pre class="fig">
+ browser ──<u>▶</u> <b>porter</b> ──<u>▶</u> <b>berth</b> ──<u>▶</u> CUBE
+             <i>login page</i>   <i>your session, your container</i>
+</pre>}
+      .o{.bf{porter}: what gdm is to a desktop.}
+      .o{No tokens. No URLs to .bf{copy}.}
+      .o{.bf{berth}: your own container. Shipping in stages.}
+      .o{Your shell is never on .bf{CUBE's} machine.}
+    }
+    .takeaway{LOG IN ONCE. LAND IN YOUR OWN SESSION.}
+    .source{github.com/HARBOR-Medical-AI/mise · docs/berths.adoc}
   }
 }
 
@@ -540,20 +625,20 @@
 .typewriter{$> harbor td --describe}
       .o{<pre class="fig">
  ┌─────────────────────────── Hub TD ───────────────────────────┐
- │      app catalogue  ·  coordination  ·  aggregation          │
+ │      marketplace  ·  orchestration  ·  audit  ·  ChRIS       │
  └──────────────────────────────────────────────────────────────┘
-       <u>▼</u> <i>apps and instructions</i>            <u>▲</u> <i>approved outputs only</i>
+       <u>▼</u> <i>apps and instructions</i>            <u>▲</u> <i>derived results only</i>
  ┌────────────────────────── Spoke TD ──────────────────────────┐
  │  <b>ChRIS</b>:  [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      raw data stays here  │
  │  OpenShift: namespaces, policy, storage                      │
  └──────────────────────────────────────────────────────────────┘
 </pre>}
-      .o{A TD is the airport. Apps are aircraft: machinery flies in, no raw data flies out.}
-      .o{.bf{ChRIS is how that machinery runs once it has landed}: the workflow runtime inside every TD.}
-      .o{What may leave is HARBOR policy. ChRIS supplies the record that policy is checked against.}
+      .o{Apps .bf{move} to the data.}
+      .o{ChRIS in .bf{every} TD, Hub and Spoke.}
+      .o{The Hub .bf{dispatches}. The Spoke runs.}
     }
     .takeaway{THE SAME WORKFLOW, UNDER THE SAME CHECKS, IN EVERY TD.}
-    .source{HARBOR TDD, TA2 Technical Architecture; Major Task 2.6}
+    .source{HARBOR Task Description Document: System Platform}
   }
 }
 
@@ -565,9 +650,9 @@
     .h2{What ChRIS owns in a Trusted Domain, and what it leaves alone}
     .term{
 .typewriter{$> chris --scope}
-      .o{.bf{Owns:} the app contract, the plugin lifecycle, workflow composition, provenance, and inspection of what ran.}
-      .o{.bf{Doesn't own:} OpenShift provisioning, fleet management, enterprise identity, cluster policy, SOC 2 and HIPAA operations.}
-      .o{What ChRIS hands the platform teams: service manifests, deployment expectations, health checks, validation tests.}
+      .o{.bf{Owns}: apps, pipelines, provenance, run history.}
+      .o{.bf{Enforces}: what an app may touch.}
+      .o{.bf{Leaves}: clusters, fleet, identity, compliance.}
     }
     .takeaway{ChRIS ISN'T COMPETING WITH OPENSHIFT. IT IS THE LAST MILE ON TOP OF IT.}
   }
@@ -575,25 +660,25 @@
 
 .slide{
   .id{harbor-end}
-  .title{Ingestion as Plugins}
+  .title{Ingestion as Apps}
   .body{
-    .h1{Ingestion as Plugins}
-    .h2{Major Task 2.7: every stage of intake is a ChRIS app}
+    .h1{Ingestion as Apps}
+    .h2{Every stage of intake is a ChRIS app}
     .term{
 .typewriter{$> harbor ingest --stages}
       .o{<pre class="fig">
  raw ──<u>▶</u> [validate] ──<u>▶</u> [de-identify] ──<u>▶</u> [deduplicate] ──<u>▶</u> [normalise] ──<u>▶</u> <b>promoted</b>
              │ <i>fail</i>
              <u>▼</u>
-     [quarantine + report]
+       [reject + report]
 </pre>}
-      .o{DICOM standardisation, tag normalisation, and a metadata validation gate.}
-      .o{De-identification: headers, text, pixels.}
-      .o{Embeddings (MedSigLIP) for deduplication. Conversion to the at-rest formats.}
-      .o{Built and tested one plugin at a time, then composed into one workflow and proven on .bf{three health systems}.}
+      .o{.bf{Validate}: readable DICOM, required fields.}
+      .o{.bf{De-identify}: headers, burned-in text, pixels.}
+      .o{.bf{Deduplicate}: by image content.}
+      .o{.bf{Composed} first. Each app then matures.}
     }
     .takeaway{EACH PARTNER'S STAGE IS A CONTAINER WITH A DIRECTORY ON EITHER SIDE.}
-    .source{HARBOR TDD, Major Task 2.7 (Data Ingestion and Processing)}
+    .source{HARBOR Task Description Document: Data Management}
   }
 }
 
@@ -605,20 +690,20 @@
     .term{
 .typewriter{$> chris --gaps --scale=federation}
       .o{<pre class="fig">
- <b>Airflow</b>     schedule · retry · monitor · policy hooks
-    │ <i>run</i>                      <u>▲</u> <i>events: start, progress, done, error</i>
+ <b>Hub</b>         dispatch · telemetry · one record per run
+    │ <i>run</i>                      <u>▲</u> <i>status, progress, failure</i>
     <u>▼</u>                          │
- <b>ChRIS</b>       [app] ──<u>▶</u> [app] ──<u>▶</u> [app] ──<u>▶</u> provenance ──<u>▶</u> OpenLineage
+ <b>Spoke</b>       [app] ──<u>▶</u> [app] ──<u>▶</u> [app] ──<u>▶</u> provenance ──<u>▶</u> OpenLineage
     │
  <b>OpenShift</b>   pods · storage · isolation
 </pre>}
-      .o{Today's runtime is .bf{synchronous}. Federation means thousands of concurrent nodes.}
-      .o{So: async execution, non-blocking I/O, faster filesystem-bus throughput.}
-      .o{Events pushed to dashboards and audit, not polled.}
-      .o{Airflow schedules and retries. The plugin stays the unit of work.}
+      .o{.bf{Dispatch}: submit at the Hub, run in a Spoke.}
+      .o{.bf{Telemetry}: one record per run.}
+      .o{.bf{Recovery}: a Spoke stalls, the run resumes.}
+      .o{.bf{Baseline} first. Then measure at scale.}
     }
-    .takeaway{THE CONTRACT IS PROVEN. THE THROUGHPUT AT FEDERATION SCALE IS THE FUNDED WORK.}
-    .source{HARBOR TDD, Major Task 2.6 (Data Pipeline Orchestration and Provenance)}
+    .takeaway{THE CONTRACT IS PROVEN. RUNNING IT ACROSS A FEDERATION IS THE FUNDED WORK.}
+    .source{HARBOR Task Description Document: App Runtime}
   }
 }
 
@@ -630,13 +715,13 @@
     .h2{Making the record legible outside ChRIS}
     .term{
 .typewriter{$> chris --extensions --for=harbor}
-      .o{.bf{Policy hooks} at the orchestration layer: data use agreements and compute quotas, checked on every run.}
-      .o{.bf{Audit metadata} captured on every pipeline execution.}
-      .o{.bf{OpenLineage} events from the filesystem-bus, so any lineage service can read ChRIS provenance.}
-      .o{.bf{DICOMweb} endpoints inside the TD: QIDO-RS to query, WADO-RS to retrieve, STOW-RS to store.}
+      .o{.bf{App policy}: what an app may touch, enforced.}
+      .o{.bf{Audit}: every operation logged and versioned.}
+      .o{.bf{Lineage}: an OpenLineage-compatible export.}
+      .o{.bf{DICOMweb}: QIDO-RS, WADO-RS, STOW-RS.}
     }
     .takeaway{PROVENANCE AN AUDITOR CAN READ WITHOUT LEARNING ChRIS.}
-    .source{HARBOR TDD, Major Task 2.6}
+    .source{HARBOR Task Description Document: App Runtime · Services}
   }
 }
 
@@ -666,8 +751,8 @@
     .term{
 .typewriter{$> harbor --interfaces --open}
       .o{.bf{Stage contracts.} What exactly sits in the directory between your stage and the next one.}
-      .o{.bf{Policy hook points.} Where in a run the TD checks a data use agreement or a quota.}
-      .o{.bf{Telemetry schema.} The events a job publishes, and who consumes them.}
+      .o{.bf{App policy.} What a stage may touch beyond its two directories.}
+      .o{.bf{Run record.} Status, progress and failure, readable by any client.}
       .o{.bf{Lineage mapping.} How a ChRIS run becomes OpenLineage run, job and dataset facets.}
     }
     .takeaway{AGREE THE DIRECTORIES AND THE EVENTS. THE REST CAN CHANGE UNDERNEATH.}
