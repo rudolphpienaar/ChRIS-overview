@@ -21,14 +21,16 @@ jobs:
       - name: Checkout deck
         uses: actions/checkout@v4
 
-      # Pinned deliberately. 0711397 = merge of FNNDSC/slidedown#7 on main (.bars
-      # .labelwidth{}; #3 theme, #4 labels, #5 .bars{}, #6 .term/.takeaway/.source).
-      # Bump on purpose.
+      # Pinned deliberately. 4651934 = main on 2026-11-11: everything up to
+      # FNNDSC/slidedown#7 (theme, labels, .bars{}, .term/.takeaway/.source),
+      # plus terminal typewriters that type only the command, code styled for a
+      # terminal window, and Up/Down panning on a slide taller than the page.
+      # The deck needs the last three. Bump on purpose.
       - name: Checkout slidedown
         uses: actions/checkout@v4
         with:
           repository: FNNDSC/slidedown
-          ref: 07113979daaef5f75db1d8fe2a7e1accb577adef
+          ref: 4651934b61850658e56c2fd982d981703836a1c9
           path: .slidedown
 
       - name: Setup Python

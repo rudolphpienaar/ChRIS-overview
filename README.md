@@ -22,7 +22,7 @@ Running off the end of a section also returns to the outline, and visited sectio
 The deck is written in [slidedown](https://github.com/FNNDSC/slidedown) (`talk.sd`, `command-line` theme) and compiles to static HTML in `talk/`.
 
 ```bash
-# with a slidedown checkout at ~/src/slidedown, at or after commit 0711397
+# with a slidedown checkout at ~/src/slidedown, at or after commit 4651934
 uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme command-line
 cd talk && python3 -m http.server 8000      # then open http://localhost:8000
 ```
@@ -31,7 +31,7 @@ The `command-line` theme, slide labels and the `.term{}`, `.takeaway{}` and `.so
 
 ## Deployment
 
-`.github/workflows/pages.yml` builds the deck on every push to `master` and deploys `talk/` to GitHub Pages. slidedown is pinned to commit `0711397` so an upstream change can't break the deck unannounced. Bump the pin on purpose.
+`.github/workflows/pages.yml` builds the deck on every push to `master` and deploys `talk/` to GitHub Pages. slidedown is pinned to commit `4651934` so an upstream change can't break the deck unannounced. Bump the pin on purpose.
 
 ## Layout
 
