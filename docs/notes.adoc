@@ -1,0 +1,133 @@
+= ChRIS Overview Deck: Design Notes
+Rudolph Pienaar
+:toc: left
+:sectnums:
+
+== About these notes
+
+This file records the thinking behind the deck in `talk.sd`, as dictated by the author while the slides are being planned. It exists because the slides only carry conclusions. The reasoning that picked those conclusions, and the order they arrive in, would otherwise live in one head. Each section below is a concept the talk has to land, written down before or alongside its slides, so the slides can be checked against the intent.
+
+The existing deck is kept. Everything here is additive to it. Full references for anything a slide asserts are in `docs/refs.bib`.
+
+== The framing problem
+
+The talk is meant to give an overview of ChRIS. The author is its chief architect and finds that hard to do, which is not an accident: the person who knows every layer has no natural stopping point, and an explanation only works if it matches the audience. The HARBOR audience is technical. The aim is still to keep things simple.
+
+The chosen approach is to start from first principles, on a conceptual footing, and build up from there. The deck does not open with components or features. It opens with the question of what it means to define a piece of technology at all.
+
+== Concept 1: the lightness of defining a product
+
+=== What it is
+
+A new first entry on the outline, "The Unbearable Lightness of Defining", after Kundera's novel <<kundera1984>>. The title was first floated as "The Unbearable Lightness of Being"; "Defining" keeps the echo and says what the section does. The entry opens a second menu that runs a thought experiment: what is an iPad?
+
+=== The thought experiment
+
+Everyone knows what an iPad is. Ask them to define it and few can. The experiment walks through the answers people give and shows each one giving way.
+
+One answer is that it is a mobile OS. The counter is to ask what a mobile OS is, and whether that is a different kind of thing from a non-mobile OS. The answer has only traded one undefined word for another.
+
+Another answer describes the experience: a device that shows pictures of applications, and touching a picture starts the app. The apps do things like report the weather, show the news, or play a game. So an iPad (or an iPhone, or any tablet or phone) is little pictures that do things.
+
+The counter to that is to change the whole UI. On Android this is entirely possible. The author's own phone runs Re:T-UI <<retui>>, a launcher whose home screen is a command line: no icons, no pictures, a prompt. By the pictures definition it is no longer a phone, which is absurd.
+
+=== The author's own definition
+
+An iPad is a computer running a bespoke fork of macOS, with a deliberately restrictive app model that often runs against the grain of the OS underneath it: sandboxed apps, no `fork`, no pipes between apps, no universal access to the file system. Put bluntly, for the sake of security it is a crippled macOS behind a very restrictive UI.
+
+=== The point, sharpened
+
+As first dictated, the point was that people define a thing by how they experience it, and that this experience is entirely subjective. Left there, it undercuts the author's own definition, which is offered as the better one while being just as much a product of how an architect meets the device.
+
+The sharper version, agreed in discussion, keeps the subjectivity and adds a test. A definition by experience describes the interface. A definition by construction says what the thing can and cannot do. Swap the launcher and "pictures you touch" becomes false, while "sandboxed apps, no pipes, no shared files" stays true. The definition worth keeping is the one that survives a change of UI. The slides say outright that the architect's answer is subjective too, so the claim is not that one view is objective. It is that one of them is stable.
+
+=== The bridge to ChRIS
+
+ChRIS has the iPad's problem. Ask five people what it is and each describes how they met it: a dashboard for running analyses, a full web UI with a shell that looks like a whole computer, the thing that pulls studies out of a PACS from the CLI, a persistent record of all analyses and transformations, a workflow engine. Each is true and each is a "pictures you touch" answer. The first three are the telling ones. They come from people who met ChRIS_ui, ARGUS and `chell`, and they describe three different products while the ChRIS underneath is the same one. The HARBOR audience has already seen ARGUS, so for them the swap is something witnessed and not hypothetical. The fourth answer comes from someone who met a feed and the fifth from someone who met a pipeline. The same test applies. Swap any of the three surfaces for another and it is still ChRIS, exactly as the author's phone is still a phone. `chell` and ARGUS are the shell and web surfaces of `mise` <<mise>>. (`mise` presents ChRIS as a POSIX-like computer. An earlier draft of the slide named `chrs` here, which is deprecated.)
+
+The second half of the bridge is the one that sets up the rest of the deck. The author's iPad definition is a list of what apps are forbidden to do. ChRIS is also defined by a restrictive app model: read a directory, write a directory, exit. The two restrict in opposite directions. The iPad keeps apps apart, for isolation. ChRIS restricts apps so that they compose. The iPad forbids the pipe between apps, and ChRIS is the pipe. This hands straight over to the existing "App Contract" section, which now arrives as the answer to a question the audience has already been made to ask.
+
+=== How the claims are sourced
+
+"Fork of macOS" is the author's spoken phrasing and is loose. The slide says "a close relative of macOS" and the figure says "same kernel (XNU), same core (Darwin)", which is what Apple's own kernel source states <<applexnu>>.
+
+That every third-party app is sandboxed, and that each has its own home directory for its files, is from Apple's platform security guide <<appleplatformsecurity>>.
+
+That iOS apps may not spawn child processes is from a reply by an Apple support engineer on the developer forums <<appleforum747499>>. It is a forum post and not formal documentation, and the same reply notes that the iOS sandbox is a different mechanism from the macOS App Sandbox.
+
+"No pipes between apps" has no direct source. It follows from the two restrictions above: without a common parent process or a shared place in the file system, two apps have no way to hold the two ends of a pipe. It is flagged here as an inference.
+
+=== How it was built
+
+The section is a menu inside a spoke. The outline entry lands on the "What is an iPad?" menu, whose four entries are the answers a room might give, the architect's answer, and the bridge. Each opens a short run of slides and returns to the menu, so the presenter can open whichever answer the audience offers first. Advancing from the menu itself returns to the outline.
+
+[cols="1,2,3"]
+|===
+| Address | Slide | Job
+
+| `lightness` | The Unbearable Lightness of Defining | The menu: "What is an iPad? Everyone knows. Now define it."
+| `mobile-os` | "It's a Mobile OS" | A category is offered in place of a definition.
+| `pictures` | "It's Pictures You Touch" | The definition by experience, stated fairly.
+| `pictures-2` | Now Change the UI | Re:T-UI breaks it. Figure: icon grid beside a prompt.
+| `crippled-mac` | "It's a Crippled Mac" | The author's definition. Figure: macOS over iPadOS.
+| `crippled-mac-2` | Which Definition Survives? | The test: swap the UI and see what is still true.
+| `so-chris` | So What Is ChRIS? | Five people, five answers, and the swap between three surfaces.
+| `so-chris-2` | The Same Move, Reversed | Isolation against composition. Figure: walls beside arrows.
+|===
+
+=== Open points
+
+Of the five answers on the "So What Is ChRIS?" slide, four are the author's wording: the dashboard, ARGUS, `chell` and feed answers. The workflow-engine answer is still the assistant's stand-in, kept because the author did not remove it. The closing line about three surfaces is also the assistant's, written once `chell` became one of the answers and could no longer be introduced as the swap.
+
+The laptop line on the "Mobile OS" slide ("A laptop is mobile. Nobody calls macOS a mobile OS.") is also the assistant's addition, in the spirit of the dictated counter.
+
+The outline now has ten entries. Number keys reach the first nine, so "Conclusions" is reachable by cursor or click only.
+
+The new "So What Is ChRIS?" slide overlaps the existing "What Is ChRIS?" section that follows it. Both are kept. The first asks the question and the second answers it, but they may want merging once the rest of the opening is dictated.
+
+The section runs for several minutes before ChRIS is named. That suits a long slot. In a short one the menu lets it be skipped.
+
+Status: materialised in `talk.sd` on 2026-11-11, built against slidedown `0711397`.
+
+== Architecture revision: pfcon alone, and mise above CUBE
+
+=== What it is
+
+A correction to the existing "Architecture" slide and two new slides after "Who Owns What". The correction removes `pman`. The figure used to show a `pfcon+pman` pair per compute environment and now shows `pfcon` alone, with `mise` added beside ChRIS_ui as a second client of CUBE's REST API. The new slides are "ChRIS as a Computer" (`architecture-posix`) and "Above CUBE" (`architecture-posix-2`).
+
+=== Why
+
+The author's instruction was that `pman` is deprecated and that the architecture should pull in ideas from `mise`, described as a core part of the POSIX-leaning extensions to ChRIS. The old figure taught the audience a component they will never deploy. The old architecture section also stopped at CUBE on the client side, with ChRIS_ui as the only thing above it, which contradicts the opening section's claim that the UI is one way among several to meet ChRIS.
+
+=== How it relates to the existing slides
+
+"Who Owns What" already layers the system downward from CUBE: meaning, mapping, execution. "Above CUBE" layers it upward in the same figure style, using the four-line statement at the head of the `mise` README <<mise>>: CUBE says what is true, `mise` says where things are, Calypso is who is there, `chell` and `argus` are how you look. The pairing gives the section one sentence to close on: below CUBE the cluster can be swapped, above it the surface can be swapped. That sentence is the assistant's. It is the architectural form of the test from Concept 1, and it returns to ChRIS_ui, ARGUS and `chell` as the three surfaces named there.
+
+"ChRIS as a Computer" shows four shell lines taken from the `mise` README: `cd` into a data directory, `ls /bin`, run a plugin by name, `cat` a job's status under `/proc`. The right-hand glosses are shortened from the README's own comments, except "a running job is a file", which paraphrases its "every running job a file you can read". The takeaway, "a machine instead of an endpoint", is the README's phrase.
+
+=== How the claims are sourced
+
+That `pman` no longer exists as a separate service is from the `pfcon` repository's history: commit `bf65ddf`, "Merge pman (#149)", dated 2025-09-25, followed by "Remove some remaining pman references" <<pfcon>>. The slide's list of compute environments is narrowed from the `pfcon` README, which names Docker, Podman, Swarm, Kubernetes and SLURM. OpenShift is carried over from the earlier slide and is not named in that README.
+
+Everything on the two new slides is from the `mise` README in the author's local checkout at `96ce597a`. Neither repository was read from GitHub.
+
+=== Open points
+
+`pfdcm` is still on the "Architecture" slide as half of the PACS bridge. The author named only `pman` as deprecated, so `pfdcm` was left alone. It should be confirmed.
+
+The slide's source line still cites `FNNDSC/CHRIS_docs`. The `miniChRIS-docker` citation was dropped from that line because its README still lists `pman` as a component.
+
+"Who Owns What" was not changed. Its three layers never named `pman`.
+
+Status: materialised in `talk.sd` on 2026-11-11, built against slidedown `70b9f25`.
+
+[bibliography]
+== References
+
+* [[[kundera1984]]] Milan Kundera. _The Unbearable Lightness of Being_. Translated by Michael Henry Heim. Harper & Row, New York, 1984.
+* [[[retui]]] _Re:T-UI: a phone-first guide built from the Re:T-UI wiki_. https://re-tui.pages.dev/ (read 2026-11-11).
+* [[[applexnu]]] Apple Inc. _XNU kernel source, README_. https://github.com/apple-oss-distributions/xnu (read 2026-11-11).
+* [[[appleplatformsecurity]]] Apple Inc. "Security of runtime process in iOS, iPadOS, and visionOS". _Apple Platform Security_. https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web (read 2026-11-11).
+* [[[appleforum747499]]] Apple Developer Technical Support. "\"fork\" is no-no but why?" Apple Developer Forums, thread 747499, February 2024. https://developer.apple.com/forums/thread/747499 (read 2026-11-11).
+* [[[pfcon]]] FNNDSC. _pfcon: a controlling service that provides a unified web API to run containerized jobs on diverse compute environments_. https://github.com/FNNDSC/pfcon (read from the author's local checkout, 2026-11-11).
+* [[[mise]]] FNNDSC. _mise: ChRIS presented as a POSIX-like computer_. https://github.com/FNNDSC/mise (read from the author's local checkout, 2026-11-11).

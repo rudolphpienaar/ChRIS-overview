@@ -11,6 +11,22 @@
   css:
     "#slide-1 h1":
         font-size: "2.6em"
+    ".slide .term pre.fig":
+        color: "#d4d4d4"
+        line-height: "1.25"
+        overflow: "visible"
+        margin: "0.2em 0 0.8em 1.6em"
+    ".slide .term pre.fig b":
+        color: "#4ec9b0"
+        font-weight: "400"
+    ".slide .term pre.fig u":
+        display: "inline-block"
+        width: "1ch"
+        text-decoration: "none"
+        color: "#4ec9b0"
+    ".slide .term pre.fig i":
+        color: "#858585"
+        font-style: "normal"
 }
 
 .slide{
@@ -52,6 +68,7 @@
     .term{
 .typewriter{$> chris --outline}
     .nexus{.id{outline}
+      .div{.jump{.target{lightness} The Unbearable Lightness of Defining}}
       .div{.jump{.target{what-is} What Is ChRIS?}}
       .div{.jump{.target{contract} The App Contract}}
       .div{.jump{.target{workflows} Workflows and Provenance}}
@@ -63,6 +80,159 @@
       .div{.jump{.target{conclusions} Conclusions}}
     }
     }
+  }
+}
+
+.slide{
+  .id{lightness}
+  .title{The Unbearable Lightness of Defining}
+  .body{
+    .h1{The Unbearable Lightness of Defining}
+    .h2{What is an iPad? Everyone knows. Now define it.}
+    .term{
+.typewriter{$> whatis ipad}
+    .nexus{.id{ipad-answers}
+      .div{.jump{.target{mobile-os} "It's a mobile OS."}}
+      .div{.jump{.target{pictures} "It's pictures you touch."}}
+      .div{.jump{.target{crippled-mac} "It's a crippled Mac."}}
+      .div{.jump{.target{so-chris} So what is ChRIS?}}
+    }
+    }
+  }
+}
+
+.slide{
+  .id{mobile-os}
+  .title{It's a Mobile OS}
+  .body{
+    .h1{"It's a Mobile OS"}
+    .term{
+.typewriter{$> define "mobile OS"}
+      .o{Fine. What is a mobile OS?}
+      .o{Is it a different kind of thing from a non-mobile OS? Or the same thing in a smaller case?}
+      .o{A laptop is mobile. Nobody calls macOS a mobile OS.}
+      .o{The answer traded one undefined word for another.}
+    }
+    .takeaway{NAMING THE CATEGORY ISN'T DEFINING THE THING.}
+  }
+}
+
+.slide{
+  .id{pictures}
+  .title{It's Pictures You Touch}
+  .body{
+    .h1{"It's Pictures You Touch"}
+    .term{
+.typewriter{$> describe --by=experience ipad}
+      .o{A screen of little pictures. Each picture is an app.}
+      .o{Touch one and it does a thing: reports the weather, shows the news, plays a game.}
+      .o{So an iPad is little pictures that do things. So is an iPhone. So is any tablet, any phone.}
+      .o{It's an honest definition. It describes what people met.}
+    }
+  }
+}
+
+.slide{
+  .id{pictures-2}
+  .title{Now Change the UI}
+  .body{
+    .h1{Now Change the UI}
+    .term{
+.typewriter{$> launcher --replace}
+      .o{<pre class="fig">
+ ┌──────────────────────┐            ┌──────────────────────┐
+ │ [wx]   [news] [game] │            │ $ weather            │
+ │ [mail] [maps] [cam]  │   ─────<u>▶</u>   │ $ news               │
+ │ [web]  [pay]  [chat] │            │ $ _                  │
+ └──────────────────────┘            └──────────────────────┘
+  <i>pictures you touch</i>                  <i>a prompt you type at</i>
+</pre>}
+      .o{On Android the whole home screen can be replaced. Mine runs .bf{Re:T-UI}: no icons, no pictures, a prompt.}
+      .o{Same hardware, same apps underneath.}
+      .o{By the pictures definition it stopped being a phone. It didn't.}
+    }
+    .takeaway{PEOPLE DEFINE A THING BY HOW THEY MET IT.}
+    .source{Re:T-UI launcher guide, re-tui.pages.dev}
+  }
+}
+
+.slide{
+  .id{crippled-mac}
+  .title{It's a Crippled Mac}
+  .body{
+    .h1{"It's a Crippled Mac"}
+    .h2{The architect's answer}
+    .term{
+.typewriter{$> describe --by=construction ipad}
+      .o{<pre class="fig">
+ <b>macOS</b>     child processes  ·  pipes  ·  one filesystem  ·  any UI you like
+   │       <i>same kernel (XNU), same core (Darwin)</i>
+   <u>▼</u>
+ <b>iPadOS</b>    every app sandboxed  ·  no child processes  ·  a private container each
+</pre>}
+      .o{A computer, running a close relative of macOS.}
+      .o{With an app model that fights the OS underneath it: no .bf{fork}, no pipes between apps, no shared filesystem.}
+      .o{For the sake of security: a crippled macOS behind a very restrictive UI.}
+      .o{This is subjective too. It's how an architect meets the thing.}
+    }
+    .source{Apple Platform Security, "Security of runtime process in iOS, iPadOS, and visionOS" · apple-oss-distributions/xnu · Apple Developer Forums thread 747499}
+  }
+}
+
+.slide{
+  .id{crippled-mac-2}
+  .title{Which Definition Survives?}
+  .body{
+    .h1{Which Definition Survives?}
+    .term{
+.typewriter{$> diff --swap-ui experience construction}
+      .o{Swap the launcher. "Pictures you touch" is now false.}
+      .o{"Sandboxed apps, no pipes, no shared files" is still true.}
+      .o{A definition by experience describes the interface.}
+      .o{A definition by construction says what the thing can and can't do.}
+    }
+    .takeaway{KEEP THE DEFINITION THAT SURVIVES A CHANGE OF UI.}
+  }
+}
+
+.slide{
+  .id{so-chris}
+  .title{So What Is ChRIS?}
+  .body{
+    .h1{So What Is ChRIS?}
+    .h2{Ask five people}
+    .term{
+.typewriter{$> whatis chris --ask=5}
+      .o{"A dashboard for running analyses." They met ChRIS_ui.}
+      .o{"A full web UI with a shell. It looks like a whole computer." They met ARGUS.}
+      .o{"The thing that pulls studies out of a PACS from the CLI." They met chell.}
+      .o{"A persistent record of all analyses and transformations." They met a feed.}
+      .o{"A workflow engine." They met a pipeline.}
+      .o{All true. All pictures you touch.}
+      .o{ChRIS_ui, ARGUS and chell are three surfaces. Swap one for another and it's still .bf{ChRIS}.}
+    }
+    .takeaway{DEFINE ChRIS THE WAY AN ARCHITECT DEFINES AN iPad.}
+    .source{github.com/FNNDSC/mise}
+  }
+}
+
+.slide{
+  .id{so-chris-2}
+  .title{The Same Move, Reversed}
+  .body{
+    .h1{The Same Move, Reversed}
+    .term{
+.typewriter{$> diff ipad chris --app-model}
+      .o{<pre class="fig">
+ <b>iPad</b>     [app]  │  [app]  │  [app]      <i>walls between apps: isolation</i>
+ <b>ChRIS</b>    [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      <i>a directory handed on: composition</i>
+</pre>}
+      .o{An iPad is defined by what its apps are forbidden: no pipes, no shared files.}
+      .o{ChRIS is defined by a rule just as strict: read a directory, write a directory, exit.}
+      .o{The iPad restricts apps to keep them apart. ChRIS restricts them so they compose.}
+      .o{The iPad forbids the pipe between apps. ChRIS is the pipe.}
+    }
+    .takeaway{THE APP MODEL IS THE DEFINITION. THE UI IS ONE WAY TO MEET IT.}
   }
 }
 
@@ -107,6 +277,13 @@
     .h1{The App Contract}
     .term{
 .typewriter{$> app [--flags] /input /output}
+      .o{<pre class="fig">
+   /input              ┌───────────────────────┐              /output
+ ┌─────────┐           │ <b>plugin</b>: one container │           ┌─────────┐
+ │  files  │ ────────<u>▶</u> │ app --flags           │ ────────<u>▶</u> │  files  │
+ └─────────┘           │ runs once, then exits │           └─────────┘
+                       └───────────────────────┘
+</pre>}
       .o{A ChRIS app -- a .bf{plugin} -- is a Linux container that reads one directory, writes another, and exits.}
       .o{It does not know about ChRIS, the workflow it sits in, or the cluster under it.}
       .o{A JSON descriptor declares its parameters and its limits: CPU, memory, GPU.}
@@ -124,6 +301,12 @@
     .h1{Three Kinds of Plugin}
     .term{
 .typewriter{$> chris plugin --types}
+      .o{<pre class="fig">
+ <b>fs</b>                     <b>ds</b>                          <b>ts</b>
+ [app] ──<u>▶</u> /out         /in ──<u>▶</u> [app] ──<u>▶</u> /out      /in ─┐
+                                                    /in ─┼<u>▶</u> [app] ──<u>▶</u> /out
+                                                    /in ─┘
+</pre>}
       .o{.bf{fs} -- feed synthesis. No input directory. Brings data in: a PACS pull, an upload, a download.}
       .o{.bf{ds} -- data synthesis. Input in, output out. Nearly everything is one of these.}
       .o{.bf{ts} -- topology synthesis. Reshapes the graph itself, joining branches into one node.}
@@ -156,6 +339,15 @@
     .h1{Workflows and Provenance}
     .term{
 .typewriter{$> tree feed/}
+      .o{<pre class="fig">
+ <b>feed</b>
+ └─ pacs-pull              <i>fs   brings the study in</i>
+    └─ dicom-normalise     <i>ds</i>
+       └─ de-identify      <i>ds</i>
+          ├─ segment       <i>ds</i>
+          │  └─ measure    <i>ds</i>
+          └─ embed         <i>ds   every node keeps its own output directory</i>
+</pre>}
       .o{A workflow is a tree of plugin runs. One node's output directory is the next node's input.}
       .o{HARBOR's documents call this the .bf{filesystem-bus}.}
       .o{Every intermediate output stays where it was written, and stays inspectable.}
@@ -170,11 +362,16 @@
   .title{Data State, Not Control Flow}
   .body{
     .h1{Data State, Not Control Flow}
-    .h2{Two things a workflow graph can mean}
     .term{
 .typewriter{$> diff control-flow data-state}
-      .o{.bf{Control flow} (Argo, Tekton): an edge says "run B after A succeeds." A controller decides what happens next.}
-      .o{.bf{Data state} (Make, ChRIS): an edge says "this data exists because that data exists."}
+      .o{<pre class="fig">
+ <b>control flow</b>    [A] ──ok?──<u>▶</u> [B] ──ok?──<u>▶</u> [C]
+                 <i>a controller decides what runs next</i>
+
+ <b>data state</b>      /d0 ──A──<u>▶</u> /d1 ──B──<u>▶</u> /d2 ──C──<u>▶</u> /d3
+                 <i>every arrow leaves a directory behind</i>
+</pre>}
+      .o{Control flow is Argo and Tekton. Data state is Make, and ChRIS.}
       .o{A ChRIS node is finished when its output is on disk. Not when a controller says so.}
       .o{Gating, branching and joining are plugins in the graph -- so they are in the record too.}
       .o{The cost: patterns that are one line in Argo take an explicit step here.}
@@ -208,13 +405,22 @@
     .h1{Architecture}
     .term{
 .typewriter{$> chris --components}
-      .o{.bf{ChRIS_ui} -- the web front end: feeds, file browser, viewers.}
-      .o{.bf{CUBE} -- the backend. Users, files, plugins, feeds, permissions, provenance. A REST API over all of it.}
-      .o{.bf{pfcon} -- the execution interface. One per compute environment.}
-      .o{.bf{pman} -- turns a plugin run into a job on that environment: Kubernetes, OpenShift, or plain Docker.}
-      .o{.bf{pfdcm} and .bf{oxidicom} -- the PACS bridge: query, retrieve, and a DICOM receiver that registers files into CUBE.}
+      .o{<pre class="fig">
+ ┌──────────┐  REST  ┌──────────────────────────────┐  DICOM  ┌────────┐
+ │ ChRIS_ui │ ─────<u>▶</u> │             <b>CUBE</b>             │ <u>◀</u>────── │  PACS  │
+ │   mise   │        │ users files feeds provenance │  <i>pfdcm</i>  └────────┘
+ └──────────┘        └───────┬──────────────┬───────┘ <i>oxidicom</i>
+                             │              │
+                         ┌───┴───┐      ┌───┴───┐
+                         │ pfcon │      │ pfcon │   <i>one per</i>
+                         └───┬───┘      └───┬───┘   <i>compute environment</i>
+                         OpenShift         HPC
+</pre>}
+      .o{.bf{CUBE} -- users, files, plugins, feeds, permissions, provenance. One REST API.}
+      .o{.bf{pfcon} -- runs a plugin as a job on Docker, Kubernetes, OpenShift, or SLURM.}
+      .o{.bf{pfdcm, oxidicom} -- the PACS bridge: query, retrieve, receive, register into CUBE.}
     }
-    .source{FNNDSC/CHRIS_docs · FNNDSC/miniChRIS-docker · FNNDSC/oxidicom}
+    .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/oxidicom · FNNDSC/mise}
   }
 }
 
@@ -225,13 +431,64 @@
     .h1{Who Owns What}
     .term{
 .typewriter{$> chris --layers}
-      .o{.bf{CUBE owns meaning}: which app consumed which directory, with which parameters, and what it produced.}
-      .o{.bf{pfcon materialises it} on whatever backend is there.}
-      .o{.bf{The cluster executes.} OpenShift governs namespaces, pods, storage, policy.}
+      .o{<pre class="fig">
+ <b>CUBE</b>       meaning      which app, which directory, which parameters
+   <u>▼</u>
+ <b>pfcon</b>      mapping      that run, on this backend
+   <u>▼</u>
+ <b>cluster</b>    execution    pods, storage, policy
+</pre>}
+      .o{.bf{CUBE owns meaning. pfcon materialises it. The cluster executes.}}
       .o{One CUBE can drive several compute environments: a workstation, an HPC, a cloud.}
       .o{The lock-in test: can the same workflow still run somewhere without Kubernetes?}
     }
     .takeaway{REPLACE MECHANISMS FREELY. DON'T REPLACE THE MEANING OF THE WORKFLOW.}
+  }
+}
+
+.slide{
+  .id{architecture-posix}
+  .title{ChRIS as a Computer}
+  .body{
+    .h1{ChRIS as a Computer}
+    .h2{mise: drive ChRIS like a computer, not a web API}
+    .term{
+.typewriter{$> chell}
+      .o{<pre class="fig">
+ <b>cd</b> /home/chris/uploads/SAG-anon                <i>data is a filesystem</i>
+ <b>ls</b> /bin                                        <i>plugins are executables</i>
+ <b>pl-fshack-v1.2.0</b> --inputFile brain.mgz         <i>run an analysis by name</i>
+ <b>cat</b> /proc/jobs/feed_123/pl-fshack_789/status   <i>a running job is a file</i>
+</pre>}
+      .o{One useful task used to be a long chain of dependent REST calls.}
+      .o{.bf{mise} builds that plumbing once. Nothing above it touches the raw API.}
+    }
+    .takeaway{A MACHINE INSTEAD OF AN ENDPOINT.}
+    .source{github.com/FNNDSC/mise}
+  }
+}
+
+.slide{
+  .id{architecture-posix-2}
+  .title{Above CUBE}
+  .body{
+    .h1{Above CUBE}
+    .term{
+.typewriter{$> mise --layers}
+      .o{<pre class="fig">
+ <b>chell  argus</b>   how you look       a terminal, a browser
+   <u>▲</u>
+ <b>calypso</b>        who is there       one login, one live session
+   <u>▲</u>
+ <b>mise</b>           where things are   /home  /bin  /proc  /SERVICES/PACS
+   <u>▲</u>
+ <b>CUBE</b>           what is true       the objects and the laws between them
+</pre>}
+      .o{Two views, never two copies: type .bf{cd} in the terminal and the browser has already moved.}
+      .o{Below CUBE you can swap the cluster. Above it you can swap the surface.}
+    }
+    .takeaway{CUBE SAYS WHAT IS TRUE. mise SAYS WHERE THINGS ARE.}
+    .source{github.com/FNNDSC/mise}
   }
 }
 
@@ -243,6 +500,10 @@
     .h2{Leg-length discrepancy at Boston Children's}
     .term{
 .typewriter{$> chris feed --from=pacs --run=lld}
+      .o{<pre class="fig">
+ PACS ──<u>▶</u> [pull] ──<u>▶</u> [LLD model] ──<u>▶</u> [measure] ──<u>▶</u> [DICOM report] ──<u>▶</u> PACS ──<u>▶</u> reading room
+          └───────────────────<i> one ChRIS feed </i>──────────────────┘
+</pre>}
       .o{A study lands from PACS. A workflow runs on it. The measurement goes back as DICOM, into the tools radiologists already use.}
       .o{The model is a Docker container. The same one that ran on the research bench.}
       .o{Validated prospectively: a .bf{shadow trial} first, then a .bf{clinical trial}.}
@@ -277,10 +538,19 @@
     .h1{Where ChRIS Sits in HARBOR}
     .term{
 .typewriter{$> harbor td --describe}
-      .o{A Trusted Domain is the airport: local tower, local rules, local territory.}
-      .o{Applications are the aircraft. They bring machinery in. They don't haul raw data out.}
-      .o{.bf{ChRIS is how that machinery runs once it has landed}: the workflow runtime inside every TD (Major Task 2.6).}
-      .o{What may leave -- telemetry, provenance, aggregates, model updates -- is HARBOR policy. ChRIS supplies the record that policy is checked against.}
+      .o{<pre class="fig">
+ ┌─────────────────────────── Hub TD ───────────────────────────┐
+ │      app catalogue  ·  coordination  ·  aggregation          │
+ └──────────────────────────────────────────────────────────────┘
+       <u>▼</u> <i>apps and instructions</i>            <u>▲</u> <i>approved outputs only</i>
+ ┌────────────────────────── Spoke TD ──────────────────────────┐
+ │  <b>ChRIS</b>:  [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      raw data stays here  │
+ │  OpenShift: namespaces, policy, storage                      │
+ └──────────────────────────────────────────────────────────────┘
+</pre>}
+      .o{A TD is the airport. Apps are aircraft: machinery flies in, no raw data flies out.}
+      .o{.bf{ChRIS is how that machinery runs once it has landed}: the workflow runtime inside every TD.}
+      .o{What may leave is HARBOR policy. ChRIS supplies the record that policy is checked against.}
     }
     .takeaway{THE SAME WORKFLOW, UNDER THE SAME CHECKS, IN EVERY TD.}
     .source{HARBOR TDD, TA2 Technical Architecture; Major Task 2.6}
@@ -310,10 +580,14 @@
     .h1{Ingestion as Plugins}
     .h2{Major Task 2.7: every stage of intake is a ChRIS app}
     .term{
-.typewriter{$> harbor ingest --stages
-> quarantine  validate  de-identify  deduplicate  normalise  promote}
-      .o{DICOM standardisation and tag normalisation.}
-      .o{A metadata validation gate. Failures are quarantined with a structured report.}
+.typewriter{$> harbor ingest --stages}
+      .o{<pre class="fig">
+ raw ──<u>▶</u> [validate] ──<u>▶</u> [de-identify] ──<u>▶</u> [deduplicate] ──<u>▶</u> [normalise] ──<u>▶</u> <b>promoted</b>
+             │ <i>fail</i>
+             <u>▼</u>
+     [quarantine + report]
+</pre>}
+      .o{DICOM standardisation, tag normalisation, and a metadata validation gate.}
       .o{De-identification: headers, text, pixels.}
       .o{Embeddings (MedSigLIP) for deduplication. Conversion to the at-rest formats.}
       .o{Built and tested one plugin at a time, then composed into one workflow and proven on .bf{three health systems}.}
@@ -328,14 +602,20 @@
   .title{What HARBOR Adds to ChRIS}
   .body{
     .h1{What HARBOR Adds to ChRIS}
-    .h2{The runtime (Major Task 2.6)}
     .term{
 .typewriter{$> chris --gaps --scale=federation}
-      .o{Today's runtime is .bf{synchronous}. A federated run across hundreds of TDs can mean thousands of concurrent nodes.}
-      .o{So: async execution and non-blocking I/O between nodes.}
-      .o{Event telemetry -- start, progress, completion, error -- pushed to dashboards and audit, not polled.}
-      .o{Filesystem-bus throughput, for terabytes of DICOM and whole-slide images.}
-      .o{TD-local orchestration (Apache Airflow) for scheduling, retries and monitoring. The plugin stays the unit of work.}
+      .o{<pre class="fig">
+ <b>Airflow</b>     schedule · retry · monitor · policy hooks
+    │ <i>run</i>                      <u>▲</u> <i>events: start, progress, done, error</i>
+    <u>▼</u>                          │
+ <b>ChRIS</b>       [app] ──<u>▶</u> [app] ──<u>▶</u> [app] ──<u>▶</u> provenance ──<u>▶</u> OpenLineage
+    │
+ <b>OpenShift</b>   pods · storage · isolation
+</pre>}
+      .o{Today's runtime is .bf{synchronous}. Federation means thousands of concurrent nodes.}
+      .o{So: async execution, non-blocking I/O, faster filesystem-bus throughput.}
+      .o{Events pushed to dashboards and audit, not polled.}
+      .o{Airflow schedules and retries. The plugin stays the unit of work.}
     }
     .takeaway{THE CONTRACT IS PROVEN. THE THROUGHPUT AT FEDERATION SCALE IS THE FUNDED WORK.}
     .source{HARBOR TDD, Major Task 2.6 (Data Pipeline Orchestration and Provenance)}

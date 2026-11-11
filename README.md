@@ -39,6 +39,9 @@ The `command-line` theme, slide labels and the `.term{}`, `.takeaway{}` and `.so
 |---|---|
 | `talk.sd` | the deck source |
 | `docs/refs.bib` | every source behind a slide (BibTeX, with provenance notes) |
+| `docs/notes.adoc` | the reasoning behind each concept in the talk |
+| `docs/status.adoc` | where the work stands and what is open; an agent reads this first |
+| `CLAUDE.md` | points an agent at `docs/status.adoc` |
 | `.github/workflows/pages.yml` | build and deploy |
 
 ## Sources

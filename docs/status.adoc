@@ -1,0 +1,81 @@
+= ChRIS Overview Deck: Status
+:toc: left
+:sectnums:
+
+== What this file is
+
+This is the working memory for whoever picks the deck up next, human or agent. `CLAUDE.md` at the repository root tells an agent to read it before doing anything else. It holds what the repository and its history do not: how the author wants the work done, what was decided and why, what is still open, and where on the author's machines the source material lives.
+
+It exists because agent sessions do not share memory across machines. A session's private memory stays on the host it ran on, so anything worth keeping is written here, where a clone carries it. `docs/notes.adoc` is the companion file: it records the thinking behind each concept in the talk. This file records the state of the work.
+
+Keep it current. When a decision is made, an open point is closed, or a fact here turns out wrong, edit this file in the same change. Delete what has gone stale; do not append a correction beneath it.
+
+== The repository is public
+
+`rudolphpienaar/ChRIS-overview` is a public GitHub repository, and every push to `master` publishes the deck to GitHub Pages. The HARBOR Task Description Document is an internal deliverable still under negotiation. Nothing from it may be quoted here, in the notes, or on a slide beyond what the deck already states at the level of task names. No budget figures, no milestone text, no partner detail.
+
+== How the author works
+
+The author is Rudolph Pienaar, chief architect of ChRIS. The standing rules are in the author's global instructions and style guides; the ones that have mattered most here follow.
+
+The work is additive. Existing slides stay unless the author says otherwise. The author dictates a concept, the agent gives its thoughts first, and slides are written on the author's word. Small, explicit corrections ("replace X with Y") are made directly.
+
+Never commit unless asked, and never push without confirming. Branch before changing anything on `master`.
+
+Every claim on a slide carries a source that has been checked, and the full reference goes in `docs/refs.bib` with a note saying how it was read. Where a line is the agent's own wording or an inference, `docs/notes.adoc` says so.
+
+Prose in `docs/` is AsciiDoc, one paragraph per line, in plain technical register, with no em-dashes. Report what was verified and what was not. The author checks.
+
+== Building and viewing
+
+The deck is `talk.sd`, written for slidedown with the `command-line` theme. Build it from the repository root:
+
+[source,bash]
+----
+uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme command-line
+cd talk && python3 -m http.server 8000
+----
+
+The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-11 that count is 33. slidedown `main` was at `70b9f25` and the Pages workflow pins `0711397`; the two build this deck to identical output. An old slidedown checkout fails with an unknown theme, so pull it first.
+
+Unknown keys inside `.meta{}` are ignored silently, so a typo there shows up only in the rendered page. Check new slides in a browser. Figures are `<pre class="fig">` blocks styled in `.meta{css:}`; that rule sets `overflow: visible` because the theme's default drew a scrollbar on every figure.
+
+== Where the deck stands
+
+The outline has ten entries. The first, "The Unbearable Lightness of Defining", is new and is the only concept the author has dictated so far; `docs/notes.adoc` has its reasoning in full. It asks what an iPad is, shows that answers from experience fail when the UI changes, and carries the test over to ChRIS. Its "So What Is ChRIS?" slide lists five answers people give. Four are the author's wording and the fifth ("A workflow engine") is the agent's stand-in.
+
+The architecture section was corrected on 2026-11-11. `pman` is gone from it, since `pfcon` absorbed it in 2025. Two slides were added after "Who Owns What": "ChRIS as a Computer" and "Above CUBE", both drawn from the `mise` README.
+
+`chrs` is deprecated and must not appear. The current client stack is `mise`, with `chell` as its shell surface and ARGUS as its web surface. The HARBOR audience has already seen ARGUS.
+
+== Open points
+
+Apache Airflow is on the "What HARBOR Adds to ChRIS" slide as the top layer of the figure and in one bullet. The author objects to it. It entered the deck from the TDD's LaTeX source, where the name survives in places that an earlier pass to technology-neutral language missed, while the TDD's prose treats any scheduler as one candidate among several. The author's own position, written in the `mise` docs, is that no scheduler component is needed: a schedule is a `chell -c` line under cron, and retry policy belongs to the calling script. The proposed fix is to relabel the figure's top layer "orchestration" with no product name and drop the Airflow bullet. The author has not yet said yes.
+
+`pfdcm` is still on the "Architecture" slide as half of the PACS bridge. The author named only `pman` as deprecated. Confirm `pfdcm`.
+
+The pfcon bullet lists OpenShift among its compute environments. The `pfcon` README names Docker, Podman, Swarm, Kubernetes and SLURM.
+
+With ten outline entries, "Conclusions" is out of reach of the number keys, which stop at nine.
+
+The new "So What Is ChRIS?" slide and the older "What Is ChRIS?" section overlap. Both are kept for now.
+
+The laptop line on the "Mobile OS" slide and the "workflow engine" answer are the agent's. The author may want to replace them.
+
+== Where the source material lives
+
+These paths are on the author's workstation and may differ on another host.
+
+[cols="1,3"]
+|===
+| Path | What
+
+| `~/src/slidedown` | The slide compiler. Keep it level with `origin/main`.
+| `~/src/mise` | The `mise` monorepo: `chell`, `calypso`, ARGUS, `porter`. Its `README.md` and `docs/` are the source for everything the deck says about the POSIX-leaning side of ChRIS. `docs/bastion.adoc`, `docs/berths.adoc` and `docs/intent-kernel.adoc` hold the position on schedulers.
+| `~/src/pfcon` | Source for the retirement of `pman` and for the list of compute environments.
+| `~/Projects/HARBOR-planning` | The TDD source. Private. Its `oldtdd/` directory is superseded and must not be used as a source. Read `tdd/` with care: LaTeX labels and one subtask title there still carry technology names the prose has dropped.
+|===
+
+== Talking to other agents
+
+An agent on the same account can list the sessions it is able to message. On 2026-11-11 the only peer visible from the author's workstation was a session on the `musings` project; no `mise` session was running. When a question is about `mise` and a `mise` session is reachable, ask it instead of inferring from the docs, and record the answer here or in `docs/notes.adoc`.

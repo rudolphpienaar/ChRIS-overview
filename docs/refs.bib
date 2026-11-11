@@ -71,3 +71,55 @@
   year        = {2026},
   note        = {Internal contract deliverable under negotiation, not public. Source for every HARBOR-specific statement on the slides.}
 }
+
+% Added 2026-11-11 for the "Unbearable Lightness of Defining" spoke. Each web source below was fetched and read on that date.
+
+@book{kundera1984,
+  author    = {Kundera, Milan},
+  title     = {The Unbearable Lightness of Being},
+  publisher = {Harper \& Row},
+  address   = {New York},
+  year      = {1984},
+  note      = {Translated by Michael Henry Heim. Source of the spoke's title only. Cited from memory of the standard English edition, not re-checked against a catalogue record.}
+}
+
+@misc{appleplatformsecurity,
+  author       = {{Apple Inc.}},
+  title        = {Security of runtime process in {iOS}, {iPadOS}, and {visionOS}},
+  howpublished = {Apple Platform Security guide. \url{https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web}},
+  note         = {Source for: all third-party apps are sandboxed, and each app has a unique home directory for its files.}
+}
+
+@misc{applexnu,
+  author       = {{Apple Inc.}},
+  title        = {{XNU} kernel source, {README}},
+  howpublished = {\url{https://github.com/apple-oss-distributions/xnu}},
+  note         = {Repository. The README states that XNU is part of the Darwin operating system for use in macOS and iOS. Source for the shared-kernel claim.}
+}
+
+@misc{appleforum747499,
+  author       = {{Apple Developer Technical Support}},
+  title        = {"fork" is no-no but why?},
+  howpublished = {Apple Developer Forums, thread 747499, February 2024. \url{https://developer.apple.com/forums/thread/747499}},
+  note         = {Forum reply by an Apple DTS engineer: iOS apps are not allowed to spawn child processes, and the iOS sandbox is not the macOS App Sandbox. A forum post, not formal documentation.}
+}
+
+@misc{retui,
+  title        = {{Re:T-UI}: a phone-first guide built from the {Re:T-UI} wiki},
+  howpublished = {\url{https://re-tui.pages.dev/}},
+  note         = {Community guide to the Android launcher whose home screen is a command line. Confirms the name and what it is; the project's own repository was not located.}
+}
+
+@misc{pfcon,
+  author       = {{FNNDSC}},
+  title        = {pfcon: a controlling service that provides a unified web {API} to run containerized jobs on diverse compute environments},
+  howpublished = {\url{https://github.com/FNNDSC/pfcon}},
+  note         = {Repository. Source for the compute environments pfcon schedules onto (README: Docker, Podman, Swarm, Kubernetes and SLURM) and for the retirement of pman as a separate service: commit bf65ddf, ``Merge pman (\#149)'', 2025-09-25. Read from the author's local checkout at b374613 on 2026-11-11.}
+}
+
+@misc{mise,
+  author       = {{FNNDSC}},
+  title        = {mise: {ChRIS} presented as a {POSIX}-like computer, with the chell shell and the argus web surface},
+  howpublished = {\url{https://github.com/FNNDSC/mise}},
+  note         = {Repository. Source for the claim that ChRIS can be driven without ChRIS\_ui: chell is the shell surface of mise. Read from the author's local checkout of the repository on 2026-11-11. Replaces the earlier chrs entry, since chrs is deprecated.}
+}
