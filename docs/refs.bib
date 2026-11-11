@@ -1,0 +1,73 @@
+% Sources behind the slides in talk.sd.
+% Journal and proceedings entries were checked on 2026-11-10: the two Springer records against the Crossref API, the IEEE record against NCBI E-utilities (PMID 26736236).
+% Repository and internal-document entries are marked as such in their note fields.
+
+@inproceedings{pienaar2015chris,
+  author    = {Pienaar, Rudolph and Rannou, Nicolas and Bernal, Jorge and Hahn, Daniel and Grant, P. Ellen},
+  title     = {{ChRIS} -- A web-based neuroimaging and informatics system for collecting, organizing, processing, visualizing and sharing of medical data},
+  booktitle = {Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
+  year      = {2015},
+  pages     = {206--209},
+  doi       = {10.1109/EMBC.2015.7318336},
+  note      = {PMID 26736236}
+}
+
+@incollection{pienaar2017chips,
+  author    = {Pienaar, Rudolph and Turk, Ata and Bernal-Rusiel, Jorge and Rannou, Nicolas and Haehn, Daniel and Grant, P. Ellen and Krieger, Orran},
+  title     = {{CHIPS} -- A Service for Collecting, Organizing, Processing, and Sharing Medical Image Data in the Cloud},
+  booktitle = {Data Management and Analytics for Medicine and Healthcare},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {10494},
+  publisher = {Springer},
+  year      = {2017},
+  pages     = {29--35},
+  doi       = {10.1007/978-3-319-67186-4_3},
+  note      = {CHIPS is the name ChRIS v3 carried in the 2017 papers. Volume number taken from the FNNDSC/CHRIS_docs listing; Crossref returns no volume for the chapter.}
+}
+
+@article{tsai2025lld,
+  author  = {Tsai, Andy and Samal, Sandip and Lamonica, Paul and Morris, Nicole and McNeil, John and Pienaar, Rudolph},
+  title   = {Clinical deployment and prospective validation of an {AI} model for limb-length discrepancy measurements using an open-source platform},
+  journal = {European Radiology},
+  volume  = {36},
+  pages   = {1698--1708},
+  year    = {2025},
+  doi     = {10.1007/s00330-025-12022-0},
+  note    = {Published online 24 September 2025.}
+}
+
+@misc{chrisdocs,
+  author       = {{FNNDSC}},
+  title        = {{ChRIS} documentation: overview, history, plugin specification, {YAML} pipeline schema},
+  howpublished = {\url{https://github.com/FNNDSC/CHRIS_docs}},
+  note         = {Repository. Source for the history slide, the plugin types (specs/ChRIS\_Plugins.adoc) and the component list.}
+}
+
+@misc{minichris,
+  author       = {{FNNDSC}},
+  title        = {{miniChRIS-docker}: a docker-compose distribution of {ChRIS}},
+  howpublished = {\url{https://github.com/FNNDSC/miniChRIS-docker}},
+  note         = {Repository. Source for the component list and the laptop deployment.}
+}
+
+@misc{oxidicom,
+  author       = {{FNNDSC}},
+  title        = {oxidicom: a {DICOM} receiver for the {ChRIS} backend},
+  howpublished = {\url{https://github.com/FNNDSC/oxidicom}},
+  note         = {Repository.}
+}
+
+@misc{grant2019summit,
+  author       = {Grant, P. Ellen},
+  title        = {{ChRIS} and Multi-Party Compute},
+  howpublished = {Red Hat Summit, May 2019. \url{https://youtu.be/FUu4kMc0PL8?t=3802}},
+  note         = {Talk. Cited as listed in FNNDSC/CHRIS\_docs; the recording itself was not re-watched for this deck.}
+}
+
+@techreport{harbortdd,
+  author      = {{HARBOR consortium}},
+  title       = {{HARBOR} Task Description Document, {TA2} Technical Architecture: Major Tasks 2.6 and 2.7},
+  institution = {Gradient Health, University of Utah, Boston Children's Hospital},
+  year        = {2026},
+  note        = {Internal contract deliverable under negotiation, not public. Source for every HARBOR-specific statement on the slides.}
+}

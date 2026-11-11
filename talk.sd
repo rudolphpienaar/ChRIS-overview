@@ -1,0 +1,412 @@
+
+.meta{
+  title: "ChRIS: An Overview for HARBOR"
+  theme: "command-line"
+  transition: zoom
+  label: "rudolph@artemis: ~ {n} {spoke}"
+  typography:
+    baseline: presentation
+  snippets:
+    marker: "▸ "
+  css:
+    "#slide-1 h1":
+        font-size: "2.6em"
+}
+
+.slide{
+  .label{rudolph@artemis: ~/harbor}
+  .title{Boot}
+  .body{
+    .h1{ChRIS}
+    .h2{An overview for the HARBOR consortium}
+
+    .div{.class{dim} Rudolph Pienaar -- Boston Children's Hospital / Harvard Medical School}
+
+    .term{
+.typewriter{$> ./chris --overview --audience=harbor}
+    }
+  }
+}
+
+.slide{
+  .title{TL;DR}
+  .body{
+    .h1{The Short Version}
+    .term{
+.typewriter{$> chris --tldr}
+      .o{ChRIS runs .bf{containerised analyses next to the data} and records how every result came to exist.}
+      .o{One rule for every app: read a directory, write a directory, exit.}
+      .o{Chain those apps and the directory tree .bf{is} the provenance record.}
+      .o{In HARBOR it is the workflow runtime .bf{inside each Trusted Domain}.}
+    }
+
+    .takeaway{OPENSHIFT GOVERNS THE CLUSTER. ChRIS MAKES THE SCIENCE ON IT AUDITABLE.}
+  }
+}
+
+.slide{
+  .id{outline}
+  .title{Outline}
+  .body{
+    .h1{Outline}
+    .term{
+.typewriter{$> chris --outline}
+    .nexus{.id{outline}
+      .div{.jump{.target{what-is} What Is ChRIS?}}
+      .div{.jump{.target{contract} The App Contract}}
+      .div{.jump{.target{workflows} Workflows and Provenance}}
+      .div{.jump{.target{architecture} Architecture}}
+      .div{.jump{.target{clinic} ChRIS in the Clinic}}
+      .div{.jump{.target{harbor} Where ChRIS Sits in HARBOR}}
+      .div{.jump{.target{roadmap} What HARBOR Adds to ChRIS}}
+      .div{.jump{.target{working} Working With It}}
+      .div{.jump{.target{conclusions} Conclusions}}
+    }
+    }
+  }
+}
+
+.slide{
+  .id{what-is}
+  .title{What Is ChRIS?}
+  .body{
+    .h1{What Is ChRIS?}
+    .term{
+.typewriter{$> whatis chris}
+      .o{An .bf{open-source platform} for running computation on medical data, wherever that data has to stay.}
+      .o{The name is recursive: .bf{Ch}RIS .bf{R}esearch .bf{I}ntegration .bf{S}ervice.}
+      .o{Built at Boston Children's (FNNDSC), with Red Hat and the Mass Open Cloud.}
+      .o{It runs a specific kind of program: no interaction once started, arguments on the command line, results in files.}
+      .o{That covers most of research imaging -- and most of an ingestion pipeline.}
+    }
+    .source{FNNDSC/CHRIS_docs · Pienaar et al., IEEE EMBC 2015}
+  }
+}
+
+.slide{
+  .id{what-is-2}
+  .title{Where It Came From}
+  .body{
+    .h1{Where It Came From}
+    .term{
+.typewriter{$> git log --oneline --reverse chris}
+      .o{.span{.class{dim} pre-2010} bash scripts gluing analysis programs together.}
+      .o{.span{.class{dim} 2010 v1} a web front end over those scripts and an in-house HPC.}
+      .o{.span{.class{dim} 2013 v2} the ideas that stuck: .bf{feeds} and .bf{plugins}. Still HPC-bound.}
+      .o{.span{.class{dim} 2017 v3} REST services and containers. Any cluster that runs Linux containers. (Called CHIPS in the papers of that year.)}
+    }
+    .takeaway{THE GLUE KEPT OUTGROWING THE TOOLS. SO THE GLUE BECAME THE PLATFORM.}
+    .source{FNNDSC/CHRIS_docs, History · Pienaar et al., LNCS 10494, 2017 (CHIPS)}
+  }
+}
+
+.slide{
+  .id{contract}
+  .title{The App Contract}
+  .body{
+    .h1{The App Contract}
+    .term{
+.typewriter{$> app [--flags] /input /output}
+      .o{A ChRIS app -- a .bf{plugin} -- is a Linux container that reads one directory, writes another, and exits.}
+      .o{It does not know about ChRIS, the workflow it sits in, or the cluster under it.}
+      .o{A JSON descriptor declares its parameters and its limits: CPU, memory, GPU.}
+      .o{Python, R, shell, compiled code, a call out to a model service. The boundary doesn't change.}
+    }
+    .takeaway{IF IT RUNS IN A CONTAINER AND WRITES FILES, IT CAN BE A PLUGIN.}
+    .source{ChRIS Plugin Specification, FNNDSC/CHRIS_docs (specs/ChRIS_Plugins.adoc)}
+  }
+}
+
+.slide{
+  .id{contract-2}
+  .title{Three Kinds of Plugin}
+  .body{
+    .h1{Three Kinds of Plugin}
+    .term{
+.typewriter{$> chris plugin --types}
+      .o{.bf{fs} -- feed synthesis. No input directory. Brings data in: a PACS pull, an upload, a download.}
+      .o{.bf{ds} -- data synthesis. Input in, output out. Nearly everything is one of these.}
+      .o{.bf{ts} -- topology synthesis. Reshapes the graph itself, joining branches into one node.}
+      .o{De-identification, format conversion, segmentation, embedding, a training step: all .bf{ds}.}
+    }
+    .source{ChRIS Plugin Specification, "Plugin Type"}
+  }
+}
+
+.slide{
+  .id{contract-end}
+  .title{Wrap Before Inventing}
+  .body{
+    .h1{Wrap Before Inventing}
+    .term{
+.typewriter{$> cat plugin-doctrine.txt}
+      .o{ChRIS doesn't need to own every anonymiser, validator, harmoniser or model runner.}
+      .o{A good external tool gets a container and a declared interface. That's usually the whole job.}
+      .o{What it gains: explicit I/O, recorded parameters, a pinned version, a place in a workflow.}
+      .o{Write a plugin from scratch only when nothing adequate exists, or the plugin is the research.}
+    }
+    .takeaway{NOT "DID WE WRITE IT?" BUT "DOES IT OBEY THE CONTRACT?"}
+  }
+}
+
+.slide{
+  .id{workflows}
+  .title{Workflows and Provenance}
+  .body{
+    .h1{Workflows and Provenance}
+    .term{
+.typewriter{$> tree feed/}
+      .o{A workflow is a tree of plugin runs. One node's output directory is the next node's input.}
+      .o{HARBOR's documents call this the .bf{filesystem-bus}.}
+      .o{Every intermediate output stays where it was written, and stays inspectable.}
+      .o{A .bf{feed} is one such tree, run on one dataset. A .bf{pipeline} is the reusable template for it.}
+    }
+    .takeaway{THE UNIX PIPE, STRETCHED ACROSS A CLUSTER.}
+  }
+}
+
+.slide{
+  .id{workflows-2}
+  .title{Data State, Not Control Flow}
+  .body{
+    .h1{Data State, Not Control Flow}
+    .h2{Two things a workflow graph can mean}
+    .term{
+.typewriter{$> diff control-flow data-state}
+      .o{.bf{Control flow} (Argo, Tekton): an edge says "run B after A succeeds." A controller decides what happens next.}
+      .o{.bf{Data state} (Make, ChRIS): an edge says "this data exists because that data exists."}
+      .o{A ChRIS node is finished when its output is on disk. Not when a controller says so.}
+      .o{Gating, branching and joining are plugins in the graph -- so they are in the record too.}
+      .o{The cost: patterns that are one line in Argo take an explicit step here.}
+    }
+    .takeaway{WHAT RAN, IN WHAT ORDER AND WHY: READ IT OFF THE DATA.}
+  }
+}
+
+.slide{
+  .id{workflows-end}
+  .title{The Five Questions}
+  .body{
+    .h1{The Five Questions}
+    .term{
+.typewriter{$> provenance --explain result.dcm}
+      .o{What data went in?}
+      .o{Which app ran, and which version of it?}
+      .o{With what parameters?}
+      .o{What came out?}
+      .o{How did this final result come to exist?}
+      .o{Answered by walking a directory tree. No log archaeology, no unordered database queries.}
+    }
+    .takeaway{MAKE THE HANDOFFS BORING. MAKE THE DATA STATE EXPLICIT.}
+  }
+}
+
+.slide{
+  .id{architecture}
+  .title{Architecture}
+  .body{
+    .h1{Architecture}
+    .term{
+.typewriter{$> chris --components}
+      .o{.bf{ChRIS_ui} -- the web front end: feeds, file browser, viewers.}
+      .o{.bf{CUBE} -- the backend. Users, files, plugins, feeds, permissions, provenance. A REST API over all of it.}
+      .o{.bf{pfcon} -- the execution interface. One per compute environment.}
+      .o{.bf{pman} -- turns a plugin run into a job on that environment: Kubernetes, OpenShift, or plain Docker.}
+      .o{.bf{pfdcm} and .bf{oxidicom} -- the PACS bridge: query, retrieve, and a DICOM receiver that registers files into CUBE.}
+    }
+    .source{FNNDSC/CHRIS_docs · FNNDSC/miniChRIS-docker · FNNDSC/oxidicom}
+  }
+}
+
+.slide{
+  .id{architecture-end}
+  .title{Who Owns What}
+  .body{
+    .h1{Who Owns What}
+    .term{
+.typewriter{$> chris --layers}
+      .o{.bf{CUBE owns meaning}: which app consumed which directory, with which parameters, and what it produced.}
+      .o{.bf{pfcon materialises it} on whatever backend is there.}
+      .o{.bf{The cluster executes.} OpenShift governs namespaces, pods, storage, policy.}
+      .o{One CUBE can drive several compute environments: a workstation, an HPC, a cloud.}
+      .o{The lock-in test: can the same workflow still run somewhere without Kubernetes?}
+    }
+    .takeaway{REPLACE MECHANISMS FREELY. DON'T REPLACE THE MEANING OF THE WORKFLOW.}
+  }
+}
+
+.slide{
+  .id{clinic}
+  .title{ChRIS in the Clinic}
+  .body{
+    .h1{ChRIS in the Clinic}
+    .h2{Leg-length discrepancy at Boston Children's}
+    .term{
+.typewriter{$> chris feed --from=pacs --run=lld}
+      .o{A study lands from PACS. A workflow runs on it. The measurement goes back as DICOM, into the tools radiologists already use.}
+      .o{The model is a Docker container. The same one that ran on the research bench.}
+      .o{Validated prospectively: a .bf{shadow trial} first, then a .bf{clinical trial}.}
+      .o{No bespoke integration per algorithm. The next model reuses the plumbing.}
+    }
+    .takeaway{SAME CONTRACT, FROM THE BENCH TO THE READING ROOM.}
+    .source{Tsai, Samal, Lamonica, Morris, McNeil, Pienaar, Eur Radiol 36:1698-1708 (online Sep 2025), doi:10.1007/s00330-025-12022-0}
+  }
+}
+
+.slide{
+  .id{clinic-end}
+  .title{Where It Has Run}
+  .body{
+    .h1{Where It Has Run}
+    .term{
+.typewriter{$> chris --deployments}
+      .o{A laptop: the whole stack in docker-compose (miniChRIS).}
+      .o{On-prem at Boston Children's, wired to clinical PACS.}
+      .o{The Mass Open Cloud, on OpenShift, with GPUs.}
+      .o{Across institutions: FreeSurfer in the cloud feeding a multi-party computation, so two hospitals compare brain volumes without either seeing the other's data.}
+    }
+    .takeaway{THE CONTAINER DOESN'T CHANGE. ONLY WHERE IT RUNS.}
+    .source{FNNDSC/miniChRIS-docker · FNNDSC/CHRIS_docs · Grant, Red Hat Summit 2019 (ChRIS and multi-party compute)}
+  }
+}
+
+.slide{
+  .id{harbor}
+  .title{Where ChRIS Sits in HARBOR}
+  .body{
+    .h1{Where ChRIS Sits in HARBOR}
+    .term{
+.typewriter{$> harbor td --describe}
+      .o{A Trusted Domain is the airport: local tower, local rules, local territory.}
+      .o{Applications are the aircraft. They bring machinery in. They don't haul raw data out.}
+      .o{.bf{ChRIS is how that machinery runs once it has landed}: the workflow runtime inside every TD (Major Task 2.6).}
+      .o{What may leave -- telemetry, provenance, aggregates, model updates -- is HARBOR policy. ChRIS supplies the record that policy is checked against.}
+    }
+    .takeaway{THE SAME WORKFLOW, UNDER THE SAME CHECKS, IN EVERY TD.}
+    .source{HARBOR TDD, TA2 Technical Architecture; Major Task 2.6}
+  }
+}
+
+.slide{
+  .id{harbor-2}
+  .title{The Boundary}
+  .body{
+    .h1{The Boundary}
+    .h2{What ChRIS owns in a Trusted Domain, and what it leaves alone}
+    .term{
+.typewriter{$> chris --scope}
+      .o{.bf{Owns:} the app contract, the plugin lifecycle, workflow composition, provenance, and inspection of what ran.}
+      .o{.bf{Doesn't own:} OpenShift provisioning, fleet management, enterprise identity, cluster policy, SOC 2 and HIPAA operations.}
+      .o{What ChRIS hands the platform teams: service manifests, deployment expectations, health checks, validation tests.}
+    }
+    .takeaway{ChRIS ISN'T COMPETING WITH OPENSHIFT. IT IS THE LAST MILE ON TOP OF IT.}
+  }
+}
+
+.slide{
+  .id{harbor-end}
+  .title{Ingestion as Plugins}
+  .body{
+    .h1{Ingestion as Plugins}
+    .h2{Major Task 2.7: every stage of intake is a ChRIS app}
+    .term{
+.typewriter{$> harbor ingest --stages
+> quarantine  validate  de-identify  deduplicate  normalise  promote}
+      .o{DICOM standardisation and tag normalisation.}
+      .o{A metadata validation gate. Failures are quarantined with a structured report.}
+      .o{De-identification: headers, text, pixels.}
+      .o{Embeddings (MedSigLIP) for deduplication. Conversion to the at-rest formats.}
+      .o{Built and tested one plugin at a time, then composed into one workflow and proven on .bf{three health systems}.}
+    }
+    .takeaway{EACH PARTNER'S STAGE IS A CONTAINER WITH A DIRECTORY ON EITHER SIDE.}
+    .source{HARBOR TDD, Major Task 2.7 (Data Ingestion and Processing)}
+  }
+}
+
+.slide{
+  .id{roadmap}
+  .title{What HARBOR Adds to ChRIS}
+  .body{
+    .h1{What HARBOR Adds to ChRIS}
+    .h2{The runtime (Major Task 2.6)}
+    .term{
+.typewriter{$> chris --gaps --scale=federation}
+      .o{Today's runtime is .bf{synchronous}. A federated run across hundreds of TDs can mean thousands of concurrent nodes.}
+      .o{So: async execution and non-blocking I/O between nodes.}
+      .o{Event telemetry -- start, progress, completion, error -- pushed to dashboards and audit, not polled.}
+      .o{Filesystem-bus throughput, for terabytes of DICOM and whole-slide images.}
+      .o{TD-local orchestration (Apache Airflow) for scheduling, retries and monitoring. The plugin stays the unit of work.}
+    }
+    .takeaway{THE CONTRACT IS PROVEN. THE THROUGHPUT AT FEDERATION SCALE IS THE FUNDED WORK.}
+    .source{HARBOR TDD, Major Task 2.6 (Data Pipeline Orchestration and Provenance)}
+  }
+}
+
+.slide{
+  .id{roadmap-end}
+  .title{Governance and Standards}
+  .body{
+    .h1{Governance and Standards}
+    .h2{Making the record legible outside ChRIS}
+    .term{
+.typewriter{$> chris --extensions --for=harbor}
+      .o{.bf{Policy hooks} at the orchestration layer: data use agreements and compute quotas, checked on every run.}
+      .o{.bf{Audit metadata} captured on every pipeline execution.}
+      .o{.bf{OpenLineage} events from the filesystem-bus, so any lineage service can read ChRIS provenance.}
+      .o{.bf{DICOMweb} endpoints inside the TD: QIDO-RS to query, WADO-RS to retrieve, STOW-RS to store.}
+    }
+    .takeaway{PROVENANCE AN AUDITOR CAN READ WITHOUT LEARNING ChRIS.}
+    .source{HARBOR TDD, Major Task 2.6}
+  }
+}
+
+.slide{
+  .id{working}
+  .title{Working With It}
+  .body{
+    .h1{Working With It}
+    .h2{Bringing a tool into a HARBOR workflow}
+    .term{
+.typewriter{$> chris plugin --howto}
+      .o{Put the tool in a container.}
+      .o{Give it the contract: flags, an input directory, an output directory. No prompts, no GUI.}
+      .o{Describe its parameters and resource needs in the JSON descriptor.}
+      .o{Register it with a CUBE. Now it can be a node in anyone's workflow.}
+      .o{Try the whole stack on a laptop first: miniChRIS, in docker-compose.}
+    }
+    .source{ChRIS Plugin Specification · github.com/FNNDSC/miniChRIS-docker · chrisproject.org}
+  }
+}
+
+.slide{
+  .id{working-end}
+  .title{What We Need to Agree}
+  .body{
+    .h1{What We Need to Agree}
+    .term{
+.typewriter{$> harbor --interfaces --open}
+      .o{.bf{Stage contracts.} What exactly sits in the directory between your stage and the next one.}
+      .o{.bf{Policy hook points.} Where in a run the TD checks a data use agreement or a quota.}
+      .o{.bf{Telemetry schema.} The events a job publishes, and who consumes them.}
+      .o{.bf{Lineage mapping.} How a ChRIS run becomes OpenLineage run, job and dataset facets.}
+    }
+    .takeaway{AGREE THE DIRECTORIES AND THE EVENTS. THE REST CAN CHANGE UNDERNEATH.}
+  }
+}
+
+.slide{
+  .id{conclusions}
+  .title{Conclusions}
+  .body{
+    .h1{Conclusions}
+    .term{
+.typewriter{$> exit
+> questions?}
+      .o{ChRIS is a .bf{workflow runtime}: containers that read a directory and write a directory, chained.}
+      .o{The provenance isn't bolted on. It is the directory tree the workflow leaves behind.}
+      .o{It already runs clinical AI at Boston Children's, on the same contract.}
+      .o{In HARBOR it is the layer inside each TD that makes local execution repeatable and auditable.}
+      .o{HARBOR's work on it is scale, telemetry and standards. The contract stays.}
+    }
+  }
+}
