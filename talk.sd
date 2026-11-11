@@ -459,6 +459,7 @@
       .div{.jump{.target{mise-machine} A Machine, Not an Endpoint}}
       .div{.jump{.target{mise-layers} Above CUBE}}
       .div{.jump{.target{mise-kernel} The Intent Kernel}}
+      .div{.jump{.target{mise-intent} One Intent, Four Ways}}
       .div{.jump{.target{mise-session} One Session, Many Surfaces}}
       .div{.jump{.target{mise-door} The Door and the Berth}}
     }
@@ -474,17 +475,18 @@
     .h1{A Machine, Not an Endpoint}
     .term{
 .typewriter{$> chell}
-      .o{<pre class="fig">
- <b>cd</b> /home/chris/uploads/SAG-anon                               <i>data is a filesystem</i>
- <b>ls</b> /bin                                                       <i>plugins are executables</i>
- <b>pl-fshack-v1.2.0</b> --inputFile brain.mgz                        <i>run an analysis by name</i>
- <b>cat</b> /proc/jobs/feed_123/pl-dircopy_456/pl-fshack_789/status   <i>a running job is a file</i>
-</pre>}
-      .o{One task was a .bf{chain} of REST calls.}
-      .o{mise builds that plumbing .bf{once}.}
-      .o{If you know a terminal, you know .bf{most} of it.}
+      .o{.typewriter{chris@cube:...loads$ cd ~/uploads/SAG-anon}}
+      .o{.typewriter{chris@cube:...-anon$ ls /bin | head -3
+ adc-to-zmap-nii-scale-up-v0.1.0
+ adc-to-zmap-nii-scale-up-v0.2.1
+ adc-to-zmap-nii-scale-up-v0.2.2}}
+      .o{.typewriter{chris@cube:...-anon$ whatif pl-fshack-v1.5.0 --inputFile brain.mgz
+  on   a new feed, rooted by pl-dircopy of /home/chris/uploads/SAG-anon
+whatif: pl-fshack-v1.5.0 was not run; nothing was created}}
+      .o{.typewriter{chris@cube:...-anon$ cat /proc/jobs/feed_123/pl-dircopy_788/pl-fshack_789/status
+finishedSuccessfully}}
     }
-    .takeaway{YOUR DATA IS A FILESYSTEM. EVERY PLUGIN IS A COMMAND.}
+    .takeaway{DATA IS A FILESYSTEM. A PLUGIN IS A COMMAND. A JOB IS A FILE.}
     .source{github.com/HARBOR-Medical-AI/mise}
   }
 }
@@ -531,6 +533,121 @@
     }
     .takeaway{NO SURFACE TOUCHES THE RAW API.}
     .source{github.com/HARBOR-Medical-AI/mise · docs/intent-kernel.adoc}
+  }
+}
+
+.slide{
+  .id{mise-intent}
+  .title{One Intent, Four Ways}
+  .body{
+    .h1{One Intent, Four Ways}
+    .h2{List one directory under your uploads}
+    .term{
+.typewriter{$> ls ~/uploads/SAG-anon --from=everywhere}
+    .nexus{.id{intent-ways}
+      .div{.jump{.target{intent-shell} From the Shell}}
+      .div{.jump{.target{intent-program} From a Program}}
+      .div{.jump{.target{intent-wire} Over the Wire}}
+      .div{.jump{.target{intent-raw} Without mise}}
+    }
+    }
+    .source{harbor-medical-ai.github.io/mise}
+  }
+}
+
+.slide{
+  .id{intent-shell}
+  .title{From the Shell}
+  .body{
+    .h1{From the Shell}
+    .term{
+.typewriter{$> chell}
+      .o{.typewriter{chris@cube:...loads$ ls -l ~/uploads/SAG-anon
+@DIR1  d chris   0        2026-10-16 13:35:18  00005-Synthesized_T1-abcdef0/
+@FIL1  - chris   320      2026-10-16 13:35:46  sphere.nii.gz
+numbered: @DIR1, @FIL1}}
+      .o{One .bf{line}.}
+      .o{Handles like .bf{@FIL1} feed the next command.}
+    }
+    .takeaway{THE COMMAND IS THE INTENT.}
+    .source{chell 5.20.7, captured live · harbor-medical-ai.github.io/mise/guide-chell.html}
+  }
+}
+
+.slide{
+  .id{intent-program}
+  .title{From a Program}
+  .body{
+    .h1{From a Program}
+    .term{
+.typewriter{$> cat list.ts}
+      .o{
+.code{.syntax{language=typescript}
+const sh: ChellApi = await chellApi_create();
+const listing = await sh.ls('data');
+if (listing.status !== 'ok' || !listing.model) {
+  console.error(listing.renderedErr ?? 'ls failed');
+  return;
+}
+const names = listing.model.data[0].items.map((item) => item.name);
+}
+}
+      .o{.bf{Shipped}: in-process, on Node.}
+      .o{The same engine. A typed .bf{envelope} back.}
+    }
+    .takeaway{THE SAME COMMAND, AS A FUNCTION CALL.}
+    .source{@fnndsc/brasa · harbor-medical-ai.github.io/mise/guide-chell.html}
+  }
+}
+
+.slide{
+  .id{intent-wire}
+  .title{Over the Wire}
+  .body{
+    .h1{Over the Wire}
+    .term{
+.typewriter{$> wscat --connect calypso}
+      .o{
+.code{.syntax{language=json}
+{"type": "execute", "id": "1", "line": "ls /home/chris/uploads/SAG-anon"}
+}
+}
+      .o{
+.code{.syntax{language=json}
+{"type": "result", "id": "1", "envelopes": [{"status": "ok",
+  "model": {"kind": "fs.listing", "data": [{"path": "/home/chris/uploads/SAG-anon",
+    "items": [{"name": "sphere.nii.gz", "type": "file", "size": 320}]}]}}]}
+}
+}
+      .o{A .bf{WebSocket} into your live session.}
+      .o{Any language can .bf{attach}.}
+      .o{Stateless HTTP: .bf{planned}, not shipped.}
+    }
+    .takeaway{ONE SESSION. ANY SURFACE CAN ATTACH.}
+    .source{@fnndsc/menu schemas; exchange derived from them, not captured · mise/guide-session.html}
+  }
+}
+
+.slide{
+  .id{intent-raw}
+  .title{Without mise}
+  .body{
+    .h1{Without mise}
+    .term{
+.typewriter{$> curl cube/api/v1/ --and-then}
+      .o{<pre class="fig">
+ <b>POST</b>  auth-token/                       <i>get a token</i>
+ <b>GET</b>   /api/v1/                          <i>discover the file browser</i>
+ <b>GET</b>   filebrowser/search/?path=...      <i>find the folder</i>
+ <b>GET</b>   folder: children                  <i>subfolders, paged</i>
+ <b>GET</b>   folder: files                     <i>files, paged</i>
+ <b>GET</b>   folder: link_files                <i>links, paged</i>
+</pre>}
+      .o{.bf{Six} calls for a small folder.}
+      .o{Three lists to .bf{merge} and sort yourself.}
+    }
+    .takeaway{ONE INTENT, OR A CHAIN OF CALLS.}
+    .source{CUBE REST as cumin and salsa call it; folder collections named by link relation}
   }
 }
 
