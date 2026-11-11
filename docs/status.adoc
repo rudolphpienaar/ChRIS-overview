@@ -36,13 +36,15 @@ uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme co
 cd talk && python3 -m http.server 8000
 ----
 
-The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-11 that count is 42. slidedown `main` was at `70b9f25` and the Pages workflow pins `0711397`; the two build this deck to identical output. An old slidedown checkout fails with an unknown theme, so pull it first.
+The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-11 that count is 46. slidedown `main` was at `70b9f25` and the Pages workflow pins `0711397`; the two build this deck to identical output. An old slidedown checkout fails with an unknown theme, so pull it first.
 
 Code and API payloads on a slide are syntax coloured. The author set this rule on 2026-11-11. Use slidedown's own `.code{.syntax{language=...}}` block for it, not hand-marked HTML. It works inside a terminal window and inside a reveal. Fenced Markdown blocks are not processed there, and the `http` language mis-colours bare request lines, so a list of REST calls is better drawn as a figure with the verbs marked.
 
 A menu entry must read exactly as the heading of the slide it lands on, character for character. The author set this rule on 2026-11-11 after a menu said "A machine, not an endpoint" and landed on a slide headed "ChRIS as a Computer". When a slide is retitled, change its menu entry in the same edit. All twenty menu entries were checked against their headings that day.
 
-The `chell` session slide depends on a slidedown change that is not yet upstream. It sits uncommitted on the branch `term-nested-typewriter` in `~/src/slidedown`, with a test and a paragraph in the guide, and its suite passes. The same branch restyles highlighted code so that it sits on a terminal window's background with no box of its own, which the code slides in the mise section rely on. The deck builds on the pinned slidedown too, but that slide then types its output letter by letter. Merge the branch and move the pin in `.github/workflows/pages.yml` before relying on the published page for that slide.
+The `chell` session slide depends on a slidedown change that is not yet upstream. It sits uncommitted on the branch `term-nested-typewriter` in `~/src/slidedown`, with a test and a paragraph in the guide, and its suite passes. The same branch restyles highlighted code so that it sits on a terminal window's background with no box of its own, which the code slides in the mise section rely on. The deck builds on the pinned slidedown too, but that slide then types its output letter by letter. A second slidedown branch, `slide-pan`, stacked on the first and also uncommitted, makes Up and Down pan a slide taller than the page. "The Whole Stack" in the mise section needs it; on the pinned slidedown the lower half of that figure can be reached only with a mouse wheel. Merge both branches and move the pin in `.github/workflows/pages.yml` before relying on the published page for that slide.
+
+Slides are brief. The author set the rule on 2026-11-11: short fragments, at most four bullets where the content allows, about six words each, one highlighted word per bullet. Every slide follows it as of that day, at a mean of 23 words a slide where it had been 49. The full sentence a fragment stands for belongs in `docs/notes.adoc` under "Speaking lines", not on the slide. Two deliberate exceptions: "So What Is ChRIS?" keeps five quoted answers at full length because they are quotations, and "The Five Questions" has five bullets because it is a list of five.
 
 Unknown keys inside `.meta{}` are ignored silently, so a typo there shows up only in the rendered page. Check new slides in a browser. Figures are `<pre class="fig">` blocks styled in `.meta{css:}`; that rule sets `overflow: visible` because the theme's default drew a scrollbar on every figure.
 
@@ -50,7 +52,7 @@ Unknown keys inside `.meta{}` are ignored silently, so a typo there shows up onl
 
 The outline has eleven entries. The first, "The Unbearable Lightness of Defining", is new and is the only concept the author has dictated so far; `docs/notes.adoc` has its reasoning in full. It asks what an iPad is, shows that answers from experience fail when the UI changes, and carries the test over to ChRIS. Its "So What Is ChRIS?" slide lists five answers people give. Four are the author's wording and the fifth ("A workflow engine") is the agent's stand-in.
 
-The architecture section was corrected on 2026-11-11. `pman` is gone from it, since `pfcon` absorbed it in 2025. `mise` has its own outline entry after "Architecture", a menu of six entries, one of which ("One Intent, Four Ways") is a menu of its own, three levels down from the outline. `docs/notes.adoc` describes it. Its claims were checked by the `mise` session on 2026-11-11 and corrected; the notes list what changed. The `mise` repository now lives at `HARBOR-Medical-AI/mise`.
+The architecture section was corrected on 2026-11-11. `pman` is gone from it, since `pfcon` absorbed it in 2025. `mise` has its own outline entry after "Architecture", a menu of seven entries, one of which ("One Intent, Four Ways") is a menu of its own, three levels down from the outline. `docs/notes.adoc` describes it. Its claims were checked by the `mise` session on 2026-11-11 and corrected; the notes list what changed. The `mise` repository now lives at `HARBOR-Medical-AI/mise`.
 
 `chrs` is deprecated and must not appear. The current client stack is `mise`, with `chell` as its shell surface and ARGUS as its web surface. The HARBOR audience has already seen ARGUS.
 
@@ -73,6 +75,10 @@ The pfcon bullet lists OpenShift among its compute environments. The `pfcon` REA
 With eleven outline entries, the last two are out of reach of the number keys, which stop at nine.
 
 The new "So What Is ChRIS?" slide and the older "What Is ChRIS?" section overlap. Both are kept for now.
+
+The author is in two minds about the small box-and-arrow figures across the deck and wants them closer to the `mise` README's architecture figure. That figure is now on "The Whole Stack" as a trial. If it reads well, "Architecture" and "Where ChRIS Sits in HARBOR" are the next to redraw, and small figures that add nothing can go. Wait for the author's verdict on the trial before redrawing anything.
+
+Three slides in the HARBOR roadmap section, on how one ChRIS talks to another, carry a recommendation that is the agent's and not yet the author's decision: a stateless HTTP intent API for Hub-to-Spoke dispatch, the session WebSocket for telemetry, and MCP for agent clients. The last slide labels each as funded, planned or proposed. The author asked for the slides but has not reviewed the wording.
 
 The laptop line on the "Mobile OS" slide and the "workflow engine" answer are the agent's. The author may want to replace them.
 

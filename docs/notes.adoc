@@ -159,9 +159,11 @@ The output lines were captured live by the `mise` session on 2026-11-11 from `ch
 
 The first build of this slide needed raw HTML and three CSS rules in the deck, which the author rejected: the `.sd` source should not be awkward. The behaviour was moved into slidedown instead, on a branch named `term-nested-typewriter` in the author's checkout. A typewriter inside a reveal now carries the terminal cursor, a prompt appears at once, only the command is typed, and the lines beneath a command are printed together. The slide's source is now four plain `.o{.typewriter{...}}` blocks. The dim glosses that sat beside each result ("data is a filesystem" and the rest) were dropped with the raw HTML, and the takeaway line carries them. Until that slidedown branch is merged and the pin in `.github/workflows/pages.yml` is moved to it, the published deck will type the output letter by letter and put the cursor under it.
 
+"The Whole Stack" puts the architecture figure from the `mise` README on a slide of its own, on the author's instruction. The author had found the deck's small figures weak and pointed to that figure as the standard: three machines and two networks, nested boxes, layers stepped like a staircase, and a note in the right margin for every row. It is reproduced as the README has it on `main`, with the component names coloured and the margin notes dimmed. It is 51 rows by 125 columns, so it is set at about three quarters of the deck's figure size and runs to nearly twice the height of the page. The author accepted that on the condition that the Up and Down keys move the window over it. slidedown did not do that, so it was added on a branch named `slide-pan` in the author's checkout: on a slide taller than the page the two keys pan and never leave the slide, and on every other slide they still go to the first and last slide. The other figures in the deck have not been redrawn. This one is the test of whether the style reads from the back of a room.
+
 The author then asked for one intent shown from each way in: the shell, a JavaScript program, and an API, using the listing of files as the example. That became a sixth entry in the mise menu, "One Intent, Four Ways", which is itself a menu of four slides. The `mise` session supplied all of the material on 2026-11-11.
 
-"From the Shell" is an `ls -l` captured live from `chell` 5.20.7, with identifiers replaced. "From a Program" is the typed `chell` API from `@fnndsc/brasa`, quoted from the mise guide with the line that creates `sh` taken from an exemplar in the repository; it is shipped, runs in-process, and runs on Node only. "Over the Wire" is the calypso session protocol over a WebSocket. Its request and response were derived from the schemas in `@fnndsc/menu` and were not captured from a running session, and the slide's source line says so. The author had asked for an API entry. The `mise` session advised against presenting one as HTTP, because a stateless HTTP facade for intents is planned and not built, so the slide says that in a bullet. "Without mise" is the fourth way and was the `mise` session's suggestion taken up by the agent: the six REST calls the same listing costs against CUBE directly. The three folder collections are named on the slide by link relation, since their literal paths were not verified.
+"From the Shell" is an `ls -l` captured live from `chell` 5.20.7, with identifiers replaced. "From a Program" is the typed `chell` API from `@fnndsc/brasa`, which is shipped, runs in-process, and runs on Node only. It began as an excerpt from the mise guide. The author then asked that it follow the TypeScript style guide, so it was rewritten by the agent as one documented function, `directoryNames_list`, with explicit types on every binding. The type names (`ChellApi`, `TypedEnvelope<'fs.listing'>`, `ListingItem`) were read from the `mise` source on `main`. The `mise` session typechecked it against `main` on 2026-11-11. The agent's first version passed plain strict mode and failed the style guide's own baseline, which turns on `noUncheckedIndexedAccess`, because it indexed `data[0]` without a guard. The version on the slide is the session's correction, which compiles clean under that baseline. It was typechecked and not run, and it assumes a connection already made with `chrisConnection_init`, which the slide's source line says. "Over the Wire" is the calypso session protocol over a WebSocket. Its request and response were derived from the schemas in `@fnndsc/menu` and were not captured from a running session, and the slide's source line says so. The author had asked for an API entry. The `mise` session advised against presenting one as HTTP, because a stateless HTTP facade for intents is planned and not built, so the slide says that in a bullet. "Without mise" is the fourth way and was the `mise` session's suggestion taken up by the agent: the six REST calls the same listing costs against CUBE directly. The three folder collections are named on the slide by link relation, since their literal paths were not verified.
 
 The program and the wire exchange are syntax coloured with slidedown's `.code{.syntax{...}}` block, in TypeScript and JSON, on the author's instruction that any code or API material shown must be coloured. The colours are the theme's configured Pygments style, Monokai, which is louder than the rest of the terminal palette; a calmer style would be a one-line change in the theme and is the author's to choose. The REST list on "Without mise" stays a figure with its verbs marked.
 
@@ -199,7 +201,193 @@ The author asked why Apache Airflow kept appearing. It traced to the LaTeX TDD t
 
 === Style
 
-These slides are the first written to the author's rule for word density, set the same day: short fragments, at most four to a slide, each with one highlighted word. "The Same Move, Reversed" was converted as a sample. The rest of the deck still uses full sentences.
+These slides are the first written to the author's rule for word density, set the same day: short fragments, at most four to a slide, each with one highlighted word. "The Same Move, Reversed" was converted as a sample, and the rest of the deck followed later the same day. The sentences those slides used to carry are kept at the end of this file as speaking lines.
+
+== How one ChRIS talks to another
+
+=== What it is
+
+Three slides added to the "What HARBOR Adds to ChRIS" section on 2026-11-11, between its opening slide and "Governance and Standards": "One ChRIS to Another", "The Gaps Between Them" and "From Client to Peer". The last line of the deck's "Conclusions" slide was changed to name the same point.
+
+=== Why
+
+The author raised it as the obvious gap. Asked whether the WebSocket was the only way for one ChRIS to reach another, apart from calling the other CUBE's API directly, the agent's answer was that neither is one ChRIS talking to another: both are a client talking to a ChRIS. The author asked for a slide on that, with the gaps and a conclusion.
+
+=== How it relates to the existing slides
+
+The opening slide of the section shows the Hub dispatching to a Spoke as HARBOR's funded work. These three say where that starts from. They also pick up "One Intent, Four Ways" in the mise section, which shows that the session wire carries a command line and nothing more structured.
+
+=== How the claims are sourced
+
+That a program can reach a CUBE over REST as one of its users, and that a surface can attach to a calypso session over a WebSocket, are both from the `mise` repository <<mise>>. That the wire's only request for work is `execute`, carrying an id and a command-line string, was read by the agent from `packages/menu/src/messages.ts` on `main` and confirmed by the `mise` session, which added that a typed form over the wire is the planned second phase of the typed `chell` API. That the egress classes and deployment profiles for a Spoke are still design is from the section of `docs/calypso.adoc` headed "The federated corollary". The agent found nothing in the `mise` docs describing a CUBE that knows of a peer CUBE, and did not read CUBE's own source.
+
+"From Client to Peer" sorts its three bullets by standing, and the labels matter. "Funded" is HARBOR's: dispatch from Hub to Spoke, recovery and version agreement, as reported by the session that maintains the HARBOR milestones. "Planned" is `mise`'s: `docs/intent-kernel.adoc` lists a stateless HTTP intent facade as forward work. "Proposed" is the agent's, from a discussion with the author the same day: the same intents offered as MCP tools for agent clients. Nothing in `mise` or in the HARBOR authority mentions MCP; the `mise` session searched its docs, manifests and sources and found neither a server nor a plan for one. The figure's pairing of a stateless call for dispatch with the session wire for telemetry is likewise the agent's recommendation and not a decision anyone has made.
+
+== Speaking lines: the sentences the slides used to carry
+
+On 2026-11-11 the author set a rule for word density: short fragments, at most four to a slide where the content allows, each with one highlighted word. The slides written before that day carried full sentences. Those sentences are kept here, slide by slide, because they are what the presenter says while the fragment is on screen. The mise and HARBOR sections were written in the short style from the start and have no entry.
+
+=== It's a Mobile OS (`mobile-os`)
+
+* Fine. What is a mobile OS?
+* Is it a different kind of thing from a non-mobile OS? Or the same thing in a smaller case?
+* A laptop is mobile. Nobody calls macOS a mobile OS.
+* The answer traded one undefined word for another.
+
+=== It's Pictures You Touch (`pictures`)
+
+* A screen of little pictures. Each picture is an app.
+* Touch one and it does a thing: reports the weather, shows the news, plays a game.
+* So an iPad is little pictures that do things. So is an iPhone. So is any tablet, any phone.
+* It's an honest definition. It describes what people met.
+
+=== Now Change the UI (`pictures-2`)
+
+* On Android the whole home screen can be replaced. Mine runs Re:T-UI: no icons, no pictures, a prompt.
+* Same hardware, same apps underneath.
+* By the pictures definition it stopped being a phone. It didn't.
+
+=== It's a Crippled Mac (`crippled-mac`)
+
+* A computer, running a close relative of macOS.
+* With an app model that fights the OS underneath it: no fork, no pipes between apps, no shared filesystem.
+* For the sake of security: a crippled macOS behind a very restrictive UI.
+* This is subjective too. It's how an architect meets the thing.
+
+=== Which Definition Survives? (`crippled-mac-2`)
+
+* Swap the launcher. "Pictures you touch" is now false.
+* "Sandboxed apps, no pipes, no shared files" is still true.
+* A definition by experience describes the interface.
+* A definition by construction says what the thing can and can't do.
+
+=== So What Is ChRIS? (`so-chris`)
+
+* "A dashboard for running analyses." They met ChRIS_ui.
+* "A full web UI with a shell. It looks like a whole computer." They met ARGUS.
+* "The thing that pulls studies out of a PACS from the CLI." They met chell.
+* "A persistent record of all analyses and transformations." They met a feed.
+* "A workflow engine." They met a pipeline.
+* All true. All pictures you touch.
+* ChRIS_ui, ARGUS and chell are three surfaces. Swap one for another and it's still ChRIS.
+
+The five quoted answers are unchanged. Each now ends with the surface or object the speaker met, highlighted, in place of "They met ...". The closing line about three surfaces came off the slide.
+
+=== What Is ChRIS? (`what-is`)
+
+* An open-source platform for running computation on medical data, wherever that data has to stay.
+* The name is recursive: ChRIS Research Integration Service.
+* Built at Boston Children's (FNNDSC), with Red Hat and the Mass Open Cloud.
+* It runs a specific kind of program: no interaction once started, arguments on the command line, results in files.
+* That covers most of research imaging: and most of an ingestion pipeline.
+
+The acronym line moved to the slide's subtitle.
+
+=== Where It Came From (`what-is-2`)
+
+* pre-2010: bash scripts gluing analysis programs together.
+* 2010 v1: a web front end over those scripts and an in-house HPC.
+* 2013 v2: the ideas that stuck: feeds and plugins. Still HPC-bound.
+* 2017 v3: REST services and containers. Any cluster that runs Linux containers. (Called CHIPS in the papers of that year.)
+
+=== The App Contract (`contract`)
+
+* A ChRIS app: a plugin: is a Linux container that reads one directory, writes another, and exits.
+* It does not know about ChRIS, the workflow it sits in, or the cluster under it.
+* A JSON descriptor declares its parameters and its limits: CPU, memory, GPU.
+* Python, R, shell, compiled code, a call out to a model service. The boundary doesn't change.
+
+=== Three Kinds of Plugin (`contract-2`)
+
+* fs: feed synthesis. No input directory. Brings data in: a PACS pull, an upload, a download.
+* ds: data synthesis. Input in, output out. Nearly everything is one of these.
+* ts: topology synthesis. Reshapes the graph itself, joining branches into one node.
+* De-identification, format conversion, segmentation, embedding, a training step: all ds.
+
+=== Wrap Before Inventing (`contract-end`)
+
+* ChRIS doesn't need to own every anonymiser, validator, harmoniser or model runner.
+* A good external tool gets a container and a declared interface. That's usually the whole job.
+* What it gains: explicit I/O, recorded parameters, a pinned version, a place in a workflow.
+* Write a plugin from scratch only when nothing adequate exists, or the plugin is the research.
+
+=== Workflows and Provenance (`workflows`)
+
+* A workflow is a tree of plugin runs. One node's output directory is the next node's input.
+* In HARBOR's terms: apps talk through storage.
+* Every intermediate output stays where it was written, and stays inspectable.
+* A feed is one such tree, run on one dataset. A pipeline is the reusable template for it.
+
+=== Data State, Not Control Flow (`workflows-2`)
+
+* Control flow is Argo and Tekton. Data state is Make, and ChRIS.
+* A ChRIS node is finished when its output is on disk. Not when a controller says so.
+* Gating, branching and joining are plugins in the graph: so they are in the record too.
+* The cost: patterns that are one line in Argo take an explicit step here.
+
+=== The Five Questions (`workflows-end`)
+
+* What data went in?
+* Which app ran, and which version of it?
+* With what parameters?
+* What came out?
+* How did this final result come to exist?
+* Answered by walking a directory tree. No log archaeology, no unordered database queries.
+
+"How did this final result come to exist?" came off the slide; the takeaway and the last bullet carry it.
+
+=== Architecture (`architecture`)
+
+* CUBE: users, files, plugins, feeds, permissions, provenance. One REST API.
+* pfcon: runs a plugin as a job on Docker, Kubernetes, OpenShift, or SLURM.
+* pfdcm, oxidicom: the PACS bridge: query, retrieve, receive, register into CUBE.
+
+=== Who Owns What (`architecture-end`)
+
+* CUBE owns meaning. pfcon materialises it. The cluster executes.
+* One CUBE can drive several compute environments: a workstation, an HPC, a cloud.
+* The lock-in test: can the same workflow still run somewhere without Kubernetes?
+
+=== ChRIS in the Clinic (`clinic`)
+
+* A study lands from PACS. A workflow runs on it. The measurement goes back as DICOM, into the tools radiologists already use.
+* The model is a Docker container. The same one that ran on the research bench.
+* Validated prospectively: a shadow trial first, then a clinical trial.
+* No bespoke integration per algorithm. The next model reuses the plumbing.
+
+=== Where It Has Run (`clinic-end`)
+
+* A laptop: the whole stack in docker-compose (miniChRIS).
+* On-prem at Boston Children's, wired to clinical PACS.
+* The Mass Open Cloud, on OpenShift, with GPUs.
+* Across institutions: FreeSurfer in the cloud feeding a multi-party computation, so two hospitals compare brain volumes without either seeing the other's data.
+
+=== Working With It (`working`)
+
+* Put the tool in a container.
+* Give it the contract: flags, an input directory, an output directory. No prompts, no GUI.
+* Describe its parameters and resource needs in the JSON descriptor.
+* Register it with a CUBE. Now it can be a node in anyone's workflow.
+* Try the whole stack on a laptop first: miniChRIS, in docker-compose.
+
+The last line became the slide's takeaway.
+
+=== What We Need to Agree (`working-end`)
+
+* Stage contracts. What exactly sits in the directory between your stage and the next one.
+* App policy. What a stage may touch beyond its two directories.
+* Run record. Status, progress and failure, readable by any client.
+* Lineage mapping. How a ChRIS run becomes OpenLineage run, job and dataset facets.
+
+=== Conclusions (`conclusions`)
+
+* ChRIS is a workflow runtime: containers that read a directory and write a directory, chained.
+* The provenance isn't bolted on. It is the directory tree the workflow leaves behind.
+* It already runs clinical AI at Boston Children's, on the same contract.
+* In HARBOR it is the layer inside each TD that makes local execution repeatable and auditable.
+* HARBOR's work on it: one ChRIS as a peer of another, telemetry, standards. The contract stays.
+
+The title slide's four bullets were shortened the same way. They read: ChRIS runs containerised analyses next to the data and records how every result came to exist. One rule for every app: read a directory, write a directory, exit. Chain those apps and the directory tree is the provenance record. In HARBOR it is the workflow runtime inside each Trusted Domain.
 
 [bibliography]
 == References

@@ -27,6 +27,10 @@
     ".slide .term pre.fig i":
         color: "#858585"
         font-style: "normal"
+    ".slide .term pre.fig.wide":
+        font-size: "0.72em"
+        line-height: "1.2"
+        margin-left: "0"
 }
 
 .slide{
@@ -50,10 +54,10 @@
     .h1{The Short Version}
     .term{
 .typewriter{$> chris --tldr}
-      .o{ChRIS runs .bf{containerised analyses next to the data} and records how every result came to exist.}
-      .o{One rule for every app: read a directory, write a directory, exit.}
-      .o{Chain those apps and the directory tree .bf{is} the provenance record.}
-      .o{In HARBOR it is the workflow runtime .bf{inside each Trusted Domain}.}
+      .o{Analyses run .bf{next to the data}.}
+      .o{One .bf{rule}: read a directory, write one, exit.}
+      .o{Chain them. The tree .bf{is} the provenance.}
+      .o{In HARBOR: the runtime inside .bf{every} Trusted Domain.}
     }
 
     .takeaway{OPENSHIFT GOVERNS THE CLUSTER. ChRIS MAKES THE SCIENCE ON IT AUDITABLE.}
@@ -109,10 +113,10 @@
     .h1{"It's a Mobile OS"}
     .term{
 .typewriter{$> define "mobile OS"}
-      .o{Fine. What is a mobile OS?}
-      .o{Is it a different kind of thing from a non-mobile OS? Or the same thing in a smaller case?}
-      .o{A laptop is mobile. Nobody calls macOS a mobile OS.}
-      .o{The answer traded one undefined word for another.}
+      .o{Fine. What is a .bf{mobile} OS?}
+      .o{Different in kind? Or a smaller .bf{case}?}
+      .o{A laptop is mobile. macOS .bf{isn't} one.}
+      .o{One undefined word .bf{traded} for another.}
     }
     .takeaway{NAMING THE CATEGORY ISN'T DEFINING THE THING.}
   }
@@ -125,10 +129,10 @@
     .h1{"It's Pictures You Touch"}
     .term{
 .typewriter{$> describe --by=experience ipad}
-      .o{A screen of little pictures. Each picture is an app.}
-      .o{Touch one and it does a thing: reports the weather, shows the news, plays a game.}
-      .o{So an iPad is little pictures that do things. So is an iPhone. So is any tablet, any phone.}
-      .o{It's an honest definition. It describes what people met.}
+      .o{A screen of little .bf{pictures}.}
+      .o{Touch one. It .bf{does} a thing.}
+      .o{So is any tablet. Any .bf{phone}.}
+      .o{Honest. It describes what people .bf{met}.}
     }
   }
 }
@@ -148,9 +152,9 @@
  └──────────────────────┘            └──────────────────────┘
   <i>pictures you touch</i>                  <i>a prompt you type at</i>
 </pre>}
-      .o{On Android the whole home screen can be replaced. Mine runs .bf{Re:T-UI}: no icons, no pictures, a prompt.}
-      .o{Same hardware, same apps underneath.}
-      .o{By the pictures definition it stopped being a phone. It didn't.}
+      .o{Mine runs .bf{Re:T-UI}: no icons, a prompt.}
+      .o{Same hardware. Same .bf{apps}.}
+      .o{No pictures. Still a .bf{phone}.}
     }
     .takeaway{PEOPLE DEFINE A THING BY HOW THEY MET IT.}
     .source{Re:T-UI launcher guide, re-tui.pages.dev}
@@ -171,10 +175,10 @@
    <u>▼</u>
  <b>iPadOS</b>    every app sandboxed  ·  no child processes  ·  a private container each
 </pre>}
-      .o{A computer, running a close relative of macOS.}
-      .o{With an app model that fights the OS underneath it: no .bf{fork}, no pipes between apps, no shared filesystem.}
-      .o{For the sake of security: a crippled macOS behind a very restrictive UI.}
-      .o{This is subjective too. It's how an architect meets the thing.}
+      .o{A close .bf{relative} of macOS.}
+      .o{No .bf{fork}. No pipes. No shared files.}
+      .o{For security: a .bf{crippled} Mac.}
+      .o{Subjective too. An .bf{architect's} view.}
     }
     .source{Apple Platform Security, "Security of runtime process in iOS, iPadOS, and visionOS" · apple-oss-distributions/xnu · Apple Developer Forums thread 747499}
   }
@@ -187,10 +191,10 @@
     .h1{Which Definition Survives?}
     .term{
 .typewriter{$> diff --swap-ui experience construction}
-      .o{Swap the launcher. "Pictures you touch" is now false.}
-      .o{"Sandboxed apps, no pipes, no shared files" is still true.}
-      .o{A definition by experience describes the interface.}
-      .o{A definition by construction says what the thing can and can't do.}
+      .o{Swap the launcher. "Pictures" is now .bf{false}.}
+      .o{"No pipes, no shared files" is still .bf{true}.}
+      .o{Experience describes the .bf{interface}.}
+      .o{Construction says what it .bf{can} do.}
     }
     .takeaway{KEEP THE DEFINITION THAT SURVIVES A CHANGE OF UI.}
   }
@@ -201,16 +205,15 @@
   .title{So What Is ChRIS?}
   .body{
     .h1{So What Is ChRIS?}
-    .h2{Ask five people}
+    .h2{Ask five people. Each names what they met.}
     .term{
 .typewriter{$> whatis chris --ask=5}
-      .o{"A dashboard for running analyses." They met ChRIS_ui.}
-      .o{"A full web UI with a shell. It looks like a whole computer." They met ARGUS.}
-      .o{"The thing that pulls studies out of a PACS from the CLI." They met chell.}
-      .o{"A persistent record of all analyses and transformations." They met a feed.}
-      .o{"A workflow engine." They met a pipeline.}
-      .o{All true. All pictures you touch.}
-      .o{ChRIS_ui, ARGUS and chell are three surfaces. Swap one for another and it's still .bf{ChRIS}.}
+      .o{"A dashboard for running analyses." .bf{ChRIS_ui}}
+      .o{"A full web UI with a shell. It looks like a whole computer." .bf{ARGUS}}
+      .o{"The thing that pulls studies out of a PACS from the CLI." .bf{chell}}
+      .o{"A persistent record of all analyses and transformations." .bf{a feed}}
+      .o{"A workflow engine." .bf{a pipeline}}
+      .o{All true. All .bf{pictures} you touch.}
     }
     .takeaway{DEFINE ChRIS THE WAY AN ARCHITECT DEFINES AN iPad.}
     .source{github.com/HARBOR-Medical-AI/mise}
@@ -242,13 +245,13 @@
   .title{What Is ChRIS?}
   .body{
     .h1{What Is ChRIS?}
+    .h2{ChRIS Research Integration Service}
     .term{
 .typewriter{$> whatis chris}
-      .o{An .bf{open-source platform} for running computation on medical data, wherever that data has to stay.}
-      .o{The name is recursive: .bf{Ch}RIS .bf{R}esearch .bf{I}ntegration .bf{S}ervice.}
-      .o{Built at Boston Children's (FNNDSC), with Red Hat and the Mass Open Cloud.}
-      .o{It runs a specific kind of program: no interaction once started, arguments on the command line, results in files.}
-      .o{That covers most of research imaging -- and most of an ingestion pipeline.}
+      .o{.bf{Open-source}. Computation where the data must stay.}
+      .o{Boston Children's, .bf{Red Hat}, Mass Open Cloud.}
+      .o{Programs with no .bf{interaction}: args in, files out.}
+      .o{That is most of research imaging. And most of .bf{ingestion}.}
     }
     .source{FNNDSC/CHRIS_docs · Pienaar et al., IEEE EMBC 2015}
   }
@@ -261,10 +264,10 @@
     .h1{Where It Came From}
     .term{
 .typewriter{$> git log --oneline --reverse chris}
-      .o{.span{.class{dim} pre-2010} bash scripts gluing analysis programs together.}
-      .o{.span{.class{dim} 2010 v1} a web front end over those scripts and an in-house HPC.}
-      .o{.span{.class{dim} 2013 v2} the ideas that stuck: .bf{feeds} and .bf{plugins}. Still HPC-bound.}
-      .o{.span{.class{dim} 2017 v3} REST services and containers. Any cluster that runs Linux containers. (Called CHIPS in the papers of that year.)}
+      .o{.span{.class{dim} pre-2010} .bf{bash} scripts as glue.}
+      .o{.span{.class{dim} 2010 v1} a web front end, one .bf{HPC}.}
+      .o{.span{.class{dim} 2013 v2} .bf{feeds} and plugins arrive.}
+      .o{.span{.class{dim} 2017 v3} REST and .bf{containers}. Any cluster.}
     }
     .takeaway{THE GLUE KEPT OUTGROWING THE TOOLS. SO THE GLUE BECAME THE PLATFORM.}
     .source{FNNDSC/CHRIS_docs, History · Pienaar et al., LNCS 10494, 2017 (CHIPS)}
@@ -285,10 +288,10 @@
  └─────────┘           │ runs once, then exits │           └─────────┘
                        └───────────────────────┘
 </pre>}
-      .o{A ChRIS app -- a .bf{plugin} -- is a Linux container that reads one directory, writes another, and exits.}
-      .o{It does not know about ChRIS, the workflow it sits in, or the cluster under it.}
-      .o{A JSON descriptor declares its parameters and its limits: CPU, memory, GPU.}
-      .o{Python, R, shell, compiled code, a call out to a model service. The boundary doesn't change.}
+      .o{A .bf{container}: read a directory, write one, exit.}
+      .o{It doesn't know ChRIS .bf{exists}.}
+      .o{A JSON .bf{descriptor}: parameters, CPU, memory, GPU.}
+      .o{Any .bf{language}. Same boundary.}
     }
     .takeaway{IF IT RUNS IN A CONTAINER AND WRITES FILES, IT CAN BE A PLUGIN.}
     .source{ChRIS Plugin Specification, FNNDSC/CHRIS_docs (specs/ChRIS_Plugins.adoc)}
@@ -308,10 +311,10 @@
                                                     /in ─┼<u>▶</u> [app] ──<u>▶</u> /out
                                                     /in ─┘
 </pre>}
-      .o{.bf{fs} -- feed synthesis. No input directory. Brings data in: a PACS pull, an upload, a download.}
-      .o{.bf{ds} -- data synthesis. Input in, output out. Nearly everything is one of these.}
-      .o{.bf{ts} -- topology synthesis. Reshapes the graph itself, joining branches into one node.}
-      .o{De-identification, format conversion, segmentation, embedding, a training step: all .bf{ds}.}
+      .o{.bf{fs}: brings data in. No input directory.}
+      .o{.bf{ds}: input in, output out. Nearly everything.}
+      .o{.bf{ts}: reshapes the graph. Joins branches.}
+      .o{De-id, conversion, segmentation: all .bf{ds}.}
     }
     .source{ChRIS Plugin Specification, "Plugin Type"}
   }
@@ -324,10 +327,10 @@
     .h1{Wrap Before Inventing}
     .term{
 .typewriter{$> cat plugin-doctrine.txt}
-      .o{ChRIS doesn't need to own every anonymiser, validator, harmoniser or model runner.}
-      .o{A good external tool gets a container and a declared interface. That's usually the whole job.}
-      .o{What it gains: explicit I/O, recorded parameters, a pinned version, a place in a workflow.}
-      .o{Write a plugin from scratch only when nothing adequate exists, or the plugin is the research.}
+      .o{ChRIS needn't .bf{own} every tool.}
+      .o{A good tool gets a .bf{container} and an interface.}
+      .o{It gains recorded parameters and a pinned .bf{version}.}
+      .o{Write new only when .bf{nothing} fits.}
     }
     .takeaway{NOT "DID WE WRITE IT?" BUT "DOES IT OBEY THE CONTRACT?"}
   }
@@ -349,10 +352,10 @@
           │  └─ measure    <i>ds</i>
           └─ embed         <i>ds   every node keeps its own output directory</i>
 </pre>}
-      .o{A workflow is a tree of plugin runs. One node's output directory is the next node's input.}
+      .o{A .bf{tree} of runs. Output feeds input.}
       .o{In HARBOR's terms: apps talk through .bf{storage}.}
-      .o{Every intermediate output stays where it was written, and stays inspectable.}
-      .o{A .bf{feed} is one such tree, run on one dataset. A .bf{pipeline} is the reusable template for it.}
+      .o{Every intermediate output stays .bf{inspectable}.}
+      .o{A .bf{feed} is one run. A pipeline is its template.}
     }
     .takeaway{THE UNIX PIPE, STRETCHED ACROSS A CLUSTER.}
   }
@@ -372,10 +375,10 @@
  <b>data state</b>      /d0 ──A──<u>▶</u> /d1 ──B──<u>▶</u> /d2 ──C──<u>▶</u> /d3
                  <i>every arrow leaves a directory behind</i>
 </pre>}
-      .o{Control flow is Argo and Tekton. Data state is Make, and ChRIS.}
-      .o{A ChRIS node is finished when its output is on disk. Not when a controller says so.}
-      .o{Gating, branching and joining are plugins in the graph -- so they are in the record too.}
-      .o{The cost: patterns that are one line in Argo take an explicit step here.}
+      .o{Control flow: Argo, Tekton. Data state: .bf{Make}, ChRIS.}
+      .o{Done when the output is on .bf{disk}.}
+      .o{Gates and joins are .bf{plugins}. So they're recorded.}
+      .o{The cost: a .bf{step} where Argo needs a line.}
     }
     .takeaway{WHAT RAN, IN WHAT ORDER AND WHY: READ IT OFF THE DATA.}
   }
@@ -388,12 +391,11 @@
     .h1{The Five Questions}
     .term{
 .typewriter{$> provenance --explain result.dcm}
-      .o{What data went in?}
-      .o{Which app ran, and which version of it?}
-      .o{With what parameters?}
-      .o{What came out?}
-      .o{How did this final result come to exist?}
-      .o{Answered by walking a directory tree. No log archaeology, no unordered database queries.}
+      .o{What data went .bf{in}?}
+      .o{Which app, which .bf{version}?}
+      .o{With what .bf{parameters}?}
+      .o{What came .bf{out}?}
+      .o{Answered by walking a .bf{directory} tree.}
     }
     .takeaway{MAKE THE HANDOFFS BORING. MAKE THE DATA STATE EXPLICIT.}
   }
@@ -417,9 +419,9 @@
                          └───┬───┘      └───┬───┘   <i>compute environment</i>
                          OpenShift         HPC
 </pre>}
-      .o{.bf{CUBE} -- users, files, plugins, feeds, permissions, provenance. One REST API.}
-      .o{.bf{pfcon} -- runs a plugin as a job on Docker, Kubernetes, OpenShift, or SLURM.}
-      .o{.bf{pfdcm, oxidicom} -- the PACS bridge: query, retrieve, receive, register into CUBE.}
+      .o{.bf{CUBE}: one REST API over everything.}
+      .o{.bf{pfcon}: runs the job, Docker to SLURM.}
+      .o{.bf{pfdcm, oxidicom}: the PACS bridge.}
     }
     .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/oxidicom · HARBOR-Medical-AI/mise}
   }
@@ -439,9 +441,9 @@
    <u>▼</u>
  <b>cluster</b>    execution    pods, storage, policy
 </pre>}
-      .o{.bf{CUBE owns meaning. pfcon materialises it. The cluster executes.}}
-      .o{One CUBE can drive several compute environments: a workstation, an HPC, a cloud.}
-      .o{The lock-in test: can the same workflow still run somewhere without Kubernetes?}
+      .o{CUBE owns .bf{meaning}. pfcon maps it. The cluster runs it.}
+      .o{One CUBE, several .bf{compute} environments.}
+      .o{The lock-in test: does it run .bf{without} Kubernetes?}
     }
     .takeaway{REPLACE MECHANISMS FREELY. DON'T REPLACE THE MEANING OF THE WORKFLOW.}
   }
@@ -458,6 +460,7 @@
     .nexus{.id{mise-parts}
       .div{.jump{.target{mise-machine} A Machine, Not an Endpoint}}
       .div{.jump{.target{mise-layers} Above CUBE}}
+      .div{.jump{.target{mise-stack} The Whole Stack}}
       .div{.jump{.target{mise-kernel} The Intent Kernel}}
       .div{.jump{.target{mise-intent} One Intent, Four Ways}}
       .div{.jump{.target{mise-session} One Session, Many Surfaces}}
@@ -512,6 +515,73 @@ finishedSuccessfully}}
     }
     .takeaway{CUBE SAYS WHAT IS TRUE. mise SAYS WHERE THINGS ARE.}
     .source{github.com/HARBOR-Medical-AI/mise}
+  }
+}
+
+.slide{
+  .id{mise-stack}
+  .title{The Whole Stack}
+  .body{
+    .h1{The Whole Stack}
+    .h2{Three machines, two networks}
+    .term{
+.typewriter{$> mise --stack}
+<pre class="fig wide">
+ ┌─ <b>your machine</b> ───────────────────────────────────────────────────────────────────┐   <i>a terminal, a browser,</i>
+ │ ┌──────────┐                           you                                       │   <i>and programs of your own</i>
+ │ │ a program│                            │                                        │
+ │ └─┬────────┘                   ┌────────┴────────┐                               │
+ │   ┆ ┌──────────┐               │                 │                               │
+ │   ┆ │ a program│         ┌─────┴─────┐     ┌─────┴─────┐                         │
+ │   ┆ └─┬────────┘         │   <b>chell</b>   │     │   <b>ARGUS</b>   │                         │   <i>surfaces: two views of one session</i>
+ │   ┆   ┆ ┌──────────┐     │ terminal  │     │  browser  │                         │
+ │   ┆   ┆ │ a program│     └─────┬─────┘     └─────┬─────┘                         │
+ │   ┆   ┆ └─┬────────┘        ws │                 │ https, then ws                <i>│</i>
+ │   ┆   ┆   ┆                    └────────┬────────┘                               │
+ │   ┆   ┆   ┆                             └───┐                                    │
+ └───┼───┼───┼─────────────────────────────────┼────────────────────────────────────┘
+     ┆   ┆   ┆                                 │  menu: the wire, across a network
+ ╔═══╪═══╪═══╪═════════════════════════════════╪══ <b>the bastion</b> ═════════════════════╗   <i>one Linux host: VM, container or metal</i>
+ ║   ┆   ┆   ┆                                 │                                    ║
+ ║   ┆   ┆   ┆                     ┌───────────┴───────────┐                        ║
+ ║   ┆   ┆   ┆                     │         <b>porter</b>        │                        ║   <i>the login page (gdm)</i>
+ ║   ┆   ┆   ┆                     ├───────────────────────┤    ┌───────────────┐   <i>║   the console's own terminal, on a pty</i>
+ ║   ┆   ┆   ┆                     │        <b>calypso</b>        ├──┬─┤  <b>chell (pty)</b>  │   <i>║   your session, long-lived (tmux + sshd)</i>
+ ║   ┆   ┆   ┆               ┌─────┴───────────────────────┤  │ └───────────────┘   <i>║</i>
+ ║   ┆   ┆   ┆               │                             │  │                     <i>║</i>
+ ║   ┆   ┆   └┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤            <b>brasa</b>            │  │ ┌───────────────┐   <i>║   the shell engine (bash + coreutils)</i>
+ ║   ┆   ┆                   │                             │  └─┤    <i>the host   │   ║</i>
+ ║   ┆   ┆             ┌─────┴─────────────────────────────┤    │ a shell       <i>│   ║   reached by `!`, under host control</i>
+ ║   ┆   ┆             │                                   │    │ ~/project     <i>│   ║   the dev environment: edit, build, run</i>
+ ║   ┆   └┄┄┄┄┄┄┄┄┄┄┄┄┄┤                <b>fond</b>               │    └───────────────┘   <i>║   the filesystem interface (the VFS)</i>
+ ║   ┆                 │                                   │                        ║
+ ║   ┆           ┌─────┴───────────────────────────────────┤                        ║
+ ║   ┆           │                                         │                        ║
+ ║   └┄┄┄┄┄┄┄┄┄┄┄┤               <b>chris driver</b>              │                        ║   <i>a filesystem driver: CUBE as a tree</i>
+ ║               │   salsa   the tree, and its logic       │                        ║
+ ║               │   cumin   CUBE's REST, via chrisapi     │                        ║
+ ║               └─────────────────────────────┬───────────┘                        ║
+ ║                                             │                                    ║
+ ╚═════════════════════════════════════════════╪════════════════════════════════════╝
+                                               │  HTTPS, Collection+JSON, across a network
+                                    ┌─────────────────────┐
+                                   ╱                     ╱│
+                                  ╱         <b>CUBE</b>        ╱ │
+                                 ╱                     ╱  │
+                                ┌─────────────────────┐   │
+                                │                     │   │                            ChRIS: users, data, plugins, compute,
+                                │                     │   ┘                            and the record of every run
+                                │       what is       │  ╱
+                                │         true        │ ╱
+                                │                     │╱
+                                └─────────────────────┘
+ 
+ <b>────</b><i>  a call, over a network</i>
+ <b>┄┄┄┄</b><i>  the same package, linked into a program of your own: its own engine, its own process</i>
+</pre>
+    }
+    .takeaway{CUBE IS THE ONLY SOURCE OF TRUTH. EVERYTHING ABOVE IT IS A VIEW OF IT.}
+    .source{github.com/HARBOR-Medical-AI/mise, README}
   }
 }
 
@@ -583,20 +653,25 @@ numbered: @DIR1, @FIL1}}
 .typewriter{$> cat list.ts}
       .o{
 .code{.syntax{language=typescript}
-const sh: ChellApi = await chellApi_create();
-const listing = await sh.ls('data');
-if (listing.status !== 'ok' || !listing.model) {
-  console.error(listing.renderedErr ?? 'ls failed');
-  return;
+import { chellApi_create, type ChellApi, type TypedEnvelope } from '@fnndsc/brasa';
+import type { ListingItem } from '@fnndsc/menu';
+/**
+ * List the entry names of one ChRIS directory.
+ * @param path - Directory to list, as chell would address it.
+ * @returns The entry names; empty if the listing failed.
+ */
+async function directoryNames_list(path: string): Promise<string[]> {
+  const sh: ChellApi = await chellApi_create();
+  const listing: TypedEnvelope<'fs.listing'> = await sh.ls(path);
+  const items: ListingItem[] = listing.model?.data[0]?.items ?? [];
+  if (listing.status !== 'ok') return [];
+  return items.map((item: ListingItem): string => item.name);
 }
-const names = listing.model.data[0].items.map((item) => item.name);
 }
 }
-      .o{.bf{Shipped}: in-process, on Node.}
-      .o{The same engine. A typed .bf{envelope} back.}
     }
-    .takeaway{THE SAME COMMAND, AS A FUNCTION CALL.}
-    .source{@fnndsc/brasa · harbor-medical-ai.github.io/mise/guide-chell.html}
+    .takeaway{THE SAME COMMAND, AS A FUNCTION CALL. SHIPPED, IN-PROCESS, ON NODE.}
+    .source{typechecked against mise main, not run; assumes a connection made with chrisConnection_init · mise/guide-chell.html}
   }
 }
 
@@ -706,10 +781,10 @@ const names = listing.model.data[0].items.map((item) => item.name);
  PACS ──<u>▶</u> [pull] ──<u>▶</u> [LLD model] ──<u>▶</u> [measure] ──<u>▶</u> [DICOM report] ──<u>▶</u> PACS ──<u>▶</u> reading room
           └───────────────────<i> one ChRIS feed </i>──────────────────┘
 </pre>}
-      .o{A study lands from PACS. A workflow runs on it. The measurement goes back as DICOM, into the tools radiologists already use.}
-      .o{The model is a Docker container. The same one that ran on the research bench.}
-      .o{Validated prospectively: a .bf{shadow trial} first, then a .bf{clinical trial}.}
-      .o{No bespoke integration per algorithm. The next model reuses the plumbing.}
+      .o{A study lands. A .bf{workflow} runs. DICOM goes back.}
+      .o{The same .bf{container} as on the bench.}
+      .o{.bf{Shadow} trial first. Then a clinical trial.}
+      .o{The next model .bf{reuses} the plumbing.}
     }
     .takeaway{SAME CONTRACT, FROM THE BENCH TO THE READING ROOM.}
     .source{Tsai, Samal, Lamonica, Morris, McNeil, Pienaar, Eur Radiol 36:1698-1708 (online Sep 2025), doi:10.1007/s00330-025-12022-0}
@@ -723,10 +798,10 @@ const names = listing.model.data[0].items.map((item) => item.name);
     .h1{Where It Has Run}
     .term{
 .typewriter{$> chris --deployments}
-      .o{A laptop: the whole stack in docker-compose (miniChRIS).}
-      .o{On-prem at Boston Children's, wired to clinical PACS.}
-      .o{The Mass Open Cloud, on OpenShift, with GPUs.}
-      .o{Across institutions: FreeSurfer in the cloud feeding a multi-party computation, so two hospitals compare brain volumes without either seeing the other's data.}
+      .o{A .bf{laptop}: miniChRIS in docker-compose.}
+      .o{On-prem, wired to clinical .bf{PACS}.}
+      .o{Mass Open Cloud: OpenShift, .bf{GPUs}.}
+      .o{Two hospitals compare. Neither sees the other's .bf{data}.}
     }
     .takeaway{THE CONTAINER DOESN'T CHANGE. ONLY WHERE IT RUNS.}
     .source{FNNDSC/miniChRIS-docker · FNNDSC/CHRIS_docs · Grant, Red Hat Summit 2019 (ChRIS and multi-party compute)}
@@ -825,6 +900,75 @@ const names = listing.model.data[0].items.map((item) => item.name);
 }
 
 .slide{
+  .id{roadmap-peer}
+  .title{One ChRIS to Another}
+  .body{
+    .h1{One ChRIS to Another}
+    .h2{Today, only as a client}
+    .term{
+.typewriter{$> chris --talk-to=another-chris}
+      .o{<pre class="fig">
+    <b>Hub</b>                                                <b>Spoke TD</b>
+ ┌────────────┐        REST, as a <b>CUBE</b> user        ┌────────────────┐
+ │  a client  │ ─────────────────────────────────<u>▶</u> │      <b>CUBE</b>      │
+ │   chell,   │                                    ├────────────────┤
+ │  a script  │ <u>◀</u>═══════ ws: one session ════════<u>▶</u> │    <b>calypso</b>     │
+ └────────────┘  <i>command lines in, envelopes out</i>   └────────────────┘
+</pre>}
+      .o{.bf{REST}: any program, as a CUBE user.}
+      .o{.bf{WebSocket}: attach to a session at the Spoke.}
+      .o{Either way a .bf{client}. Never a peer.}
+    }
+    .takeaway{TODAY ONE ChRIS CAN ONLY BE A CLIENT OF ANOTHER.}
+    .source{github.com/HARBOR-Medical-AI/mise · docs/calypso.adoc, packages/menu/src/messages.ts}
+  }
+}
+
+.slide{
+  .id{roadmap-peer-2}
+  .title{The Gaps Between Them}
+  .body{
+    .h1{The Gaps Between Them}
+    .h2{The wire was built for a person at a prompt}
+    .term{
+.typewriter{$> diff operator hub}
+      .o{<pre class="fig">
+              <i>today</i>                      <i>a Hub needs</i>
+ <b>identity</b>     a user's login             to act as itself
+ <b>request</b>      a command-line string      a typed, versioned call
+ <b>delivery</b>     one live session           submit once, resume, retry
+ <b>egress</b>       not yet classified         policy at the Spoke's edge
+</pre>}
+      .o{A Hub is not a .bf{person}.}
+      .o{It cannot borrow someone's .bf{session}.}
+    }
+    .takeaway{SHAPED FOR AN OPERATOR. NOT YET FOR A HUB.}
+    .source{github.com/HARBOR-Medical-AI/mise · docs/calypso.adoc, docs/intent-kernel.adoc}
+  }
+}
+
+.slide{
+  .id{roadmap-peer-3}
+  .title{From Client to Peer}
+  .body{
+    .h1{From Client to Peer}
+    .term{
+.typewriter{$> chris --peer --plan}
+      .o{<pre class="fig">
+ <b>dispatch</b>     Hub ──<u>▶</u> Spoke     a stateless intent call: submit, poll, resume
+ <b>telemetry</b>    Spoke ──<u>▶</u> Hub     the session wire: status, progress, failure
+ <b>agents</b>       any ──<u>▶</u> either    the same intents, offered as tools
+</pre>}
+      .o{.bf{Funded}: dispatch, recovery, version agreement.}
+      .o{.bf{Planned} in mise: a stateless intent API.}
+      .o{.bf{Proposed}: the same intents as MCP tools.}
+    }
+    .takeaway{TODAY A CLIENT. HARBOR FUNDS THE PEER.}
+    .source{HARBOR Task Description Document: App Runtime · mise docs/intent-kernel.adoc}
+  }
+}
+
+.slide{
   .id{roadmap-end}
   .title{Governance and Standards}
   .body{
@@ -850,12 +994,12 @@ const names = listing.model.data[0].items.map((item) => item.name);
     .h2{Bringing a tool into a HARBOR workflow}
     .term{
 .typewriter{$> chris plugin --howto}
-      .o{Put the tool in a container.}
-      .o{Give it the contract: flags, an input directory, an output directory. No prompts, no GUI.}
-      .o{Describe its parameters and resource needs in the JSON descriptor.}
-      .o{Register it with a CUBE. Now it can be a node in anyone's workflow.}
-      .o{Try the whole stack on a laptop first: miniChRIS, in docker-compose.}
+      .o{Put the tool in a .bf{container}.}
+      .o{Flags and two .bf{directories}. No prompts, no GUI.}
+      .o{Describe it in a JSON .bf{descriptor}.}
+      .o{.bf{Register} it. Now anyone can use it.}
     }
+    .takeaway{TRY THE WHOLE STACK ON A LAPTOP FIRST: miniChRIS.}
     .source{ChRIS Plugin Specification · github.com/FNNDSC/miniChRIS-docker · chrisproject.org}
   }
 }
@@ -867,10 +1011,10 @@ const names = listing.model.data[0].items.map((item) => item.name);
     .h1{What We Need to Agree}
     .term{
 .typewriter{$> harbor --interfaces --open}
-      .o{.bf{Stage contracts.} What exactly sits in the directory between your stage and the next one.}
-      .o{.bf{App policy.} What a stage may touch beyond its two directories.}
-      .o{.bf{Run record.} Status, progress and failure, readable by any client.}
-      .o{.bf{Lineage mapping.} How a ChRIS run becomes OpenLineage run, job and dataset facets.}
+      .o{.bf{Stage contracts}: what sits between two stages.}
+      .o{.bf{App policy}: what a stage may touch.}
+      .o{.bf{Run record}: status, progress, failure.}
+      .o{.bf{Lineage mapping}: a run as OpenLineage.}
     }
     .takeaway{AGREE THE DIRECTORIES AND THE EVENTS. THE REST CAN CHANGE UNDERNEATH.}
   }
@@ -884,11 +1028,10 @@ const names = listing.model.data[0].items.map((item) => item.name);
     .term{
 .typewriter{$> exit
 > questions?}
-      .o{ChRIS is a .bf{workflow runtime}: containers that read a directory and write a directory, chained.}
-      .o{The provenance isn't bolted on. It is the directory tree the workflow leaves behind.}
-      .o{It already runs clinical AI at Boston Children's, on the same contract.}
-      .o{In HARBOR it is the layer inside each TD that makes local execution repeatable and auditable.}
-      .o{HARBOR's work on it is scale, telemetry and standards. The contract stays.}
+      .o{A .bf{workflow runtime}. Provenance is the tree it leaves.}
+      .o{Clinical AI at Boston Children's, .bf{today}.}
+      .o{In HARBOR: repeatable and auditable in every .bf{TD}.}
+      .o{Next: one ChRIS as a .bf{peer} of another.}
     }
   }
 }
