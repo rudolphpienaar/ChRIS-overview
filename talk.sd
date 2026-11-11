@@ -31,6 +31,23 @@
         font-size: "0.72em"
         line-height: "1.2"
         margin-left: "0"
+    ".slide .term pre.fig em":
+        color: "#dcdcaa"
+        font-style: "normal"
+    ".slide .term pre.fig.step":
+        font-size: "0.7em"
+        line-height: "1.2"
+        margin-top: "0"
+        margin-bottom: "0"
+    ".slide .term > .snippet:has(> pre.step)":
+        margin: "0"
+    ".slide .term > .snippet:has(> pre.step):is(.sl-hidden, :has(~ .snippet:not(.sl-hidden)))":
+        height: "0"
+        min-height: "0"
+        margin: "0"
+        overflow: "hidden"
+    ".slide .term > .snippet:has(> pre.step)::after":
+        content: "none"
 }
 
 .slide{
@@ -145,12 +162,13 @@
     .term{
 .typewriter{$> launcher --replace}
       .o{<pre class="fig">
- ┌──────────────────────┐            ┌──────────────────────┐
- │ [wx]   [news] [game] │            │ $ weather            │
- │ [mail] [maps] [cam]  │   ─────<u>▶</u>   │ $ news               │
- │ [web]  [pay]  [chat] │            │ $ _                  │
- └──────────────────────┘            └──────────────────────┘
-  <i>pictures you touch</i>                  <i>a prompt you type at</i>
+ ┌─ <b>pictures you touch</b> ────────┐           ┌─ <b>a prompt you type at</b> ──────┐
+ │  [wx]    [news]   [game]    │           │  $ weather                  │
+ │  [mail]  [maps]   [cam]     │   ────<u>▶</u>   │  $ news                     │
+ │  [web]   [pay]    [chat]    │           │  $ _                        │
+ ├─────────────────────────────┴───────────┴─────────────────────────────┤
+ │          <i>the same apps  ·  the same kernel  ·  the same phone</i>         │
+ └───────────────────────────────────────────────────────────────────────┘
 </pre>}
       .o{Mine runs .bf{Re:T-UI}: no icons, a prompt.}
       .o{Same hardware. Same .bf{apps}.}
@@ -170,10 +188,15 @@
     .term{
 .typewriter{$> describe --by=construction ipad}
       .o{<pre class="fig">
- <b>macOS</b>     child processes  ·  pipes  ·  one filesystem  ·  any UI you like
-   │       <i>same kernel (XNU), same core (Darwin)</i>
-   <u>▼</u>
- <b>iPadOS</b>    every app sandboxed  ·  no child processes  ·  a private container each
+ ┌─ <b>macOS</b> ───────────────────────┐     ┌─ <b>iPadOS</b> ──────────────────────┐
+ │                               │     │ ┌───────┐ ┌───────┐ ┌───────┐ │
+ │  [app] ══ pipe ══ [app]       │     │ │  app  │ │  app  │ │  app  │ │
+ │    └── fork ──<u>▶</u> [child]       │     │ │ files │ │ files │ │ files │ │
+ │  <i>one filesystem, any UI</i>       │     │ └───────┘ └───────┘ └───────┘ │
+ │                               │     │ <i>no fork · no pipes between</i>    │
+ ├───────────────────────────────┴─────┴───────────────────────────────┤
+ │           <i>the same kernel (XNU)  ·  the same core (Darwin)</i>          │
+ └─────────────────────────────────────────────────────────────────────┘
 </pre>}
       .o{A close .bf{relative} of macOS.}
       .o{No .bf{fork}. No pipes. No shared files.}
@@ -228,8 +251,15 @@
     .term{
 .typewriter{$> diff ipad chris --app-model}
       .o{<pre class="fig">
- <b>iPad</b>     [app]  │  [app]  │  [app]      <i>walls between apps: isolation</i>
- <b>ChRIS</b>    [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      <i>a directory handed on: composition</i>
+ ┌─ <b>iPad</b> ────────────────────────────────┐
+ │ ┌───────┐     ┌───────┐     ┌───────┐ │   <i>walls between apps</i>
+ │ │  app  │  ║  │  app  │  ║  │  app  │ │   <i>isolation</i>
+ │ └───────┘     └───────┘     └───────┘ │
+ ├─ <b>ChRIS</b> ───────────────────────────────┤
+ │ ┌───────┐     ┌───────┐     ┌───────┐ │   <i>a directory handed on</i>
+ │ │  app  │ ──<u>▶</u> │  app  │ ──<u>▶</u> │  app  │ │   <i>composition</i>
+ │ └───────┘     └───────┘     └───────┘ │
+ └───────────────────────────────────────┘
 </pre>}
       .o{iPad: apps .bf{forbidden} to share.}
       .o{ChRIS: apps .bf{required} to hand on.}
@@ -282,11 +312,12 @@
     .term{
 .typewriter{$> app [--flags] /input /output}
       .o{<pre class="fig">
-   /input              ┌───────────────────────┐              /output
- ┌─────────┐           │ <b>plugin</b>: one container │           ┌─────────┐
- │  files  │ ────────<u>▶</u> │ app --flags           │ ────────<u>▶</u> │  files  │
- └─────────┘           │ runs once, then exits │           └─────────┘
-                       └───────────────────────┘
+                       ┌─ <b>one container</b> ────────────────────┐
+  <b>/input</b>               │  ┌──────────────────────────────┐  │            <b>/output</b>
+ ┌─────────┐           │  │  app --flags <b>/input</b> <b>/output</b>  │  │           ┌─────────┐
+ │  files  │ ────────<u>▶</u> │  └──────────────────────────────┘  │ ────────<u>▶</u> │  files  │
+ └─────────┘<i>   read</i>    │  <i>runs once, then exits</i>             │<i>   write</i>   └─────────┘
+                       └────────────────────────────────────┘
 </pre>}
       .o{A .bf{container}: read a directory, write one, exit.}
       .o{It doesn't know ChRIS .bf{exists}.}
@@ -306,10 +337,13 @@
     .term{
 .typewriter{$> chris plugin --types}
       .o{<pre class="fig">
- <b>fs</b>                     <b>ds</b>                          <b>ts</b>
- [app] ──<u>▶</u> /out         /in ──<u>▶</u> [app] ──<u>▶</u> /out      /in ─┐
-                                                    /in ─┼<u>▶</u> [app] ──<u>▶</u> /out
-                                                    /in ─┘
+ ┌─ <b>fs</b> ─────────────────┐  ┌─ <b>ds</b> ───────────────────┐  ┌─ <b>ts</b> ───────────────────┐
+ │                      │  │                        │  │                        │
+ │    ┌─────┐           │  │        ┌─────┐         │  │ /in ──<u>▶</u>┌─────┐         │
+ │    │ app │──<u>▶</u> /out   │  │ /in ──<u>▶</u>│ app │──<u>▶</u> /out │  │ /in ──<u>▶</u>│ app │──<u>▶</u> /out │
+ │    └─────┘           │  │        └─────┘         │  │ /in ──<u>▶</u>└─────┘         │
+ │  <i>brings data in</i>      │  │  <i>transforms it</i>         │  │  <i>joins branches</i>        │
+ └──────────────────────┘  └────────────────────────┘  └────────────────────────┘
 </pre>}
       .o{.bf{fs}: brings data in. No input directory.}
       .o{.bf{ds}: input in, output out. Nearly everything.}
@@ -344,13 +378,14 @@
     .term{
 .typewriter{$> tree feed/}
       .o{<pre class="fig">
- <b>feed</b>
- └─ pacs-pull              <i>fs   brings the study in</i>
-    └─ dicom-normalise     <i>ds</i>
-       └─ de-identify      <i>ds</i>
-          ├─ segment       <i>ds</i>
-          │  └─ measure    <i>ds</i>
-          └─ embed         <i>ds   every node keeps its own output directory</i>
+ ┌─ <b>a feed</b> ───────────────────┐
+ │ pacs-pull              <i> fs </i>│   <i>brings the study in</i>
+ │ └─ dicom-normalise     <i> ds </i>│
+ │    └─ de-identify      <i> ds </i>│   <i>each node reads its parent's output</i>
+ │       ├─ segment       <i> ds </i>│
+ │       │  └─ measure    <i> ds </i>│
+ │       └─ embed         <i> ds </i>│   <i>and keeps its own</i>
+ └────────────────────────────┘
 </pre>}
       .o{A .bf{tree} of runs. Output feeds input.}
       .o{In HARBOR's terms: apps talk through .bf{storage}.}
@@ -369,11 +404,18 @@
     .term{
 .typewriter{$> diff control-flow data-state}
       .o{<pre class="fig">
- <b>control flow</b>    [A] ──ok?──<u>▶</u> [B] ──ok?──<u>▶</u> [C]
-                 <i>a controller decides what runs next</i>
-
- <b>data state</b>      /d0 ──A──<u>▶</u> /d1 ──B──<u>▶</u> /d2 ──C──<u>▶</u> /d3
-                 <i>every arrow leaves a directory behind</i>
+ ┌─ <b>control flow</b> ───────────────────────────────────────────┐
+ │     ┌─────────── <b>controller</b> ──────────┐                  │   <i>a <b>controller</b> decides</i>
+ │     <u>▼</u>                <u>▼</u>                <u>▼</u>                  │   <i>what runs next</i>
+ │  ┌─────┐          ┌─────┐          ┌─────┐               │
+ │  │  A  │ ─ ok? ─<u>▶</u> │  B  │ ─ ok? ─<u>▶</u> │  C  │               │
+ │  └─────┘          └─────┘          └─────┘               │
+ └──────────────────────────────────────────────────────────┘
+ ┌─ <b>data state</b> ─────────────────────────────────────────────┐
+ │         ┌─────┐          ┌─────┐          ┌─────┐        │   <i>every arrow leaves</i>
+ │  /d0 ─<u>▶</u> │  A  │ ─<u>▶</u> /d1 ─<u>▶</u>│  B  │ ─<u>▶</u> /d2 ─<u>▶</u>│  C  │ ─<u>▶</u> /d3 │   <i>a directory behind</i>
+ │         └─────┘          └─────┘          └─────┘        │
+ └──────────────────────────────────────────────────────────┘
 </pre>}
       .o{Control flow: Argo, Tekton. Data state: .bf{Make}, ChRIS.}
       .o{Done when the output is on .bf{disk}.}
@@ -408,22 +450,269 @@
     .h1{Architecture}
     .term{
 .typewriter{$> chris --components}
-      .o{<pre class="fig">
- ┌──────────┐  REST  ┌──────────────────────────────┐  DICOM  ┌────────┐
- │ ChRIS_ui │ ─────<u>▶</u> │             <b>CUBE</b>             │ <u>◀</u>────── │  PACS  │
- │   mise   │        │ users files feeds provenance │  <i>pfdcm</i>  └────────┘
- └──────────┘        └───────┬──────────────┬───────┘ <i>oxidicom</i>
-                             │              │
-                         ┌───┴───┐      ┌───┴───┐
-                         │ pfcon │      │ pfcon │   <i>one per</i>
-                         └───┬───┘      └───┬───┘   <i>compute environment</i>
-                         OpenShift         HPC
+      .o{<pre class="fig step">
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+        <em>┌─────────────────────────────────────────────────────┐</em>
+       <em>/</em>                                                     <em>/│</em>
+      <em>/</em>                                                     <em>/</em> <em>│</em>
+     <em>/</em>                                                     <em>/</em>  <em>│</em>
+    <em>┌─────────────────────────────────────────────────────┐</em>   <em>┘</em>
+    <em>│</em>                        <em>CUBE</em>                         <em>│</em>  <em>/</em>
+    <em>│</em>              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              <em>│</em> <em>/</em>
+    <em>│</em>          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          <em>│/</em>
+    <em>└─────────────────────────────────────────────────────┘</em>
+ 
+ 
+                                                                                      <b>CUBE</b>: the record of every
+                                                                                      user, file and run.
+ 
+ 
 </pre>}
-      .o{.bf{CUBE}: one REST API over everything.}
-      .o{.bf{pfcon}: runs the job, Docker to SLURM.}
-      .o{.bf{pfdcm, oxidicom}: the PACS bridge.}
+      .o{<pre class="fig step">
+     <em>┌─────────┐</em>
+     <em>│</em> <em>browser</em> <em>│</em>
+     <em>└────┬────┘</em>
+          <em>│</em>
+          <em>│</em>
+          <em>│</em>
+          <em>│</em>
+    <em>┌─────</em><u><em>▼</em></u><em>─────┐</em>
+    <em>│</em> <em>ChRIS_ui</em>  <em>│</em>
+    <em>└─────┬─────┘</em>
+        ┌─<em>┼</em>───────────────────────────────────────────────────┐
+       /  <u><em>▼</em></u>                                                  /│
+      /                      <em>CUBE</em> <em>API</em>                       / │
+     /                                                     /  │
+    ┌─────────────────────────────────────────────────────┐   ┘
+    │                        <b>CUBE</b>                         │  /
+    │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /
+    │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/
+    └─────────────────────────────────────────────────────┘
+ 
+ 
+                                                                                      <b>CUBE</b> <b>API</b>: one REST API.
+                                                                                      <b>ChRIS_ui</b> is a client, in a browser.
+ 
+ 
+</pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐
+     │ <b>browser</b> │
+     └────┬────┘
+          │
+          │       <em>┌─</em> <em>mise</em> <em>────────────────────────────────┐</em>
+          │       <em>│</em> <em>chell</em>  <em>·</em>  <em>ARGUS</em>      <i>surfaces</i>         <em>│</em>
+          │       <em>│</em> <em>calypso</em>  <em>·</em>  <em>brasa</em>    <i>session,</i> <i>shell</i>   <em>│</em>
+    ┌─────<u>▼</u>─────┐ <em>│</em> <em>fond</em>  <em>·</em>  <em>salsa</em>       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   <em>│</em>
+    │ <b>ChRIS_ui</b>  │ <em>│</em> <em>cumin</em>                <i>CUBE's</i> <i>REST</i>      <em>│</em>
+    └─────┬─────┘ <em>└───┬───────────────────────────────────┘</em>
+        ┌─┼───────────<em>┼</em>───────────────────────────────────────┐
+       /  <u>▼</u>           <u><em>▼</em></u>                                      /│
+      /                      <b>CUBE</b> <b>API</b>                       / │
+     /                                                     /  │
+    ┌─────────────────────────────────────────────────────┐   ┘
+    │                        <b>CUBE</b>                         │  /
+    │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /
+    │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/
+    └─────────────────────────────────────────────────────┘
+ 
+ 
+                                                                                      <b>mise</b>: a second client, a stack.
+                                                                                      <b>cumin</b> speaks the API.
+ 
+ 
+</pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐     <em>┌──────────┐</em> <em>┌─────────┐</em> <em>┌─────────┐</em>
+     │ <b>browser</b> │     <em>│</em> <em>terminal</em> <em>│</em> <em>│</em> <em>browser</em> <em>│</em> <em>│</em> <em>program</em> <em>│</em>      <i>entry</i> <i>points</i>
+     └────┬────┘     <em>└─────┬────┘</em> <em>└────┬────┘</em> <em>└────┬────┘</em>
+          │                <em>│</em>           <em>│</em>           <em>│</em>
+          │       ┌─ <b>mise</b> ─<u><em>▼</em></u>───────────<u><em>▼</em></u>───────────<u><em>▼</em></u>──────┐
+          │       │ chell  ·  ARGUS      <i>surfaces</i>         │
+          │       │ calypso  ·  brasa    <i>session,</i> <i>shell</i>   │
+    ┌─────<u>▼</u>─────┐ │ fond  ·  salsa       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   │
+    │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │
+    └─────┬─────┘ └───┬───────────────────────────────────┘
+        ┌─┼───────────┼───────────────────────────────────────┐
+       /  <u>▼</u>           <u>▼</u>                                      /│
+      /                      <b>CUBE</b> <b>API</b>                       / │
+     /                                                     /  │
+    ┌─────────────────────────────────────────────────────┐   ┘
+    │                        <b>CUBE</b>                         │  /
+    │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /
+    │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/
+    └─────────────────────────────────────────────────────┘
+ 
+ 
+                                                                                      <b>Entry</b> <b>points</b>: a terminal, a browser,
+                                                                                      or a program of your own.
+ 
+ 
+</pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐     ┌──────────┐ ┌─────────┐ ┌─────────┐
+     │ <b>browser</b> │     │ <b>terminal</b> │ │ <b>browser</b> │ │ <b>program</b> │      <i>entry</i> <i>points</i>
+     └────┬────┘     └─────┬────┘ └────┬────┘ └────┬────┘
+          │                │           │           │
+          │       ┌─ <b>mise</b> ─<u>▼</u>───────────<u>▼</u>───────────<u>▼</u>──────┐
+          │       │ chell  ·  ARGUS      <i>surfaces</i>         │
+          │       │ calypso  ·  brasa    <i>session,</i> <i>shell</i>   │
+    ┌─────<u>▼</u>─────┐ │ fond  ·  salsa       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   │
+    │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │
+    └─────┬─────┘ └───┬───────────────────────────────────┘
+        ┌─┼───────────┼───────────────────────────────────────┐
+       /  <u>▼</u>           <u>▼</u>                                      /│
+      /                      <b>CUBE</b> <b>API</b>                       / │
+     /                                                     /  │
+    ┌─────────────────────────────────────────────────────┐   ┘
+    │                        <b>CUBE</b>                         │  /
+    │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /
+    │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/
+    └─────<em>┬</em>─────────────<em>┬</em>─────────────<em>┬</em>─────────────<em>┬</em>─────┘
+    <em>┌─────┴─────┐</em> <em>┌─────┴─────┐</em> <em>┌─────┴─────┐</em> <em>┌─────┴─────┐</em>
+    <em>│</em>   <em>pfcon</em>   <em>│</em> <em>│</em>   <em>pfcon</em>   <em>│</em> <em>│</em>   <em>pfcon</em>   <em>│</em> <em>│</em>   <em>pfcon</em>   <em>│</em>
+    <em>├───────────┤</em> <em>├───────────┤</em> <em>├───────────┤</em> <em>├───────────┤</em>                           <b>pfcon</b>: one per compute environment,
+    <em>│</em> <em>OpenShift</em> <em>│</em> <em>│</em>    <em>k8s</em>    <em>│</em> <em>│</em>    <em>HPC</em>    <em>│</em> <em>│</em>    <em>VM</em>     <em>│</em>                           the same contract on each.
+    <em>└───────────┘</em> <em>└───────────┘</em> <em>└───────────┘</em> <em>└───────────┘</em>
+ 
+</pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐     ┌──────────┐ ┌─────────┐ ┌─────────┐
+     │ <b>browser</b> │     │ <b>terminal</b> │ │ <b>browser</b> │ │ <b>program</b> │      <i>entry</i> <i>points</i>
+     └────┬────┘     └─────┬────┘ └────┬────┘ └────┬────┘
+ <em>╔════════╪════════════════╪═══════════╪═══════════╪════════════</em> <em>Trusted</em> <em>Domain</em> <em>══╗</em>
+ <em>║</em>        │       ┌─ <b>mise</b> ─<u>▼</u>───────────<u>▼</u>───────────<u>▼</u>──────┐                       <em>║</em>
+ <em>║</em>        │       │ chell  ·  ARGUS      <i>surfaces</i>         │                       <em>║</em>
+ <em>║</em>        │       │ calypso  ·  brasa    <i>session,</i> <i>shell</i>   │                       <em>║</em>
+ <em>║</em>  ┌─────<u>▼</u>─────┐ │ fond  ·  salsa       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   │                       <em>║</em>
+ <em>║</em>  │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │                       <em>║</em>
+ <em>║</em>  └─────┬─────┘ └───┬───────────────────────────────────┘                       <em>║</em>
+ <em>║</em>      ┌─┼───────────┼───────────────────────────────────────┐                   <em>║</em>
+ <em>║</em>     /  <u>▼</u>           <u>▼</u>                                      /│                   <em>║</em>
+ <em>║</em>    /                      <b>CUBE</b> <b>API</b>                       / │                   <em>║</em>
+ <em>║</em>   /                                                     /  │                   <em>║</em>
+ <em>║</em>  ┌─────────────────────────────────────────────────────┐   ┘                   <em>║</em>
+ <em>║</em>  │                        <b>CUBE</b>                         │  /                    <em>║</em>
+ <em>║</em>  │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /                     <em>║</em>
+ <em>║</em>  │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/                      <em>║</em>
+ <em>║</em>  └─────┬─────────────┬─────────────┬─────────────┬─────┘                       <em>║</em>
+ <em>║</em>  ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐                       <em>║</em>
+ <em>║</em>  │   <b>pfcon</b>   │ │   <b>pfcon</b>   │ │   <b>pfcon</b>   │ │   <b>pfcon</b>   │                       <em>║</em>
+ <em>║</em>  ├───────────┤ ├───────────┤ ├───────────┤ ├───────────┤                       <em>║</em>   <b>Trusted</b> <b>Domain</b>: ChRIS runs inside it.
+ <em>║</em>  │ OpenShift │ │    k8s    │ │    HPC    │ │    VM     │                       <em>║</em>   The entry points reach in from outside.
+ <em>║</em>  └───────────┘ └───────────┘ └───────────┘ └───────────┘                       <em>║</em>
+ <em>╚════════════════════════════════════════════════════════════════════════════════╝</em>
+</pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐     ┌──────────┐ ┌─────────┐ ┌─────────┐
+     │ <b>browser</b> │     │ <b>terminal</b> │ │ <b>browser</b> │ │ <b>program</b> │      <i>entry</i> <i>points</i>
+     └────┬────┘     └─────┬────┘ └────┬────┘ └────┬────┘
+ ╔════════╪════════════════╪═══════════╪═══════════╪════════════ <b>Trusted</b> <b>Domain</b> ══╗
+ ║        │       ┌─ <b>mise</b> ─<u>▼</u>───────────<u>▼</u>───────────<u>▼</u>──────┐                       ║
+ ║        │       │ chell  ·  ARGUS      <i>surfaces</i>         │                       ║
+ ║        │       │ calypso  ·  brasa    <i>session,</i> <i>shell</i>   │                       ║
+ ║  ┌─────<u>▼</u>─────┐ │ fond  ·  salsa       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   │                       ║
+ ║  │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │                       ║
+ ║  └─────┬─────┘ └───┬───────────────────────────────────┘         <i>query,</i> <i>pull</i>   ║
+ ║      ┌─┼───────────┼───────────────────────────────────────┐     <em>┌──────────┐</em>  ║      <em>┌────────┐</em>
+ ║     /  <u>▼</u>           <u>▼</u>                                      /│<em>────</em><u><em>▶</em></u><em>│</em>  <em>pfdcm</em>   <em>│───╫─────</em><u><em>▶</em></u>        <em>│</em>
+ ║    /                      <b>CUBE</b> <b>API</b>                       / │     <em>├──────────┤</em>  ║      <em>│</em>  <em>PACS</em>  <em>│</em>
+ ║   /                                                     /  │<u><em>◀</em></u><em>────│</em> <em>oxidicom</em> <em>│</em><u><em>◀</em></u><em>──╫──────</em>        <em>│</em>
+ ║  ┌─────────────────────────────────────────────────────┐   ┘     <em>└──────────┘</em>  ║      <em>└────────┘</em>
+ ║  │                        <b>CUBE</b>                         │  /      <i>receive,</i>      ║         <i>DICOM</i>
+ ║  │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /       <i>register</i>      ║
+ ║  │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/                      ║
+ ║  └─────┬─────────────┬─────────────┬─────────────┬─────┘                       ║
+ ║  ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐                       ║
+ ║  │   <b>pfcon</b>   │ │   <b>pfcon</b>   │ │   <b>pfcon</b>   │ │   <b>pfcon</b>   │                       ║
+ ║  ├───────────┤ ├───────────┤ ├───────────┤ ├───────────┤                       ║   <b>pfdcm</b> asks the PACS.
+ ║  │ OpenShift │ │    k8s    │ │    HPC    │ │    VM     │                       ║   <b>oxidicom</b> receives what it sends back.
+ ║  └───────────┘ └───────────┘ └───────────┘ └───────────┘                       ║
+ ╚════════════════════════════════════════════════════════════════════════════════╝
+</pre>}
     }
-    .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/oxidicom · HARBOR-Medical-AI/mise}
+    .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/pfdcm · FNNDSC/oxidicom · HARBOR-Medical-AI/mise}
+  }
+}
+
+.slide{
+  .id{architecture-2}
+  .title{One DAG, Many Pods}
+  .body{
+    .h1{One DAG, Many Pods}
+    .term{
+.typewriter{$> chris --run}
+      .o{<pre class="fig step">
+ ┌─ <em>CUBE</em> ───────────────────────────────────────────────────────────┐
+ │         <em>┌─────────┐</em>               <em>┌─────────┐</em>      <em>┌─────────┐</em>   │
+ │         <em>│</em>  <em>de-id</em>  <em>│────┬─────────</em><u><em>▶</em></u><em>│</em> <em>segment</em> <em>│─────</em><u><em>▶</em></u><em>│</em> <em>measure</em> <em>│</em>   │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │         <em>└─────────┘</em>    <em>│</em>          <em>└─────────┘</em>      <em>└─────────┘</em>   │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
+ │                   <em>┌────</em><u><em>▼</em></u><em>────┐</em>                                    │
+ │                   <em>│</em>  <em>embed</em>  <em>│</em>                                    │
+ │                   <em>└─────────┘</em>                                    │
+ │                                                                  │
+ ├─ <b>pfcon</b> ──────────────────────────────────────────────────────────┤
+ │                                                                  │
+ │                                                                  │
+ │                                                                  │
+ │                                                                  │
+ ├─ <b>OpenShift</b> ──────────────────────────────────────────────────────┤
+ │                                                                  │
+ │                                                                  │
+ │                                                                  │
+ └──────────────────────────────────────────────────────────────────┘
+</pre>}
+      .o{<pre class="fig step">
+ ┌─ <b>CUBE</b> ───────────────────────────────────────────────────────────┐
+ │         ┌─────────┐               ┌─────────┐      ┌─────────┐   │
+ │         │  de-id  │────┬─────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │   │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │         └────<em>┬</em>────┘    │          └────<em>┬</em>────┘      └────<em>┬</em>────┘   │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
+ │              <em>┆</em>    ┌────<u>▼</u>────┐          <em>┆</em>                <em>┆</em>        │
+ │              <em>┆</em>    │  embed  │          <em>┆</em>                <em>┆</em>        │
+ │              <em>┆</em>    └────<em>┬</em>────┘          <em>┆</em>                <em>┆</em>        │
+ │              <em>┆</em>         <em>┆</em>               <em>┆</em>                <em>┆</em>        │
+ ├─ <em>pfcon</em> ──────<em>┼</em>─────────<em>┼</em>───────────────<em>┼</em>────────────────<em>┼</em>────────┤
+ │          <em>┌───</em><u><em>▼</em></u><em>───┐</em> <em>┌───</em><u><em>▼</em></u><em>───┐</em>       <em>┌───</em><u><em>▼</em></u><em>───┐</em>        <em>┌───</em><u><em>▼</em></u><em>───┐</em>    │
+ │          <em>│</em>  <em>job</em>  <em>│</em> <em>│</em>  <em>job</em>  <em>│</em>       <em>│</em>  <em>job</em>  <em>│</em>        <em>│</em>  <em>job</em>  <em>│</em>    │   <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+ │          <em>└───────┘</em> <em>└───────┘</em>       <em>└───────┘</em>        <em>└───────┘</em>    │   <i>pfcon</i> <i>sees</i> <i>no</i> <i>DAG</i>
+ │                                                                  │
+ ├─ <b>OpenShift</b> ──────────────────────────────────────────────────────┤
+ │                                                                  │
+ │                                                                  │
+ │                                                                  │
+ └──────────────────────────────────────────────────────────────────┘
+</pre>}
+      .o{<pre class="fig step">
+ ┌─ <b>CUBE</b> ───────────────────────────────────────────────────────────┐
+ │         ┌─────────┐               ┌─────────┐      ┌─────────┐   │
+ │         │  de-id  │────┬─────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │   │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │         └────┬────┘    │          └────┬────┘      └────┬────┘   │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
+ │              ┆    ┌────<u>▼</u>────┐          ┆                ┆        │
+ │              ┆    │  embed  │          ┆                ┆        │
+ │              ┆    └────┬────┘          ┆                ┆        │
+ │              ┆         ┆               ┆                ┆        │
+ ├─ <b>pfcon</b> ──────┼─────────┼───────────────┼────────────────┼────────┤
+ │          ┌───<u>▼</u>───┐ ┌───<u>▼</u>───┐       ┌───<u>▼</u>───┐        ┌───<u>▼</u>───┐    │
+ │          │  job  │ │  job  │       │  job  │        │  job  │    │   <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+ │          └───<em>┬</em>───┘ └───<em>┬</em>───┘       └───<em>┬</em>───┘        └───<em>┬</em>───┘    │   <i>pfcon</i> <i>sees</i> <i>no</i> <i>DAG</i>
+ │              <em>┆</em>         <em>┆</em>               <em>┆</em>                <em>┆</em>        │
+ ├─ <em>OpenShift</em> ──<em>┼</em>─────────<em>┼</em>───────────────<em>┼</em>────────────────<em>┼</em>────────┤
+ │          <em>┌───</em><u><em>▼</em></u><em>───┐</em> <em>┌───</em><u><em>▼</em></u><em>───┐</em>       <em>┌───</em><u><em>▼</em></u><em>───┐</em>        <em>┌───</em><u><em>▼</em></u><em>───┐</em>    │
+ │          <em>│</em>  <em>pod</em>  <em>│</em> <em>│</em>  <em>pod</em>  <em>│</em>       <em>│</em>  <em>pod</em>  <em>│</em>        <em>│</em>  <em>pod</em>  <em>│</em>    │   <i>physical:</i> <i>one</i> <i>pod</i> <i>per</i> <i>job</i>
+ │          <em>└───────┘</em> <em>└───────┘</em>       <em>└───────┘</em>        <em>└───────┘</em>    │   <i>the</i> <i>cluster</i> <i>sees</i> <i>only</i> <i>pods</i>
+ └──────────────────────────────────────────────────────────────────┘
+</pre>}
+    }
+    .takeaway{CUBE HOLDS THE DAG. THE CLUSTER SEES ONLY PODS.}
   }
 }
 
@@ -435,11 +724,13 @@
     .term{
 .typewriter{$> chris --layers}
       .o{<pre class="fig">
- <b>CUBE</b>       meaning      which app, which directory, which parameters
-   <u>▼</u>
- <b>pfcon</b>      mapping      that run, on this backend
-   <u>▼</u>
- <b>cluster</b>    execution    pods, storage, policy
+ ┌──────────────────────────────────────────┐
+ │                   <b>CUBE</b>                   │   <i><b>meaning</b>: which app, which directory,</i>
+ └─────┬────────────────────────────────────┤   <i>which parameters</i>
+       │               <b>pfcon</b>                │   <i><b>mapping</b>: that run, on this backend</i>
+       └─────┬──────────────────────────────┤
+             │           <b>cluster</b>            │   <i><b>execution</b>: pods, storage, policy</i>
+             └──────────────────────────────┘
 </pre>}
       .o{CUBE owns .bf{meaning}. pfcon maps it. The cluster runs it.}
       .o{One CUBE, several .bf{compute} environments.}
@@ -502,13 +793,15 @@ finishedSuccessfully}}
     .term{
 .typewriter{$> mise --layers}
       .o{<pre class="fig">
- <b>chell  argus</b>   how you look       a terminal, a browser
-   <u>▲</u>
- <b>calypso</b>        who is there       one login, one live session
-   <u>▲</u>
- <b>mise</b>           where things are   /home  /bin  /proc
-   <u>▲</u>
- <b>CUBE</b>           what is true       the objects and the laws between them
+             ┌─────────────┬──────────────┐
+             │    <b>chell</b>    │    <b>argus</b>     │   <i><b>how you look</b>: a terminal, a browser</i>
+       ┌─────┴─────────────┴──────────────┤
+       │             <b>calypso</b>              │   <i><b>who is there</b>: one login, one live session</i>
+ ┌─────┴──────────────────────────────────┤
+ │                  <b>mise</b>                  │   <i><b>where things are</b>: /home  /bin  /proc</i>
+ ├────────────────────────────────────────┤
+ │                  <b>CUBE</b>                  │   <i><b>what is true</b>: the objects and their laws</i>
+ └────────────────────────────────────────┘
 </pre>}
       .o{Below CUBE, swap the .bf{cluster}.}
       .o{Above CUBE, swap the .bf{surface}.}
@@ -593,8 +886,9 @@ finishedSuccessfully}}
     .term{
 .typewriter{$> brasa --contract}
       .o{<pre class="fig">
- <b>intent</b>    ──<u>▶</u>  brasa  ──<u>▶</u>  validated actions  ──<u>▶</u>  CUBE
- <b>receipt</b>   <u>◀</u>──  brasa  <u>◀</u>──  what actually happened
+ ┌───────┐   ─── <b>intent</b> ────<u>▶</u>   ┌─────────┐   ─── <i>validated actions</i> ───<u>▶</u>    ┌────────┐
+ │  you  │                      │  <b>brasa</b>  │                                 │  <b>CUBE</b>  │
+ └───────┘   <u>◀</u>── <b>receipt</b> ────   └─────────┘   <u>◀</u>── <i>what really happened</i> ──   └────────┘
 </pre>}
       .o{Say .bf{what} you want, not how.}
       .o{A .bf{bounded} vocabulary. No arbitrary API calls.}
@@ -734,9 +1028,13 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> calypso --berths}
       .o{<pre class="fig">
- chell ──┐
-         ├──<u>▶</u> <b>calypso</b> ──<u>▶</u> CUBE
- argus ──┘     <i>one login, one session</i>
+ ┌─────────┐
+ │  <b>chell</b>  │──┐
+ └─────────┘  │   ┌────────────────────────┐
+              ├──<u>▶</u>│        <b>calypso</b>         │        ┌────────┐
+ ┌─────────┐  │   │ <i>one login, one session</i> │ ─────<u>▶</u> │  <b>CUBE</b>  │
+ │  <b>argus</b>  │──┘   └────────────────────────┘        └────────┘
+ └─────────┘
 </pre>}
       .o{Work .bf{outlives} its viewer.}
       .o{Type .bf{cd} in the terminal. The browser moves.}
@@ -756,8 +1054,10 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> porter}
       .o{<pre class="fig">
- browser ──<u>▶</u> <b>porter</b> ──<u>▶</u> <b>berth</b> ──<u>▶</u> CUBE
-             <i>login page</i>   <i>your session, your container</i>
+                    ┌─ <b>the door</b> ──┐      ┌─ <b>your berth</b> ───────────┐
+ ┌───────────┐      │   <b>porter</b>    │      │  calypso  ·  chell     │      ┌────────┐
+ │  browser  │ ───<u>▶</u> │ <i>login page</i>  │ ───<u>▶</u> │  <i>/incoming  /outgoing</i>  │ ───<u>▶</u> │  <b>CUBE</b>  │
+ └───────────┘      └─────────────┘      └────────────────────────┘      └────────┘
 </pre>}
       .o{.bf{porter}: what gdm is to a desktop.}
       .o{No tokens. No URLs to .bf{copy}.}
@@ -778,8 +1078,12 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> chris feed --from=pacs --run=lld}
       .o{<pre class="fig">
- PACS ──<u>▶</u> [pull] ──<u>▶</u> [LLD model] ──<u>▶</u> [measure] ──<u>▶</u> [DICOM report] ──<u>▶</u> PACS ──<u>▶</u> reading room
-          └───────────────────<i> one ChRIS feed </i>──────────────────┘
+            ┌─ <b>one ChRIS feed</b> ──────────────────────────────────────────┐
+ ┌──────┐   │ ┌──────┐   ┌───────────┐   ┌─────────┐   ┌──────────────┐ │   ┌──────┐
+ │ <b>PACS</b> │──<u>▶</u>│ │ pull │──<u>▶</u>│ <b>LLD model</b> │──<u>▶</u>│ measure │──<u>▶</u>│ DICOM report │ │──<u>▶</u>│ <b>PACS</b> │
+ └──────┘   │ └──────┘   └───────────┘   └─────────┘   └──────────────┘ │   └──────┘
+            └───────────────────────────────────────────────────────────┘
+                                                                            <i>reading room</i>
 </pre>}
       .o{A study lands. A .bf{workflow} runs. DICOM goes back.}
       .o{The same .bf{container} as on the bench.}
@@ -816,14 +1120,20 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> harbor td --describe}
       .o{<pre class="fig">
- ┌─────────────────────────── Hub TD ───────────────────────────┐
- │      marketplace  ·  orchestration  ·  audit  ·  ChRIS       │
- └──────────────────────────────────────────────────────────────┘
-       <u>▼</u> <i>apps and instructions</i>            <u>▲</u> <i>derived results only</i>
- ┌────────────────────────── Spoke TD ──────────────────────────┐
- │  <b>ChRIS</b>:  [app] ──<u>▶</u> [app] ──<u>▶</u> [app]      raw data stays here  │
- │  OpenShift: namespaces, policy, storage                      │
- └──────────────────────────────────────────────────────────────┘
+ ┌─ <b>Hub TD</b> ───────────────────────────────────────────────────────┐
+ │    marketplace   ·   orchestration   ·   audit   ·   <b>ChRIS</b>     │
+ └─────────────┬───────────────────────────────────┬──────────────┘
+               │ <i>apps and instructions</i>             │
+               │              <i>derived results only</i> │
+ ╔═ <b>Spoke TD</b> ══<u>▼</u>═══════════════════════════════════<u>▲</u>══════════════╗
+ ║  ┌─ <b>ChRIS</b> ──────────────────────────────────────────────────┐  ║
+ ║  │  ┌─────┐     ┌─────┐     ┌─────┐                         │  ║   <i>raw data</i>
+ ║  │  │ app │ ──<u>▶</u> │ app │ ──<u>▶</u> │ app │                         │  ║   <i>stays here</i>
+ ║  │  └─────┘     └─────┘     └─────┘                         │  ║
+ ║  ├──────────────────────────────────────────────────────────┤  ║
+ ║  │ OpenShift:  namespaces  ·  policy  ·  storage            │  ║
+ ║  └──────────────────────────────────────────────────────────┘  ║
+ ╚════════════════════════════════════════════════════════════════╝
 </pre>}
       .o{Apps .bf{move} to the data.}
       .o{ChRIS in .bf{every} TD, Hub and Spoke.}
@@ -859,10 +1169,13 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> harbor ingest --stages}
       .o{<pre class="fig">
- raw ──<u>▶</u> [validate] ──<u>▶</u> [de-identify] ──<u>▶</u> [deduplicate] ──<u>▶</u> [normalise] ──<u>▶</u> <b>promoted</b>
-             │ <i>fail</i>
-             <u>▼</u>
-       [reject + report]
+         ┌──────────┐   ┌─────────────┐   ┌─────────────┐   ┌───────────┐
+  <i>raw</i> ──<u>▶</u>│ <b>validate</b> │──<u>▶</u>│ <b>de-identify</b> │──<u>▶</u>│ <b>deduplicate</b> │──<u>▶</u>│ <b>normalise</b> │──<u>▶</u> <b>promoted</b>
+         └─────┬────┘   └─────────────┘   └─────────────┘   └───────────┘
+               │ <i>fail</i>
+            ┌──<u>▼</u>──────────────┐
+            │ reject + report │
+            └─────────────────┘
 </pre>}
       .o{.bf{Validate}: readable DICOM, required fields.}
       .o{.bf{De-identify}: headers, burned-in text, pixels.}
@@ -882,12 +1195,17 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> chris --gaps --scale=federation}
       .o{<pre class="fig">
- <b>Hub</b>         dispatch · telemetry · one record per run
-    │ <i>run</i>                      <u>▲</u> <i>status, progress, failure</i>
-    <u>▼</u>                          │
- <b>Spoke</b>       [app] ──<u>▶</u> [app] ──<u>▶</u> [app] ──<u>▶</u> provenance ──<u>▶</u> OpenLineage
-    │
- <b>OpenShift</b>   pods · storage · isolation
+ ┌─ <b>Hub</b> ──────────────────────────────────────────────────────────────┐
+ │         dispatch   ·   telemetry   ·   one record per run          │
+ └─────────┬───────────────────────────────────┬──────────────────────┘
+           │ <i>jobs</i>                              │ <i>status, progress, failure</i>
+ ╔═ <b>Spoke</b> ═<u>▼</u>═══════════════════════════════════<u>▲</u>══════════════════════╗
+ ║  ┌─────┐   ┌─────┐   ┌─────┐   ┌────────────┐                      ║
+ ║  │ app │──<u>▶</u>│ app │──<u>▶</u>│ app │──<u>▶</u>│ <b>provenance</b> │──<u>▶</u> <b>OpenLineage</b>       ║
+ ║  └─────┘   └─────┘   └─────┘   └────────────┘                      ║
+ ╟────────────────────────────────────────────────────────────────────╢
+ ║  OpenShift:  pods  ·  storage  ·  isolation                        ║
+ ╚════════════════════════════════════════════════════════════════════╝
 </pre>}
       .o{.bf{Dispatch}: submit at the Hub, run in a Spoke.}
       .o{.bf{Telemetry}: one record per run.}
@@ -933,11 +1251,14 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> diff operator hub}
       .o{<pre class="fig">
-              <i>today</i>                      <i>a Hub needs</i>
- <b>identity</b>     a user's login             to act as itself
- <b>request</b>      a command-line string      a typed, versioned call
- <b>delivery</b>     one live session           submit once, resume, retry
- <b>egress</b>       not yet classified         policy at the Spoke's edge
+ ┌──────────┬───────────────────────┬────────────────────────────┐
+ │          │<i> today</i>                 │<i> a Hub needs</i>                │
+ ├──────────┼───────────────────────┼────────────────────────────┤
+ │ <b>identity</b> │ a user's login        │ to act as itself           │
+ │ <b>request</b>  │ a command-line string │ a typed, versioned call    │
+ │ <b>delivery</b> │ one live session      │ submit once, resume, retry │
+ │ <b>egress</b>   │ not yet classified    │ policy at the Spoke's edge │
+ └──────────┴───────────────────────┴────────────────────────────┘
 </pre>}
       .o{A Hub is not a .bf{person}.}
       .o{It cannot borrow someone's .bf{session}.}
@@ -955,9 +1276,12 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> chris --peer --plan}
       .o{<pre class="fig">
- <b>dispatch</b>     Hub ──<u>▶</u> Spoke     a stateless intent call: submit, poll, resume
- <b>telemetry</b>    Spoke ──<u>▶</u> Hub     the session wire: status, progress, failure
- <b>agents</b>       any ──<u>▶</u> either    the same intents, offered as tools
+ ┌─ <b>Hub</b> ────┐                                                ┌─ <b>Spoke</b> ──┐
+ │          │ ───── <b>dispatch</b>: a stateless intent call ─────<u>▶</u> │          │
+ │          │                                                │          │
+ │          │ <u>◀</u>─────── <b>telemetry</b>: the session wire ───────── │          │
+ └─────┬────┘                                                └────┬─────┘
+       └─────────── <b>agents</b>: the same intents, as tools ───────────┘
 </pre>}
       .o{.bf{Funded}: dispatch, recovery, version agreement.}
       .o{.bf{Planned} in mise: a stateless intent API.}
