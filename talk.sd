@@ -173,7 +173,7 @@
       .o{A screen of little .bf{pictures}.}
       .o{Touch one. It .bf{does} a thing.}
       .o{So is any tablet. Any .bf{phone}.}
-      .o{Honest. It describes what people .bf{met}.}
+      .o{Honest. It describes what people .bf{see}.}
     }
   }
 }
@@ -198,7 +198,7 @@
       .o{Same hardware. Same .bf{apps}.}
       .o{No pictures. Still a .bf{phone}.}
     }
-    .takeaway{PEOPLE DEFINE A THING BY HOW THEY MET IT.}
+    .takeaway{PEOPLE DEFINE A THING BY HOW THEY USE IT.}
     .source{Re:T-UI launcher guide, re-tui.pages.dev}
   }
 }
@@ -252,7 +252,7 @@
   .title{So What Is ChRIS?}
   .body{
     .h1{So What Is ChRIS?}
-    .h2{Ask five people. Each names what they met.}
+    .h2{Ask five people. Each names what they use.}
     .term{
 .typewriter{$> whatis chris --ask=5}
       .o{"A dashboard for running analyses." .bf{ChRIS_ui}}
