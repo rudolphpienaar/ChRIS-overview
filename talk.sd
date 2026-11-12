@@ -44,6 +44,10 @@
     ".slide .term pre.fig.step.chain":
         font-size: "0.8em"
         margin: "0.6em 0"
+    ".slide .term pre.fig.step.full":
+        font-size: "1em"
+        line-height: "1.25"
+        margin: "0.6em 0 0.6em 1.6em"
     ".slide .term > .snippet:has(> pre.step:not(.keep)):is(.sl-hidden, :has(~ .snippet:not(.sl-hidden)))":
         height: "0"
         min-height: "0"
@@ -99,7 +103,7 @@
       .o{In HARBOR: app manager and .bf{workflow runtime} in every TD.}
     }
 
-    .takeaway{WRITE THE SCIENCE ONCE. RUN IT WHEREVER THE DATA HAS TO STAY.}
+    .takeaway{WRITE THE SCIENCE ONCE. RUN IT ON ANY COMPUTE, NEAR THE DATA OR FAR.}
   }
 }
 
@@ -318,7 +322,7 @@
     .h2{ChRIS Research Integration Service}
     .term{
 .typewriter{$> whatis chris}
-      .o{.bf{Open-source}. Computation where the data must stay.}
+      .o{.bf{Open-source}. Runs apps on data, near or far.}
       .o{From Boston Children's Radiology. Built .bf{generic}.}
       .o{Programs with no .bf{interaction}: args in, files out.}
       .o{Most of scientific computing. Most of .bf{HARBOR}.}
@@ -437,21 +441,47 @@
   .title{One Contract, Not n APIs}
   .body{
     .h1{One Contract, Not n APIs}
+    .h2{n tools have to work together. How?}
     .term{
-.typewriter{$> ls adapters/ | wc -l}
-      .o{<pre class="fig">
- ┌─ <b>API mesh</b> ─ <em>O(n²)</em> ──┐  ┌─ <b>every tool's API</b> ─ <em>O(n)</em> ─┐  ┌─ <b>one contract</b> ─ <em>O(1)</em> ──────────┐
- │  A <u>◀</u>────<u>▶</u> B         │  │  platform                 │  │  platform                      │
- │  <u>▲</u> \    / <u>▲</u>         │  │   ├─ adapter ─<u>▶</u> A's API   │  │   └─ /in /out ─┬─<u>▶</u> app A       │
- │  │   <i>X</i>    │         │  │   ├─ adapter ─<u>▶</u> B's API   │  │                ├─<u>▶</u> app B       │
- │  <u>▼</u> /    \ <u>▼</u>         │  │   ├─ adapter ─<u>▶</u> C's API   │  │                ├─<u>▶</u> app C       │
- │  C <u>◀</u>────<u>▶</u> D         │  │   └─ <i>one more per tool</i>    │  │                └─<u>▶</u> <i>app n: same</i> │
- └─────────────────────┘  └───────────────────────────┘  └────────────────────────────────┘
+.typewriter{$> integrate tool-1 tool-2 ... tool-n}
+      .o{<pre class="fig step full">
+ <em>┌─ <b>API mesh</b> ─ O(n²) ──┐</em>
+ <em>│  A <u>◀</u>────<u>▶</u> B         │</em>
+ <em>│  <u>▲</u> \    / <u>▲</u>         │</em>
+ <em>│  │   <i>X</i>    │         │</em>
+ <em>│  <u>▼</u> /    \ <u>▼</u>         │</em>
+ <em>│  C <u>◀</u>────<u>▶</u> D         │</em>
+ <em>└─────────────────────┘</em>
+ 
+ <em>1.</em> Let them call each other.
+ <i>   Every pair needs its own connection: n(n-1) of them.</i>
 </pre>}
-      .o{Tools call each other: every .bf{pair} wired. O(n²).}
-      .o{A hub calls each API: one .bf{adapter} each. O(n).}
-      .o{One contract: the platform learns .bf{nothing} new. O(1).}
+      .o{<pre class="fig step full">
+ ┌─ <b>API mesh</b> ─ <em>O(n²)</em> ──┐  <em>┌─ <b>every tool's API</b> ─ O(n) ─┐</em>
+ │  A <u>◀</u>────<u>▶</u> B         │  <em>│  platform                 │</em>
+ │  <u>▲</u> \    / <u>▲</u>         │  <em>│   ├─ adapter ─<u>▶</u> A's API   │</em>
+ │  │   <i>X</i>    │         │  <em>│   ├─ adapter ─<u>▶</u> B's API   │</em>
+ │  <u>▼</u> /    \ <u>▼</u>         │  <em>│   ├─ adapter ─<u>▶</u> C's API   │</em>
+ │  C <u>◀</u>────<u>▶</u> D         │  <em>│   └─ <i>one more per tool</i>    │</em>
+ └─────────────────────┘  <em>└───────────────────────────┘</em>
+ 
+ <em>2.</em> Put a platform in the middle, and teach it every API.
+ <i>   One adapter per tool. And it carries the data between them.</i>
+</pre>}
+      .o{<pre class="fig step full keep">
+ ┌─ <b>API mesh</b> ─ <em>O(n²)</em> ──┐  ┌─ <b>every tool's API</b> ─ <em>O(n)</em> ─┐  <em>┌─ <b>one contract</b> ─ O(1) ──────────┐</em>
+ │  A <u>◀</u>────<u>▶</u> B         │  │  platform                 │  <em>│  platform                      │</em>
+ │  <u>▲</u> \    / <u>▲</u>         │  │   ├─ adapter ─<u>▶</u> A's API   │  <em>│   └─ /in /out ─┬─<u>▶</u> app A       │</em>
+ │  │   <i>X</i>    │         │  │   ├─ adapter ─<u>▶</u> B's API   │  <em>│                ├─<u>▶</u> app B       │</em>
+ │  <u>▼</u> /    \ <u>▼</u>         │  │   ├─ adapter ─<u>▶</u> C's API   │  <em>│                ├─<u>▶</u> app C       │</em>
+ │  C <u>◀</u>────<u>▶</u> D         │  │   └─ <i>one more per tool</i>    │  <em>│                └─<u>▶</u> <i>app n: same</i> │</em>
+ └─────────────────────┘  └───────────────────────────┘  <em>└────────────────────────────────┘</em>
+ 
+ <em>3.</em> Give every tool one contract: files in, files out.
+ <i>   The platform learns it once. Tool n changes nothing.</i>
+</pre>}
       .o{Still one wrapper per app. .bf{Small}, and not ours.}
+      .o{O(n²), then O(n), then .bf{O(1)}.}
     }
     .takeaway{THE PLATFORM'S COST DOESN'T GROW WITH THE NUMBER OF APPS.}
   }
