@@ -96,7 +96,7 @@
       .o{One .bf{rule}: read a directory, write one, exit.}
       .o{Your app doesn't change. ChRIS carries the .bf{glue}.}
       .o{Chain them. Provenance is a .bf{file system} tree.}
-      .o{In HARBOR: the runtime inside .bf{every} Trusted Domain.}
+      .o{In HARBOR: app manager and .bf{workflow runtime} in every TD.}
     }
 
     .takeaway{WRITE THE SCIENCE ONCE. RUN IT WHEREVER THE DATA HAS TO STAY.}
