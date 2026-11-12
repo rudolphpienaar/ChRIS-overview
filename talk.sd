@@ -112,12 +112,14 @@
     .h1{The Unbearable Lightness of Defining}
     .h2{What is an iPad? Everyone knows. Now define it.}
     .term{
+    .o{
 .typewriter{$> whatis ipad}
     .nexus{.id{ipad-answers}
       .div{.jump{.target{mobile-os} "It's a Mobile OS"}}
       .div{.jump{.target{pictures} "It's Pictures You Touch"}}
       .div{.jump{.target{crippled-mac} "It's a Crippled Mac"}}
       .div{.jump{.target{so-chris} So What Is ChRIS?}}
+    }
     }
     }
   }
@@ -245,6 +247,33 @@
 
 .slide{
   .id{so-chris-2}
+  .title{One Kernel, Two Surfaces}
+  .body{
+    .h1{One Kernel, Two Surfaces}
+    .term{
+.typewriter{$> map --by=construction apple chris}
+      .o{<pre class="fig wide">
+ ┌─ <b>iPadOS</b> ─────────────┐ ┌─ <b>macOS</b> ──────────────┐     ┌─ <b>ChRIS_ui</b> ───────────┐ ┌─ <b>mise</b> ───────────────┐
+ │ SpringBoard          │ │ Finder · Terminal    │     │ a dashboard          │ │ ARGUS · chell        │
+ │ <i>login: lock screen</i>   │ │ <i>login: loginwindow</i>   │     │ <i>login: its own</i>       │ │ <i>login: porter</i>        │
+ │ <i>pictures you touch</i>   │ │ <i>the whole computer</i>   │     │ <i>pictures you touch</i>   │ │ <i>the whole computer</i>   │
+ ├──────────────────────┴─┴──────────────────────┤     ├──────────────────────┴─┴──────────────────────┤
+ │                    <b>Darwin</b>                     │     │                     <b>CUBE</b>                      │
+ │      <i>one kernel (XNU)  ·  the same chip</i>       │     │        <i>one REST API  ·  the same apps</i>         │
+ └───────────────────────────────────────────────┘     └───────────────────────────────────────────────┘
+</pre>}
+      .o{Same chip. Same .bf{kernel}.}
+      .o{iPad apps run on a Mac, .bf{unmodified}.}
+      .o{The difference: what you're .bf{allowed} to do.}
+      .o{ChRIS_ui is the dashboard. mise is the .bf{computer}.}
+    }
+    .takeaway{ONE KERNEL. THE SURFACE DECIDES WHAT YOU MAY DO.}
+    .source{Apple Developer, "Running your iOS apps in macOS" · apple-oss-distributions/xnu · HARBOR-Medical-AI/mise}
+  }
+}
+
+.slide{
+  .id{so-chris-3}
   .title{The Same Move, Reversed}
   .body{
     .h1{The Same Move, Reversed}
@@ -624,9 +653,9 @@
  ║  │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │                       ║
  ║  └─────┬─────┘ └───┬───────────────────────────────────┘         <i>query,</i> <i>pull</i>   ║
  ║      ┌─┼───────────┼───────────────────────────────────────┐     <em>┌──────────┐</em>  ║      <em>┌────────┐</em>
- ║     /  <u>▼</u>           <u>▼</u>                                      /│<em>────</em><u><em>▶</em></u><em>│</em>  <em>pfdcm</em>   <em>│───╫─────</em><u><em>▶</em></u>        <em>│</em>
+ ║     /  <u>▼</u>           <u>▼</u>                                      /│<em>────</em><u><em>▶</em></u><em>│</em>  <em>pfdcm</em>   <em>│──╫─────</em><u><em>▶</em></u><em>│</em>        <em>│</em>
  ║    /                      <b>CUBE</b> <b>API</b>                       / │     <em>├──────────┤</em>  ║      <em>│</em>  <em>PACS</em>  <em>│</em>
- ║   /                                                     /  │<u><em>◀</em></u><em>────│</em> <em>oxidicom</em> <em>│</em><u><em>◀</em></u><em>──╫──────</em>        <em>│</em>
+ ║   /                                                     /  │<u><em>◀</em></u><em>────│</em> <em>oxidicom</em> <em>│</em><u><em>◀</em></u><em>─╫──────│</em>        <em>│</em>
  ║  ┌─────────────────────────────────────────────────────┐   ┘     <em>└──────────┘</em>  ║      <em>└────────┘</em>
  ║  │                        <b>CUBE</b>                         │  /      <i>receive,</i>      ║         <i>DICOM</i>
  ║  │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /       <i>register</i>      ║

@@ -45,6 +45,14 @@ The sharper version, agreed in discussion, keeps the subjectivity and adds a tes
 
 ChRIS has the iPad's problem. Ask five people what it is and each describes how they met it: a dashboard for running analyses, a full web UI with a shell that looks like a whole computer, the thing that pulls studies out of a PACS from the CLI, a persistent record of all analyses and transformations, a workflow engine. Each is true and each is a "pictures you touch" answer. The first three are the telling ones. They come from people who met ChRIS_ui, ARGUS and `chell`, and they describe three different products while the ChRIS underneath is the same one. The HARBOR audience has already seen ARGUS, so for them the swap is something witnessed and not hypothetical. The fourth answer comes from someone who met a feed and the fifth from someone who met a pipeline. The same test applies. Swap any of the three surfaces for another and it is still ChRIS, exactly as the author's phone is still a phone. `chell` and ARGUS are the shell and web surfaces of `mise` <<mise>>. (`mise` presents ChRIS as a POSIX-like computer. An earlier draft of the slide named `chrs` here, which is deprecated.)
 
+Between the two halves sits a mapping the author proposed after the section was first built. The iPad was brought in to show how hard a common computing object is to define, and it can also be read as a model of ChRIS. Darwin, the core that iPadOS and macOS share, stands for CUBE. iPadOS is Darwin under SpringBoard, the process that draws the home screen and launches apps, and that stands for CUBE under ChRIS_ui. macOS is the same core with the whole computer exposed, and that stands for CUBE under `mise`, with Terminal against `chell` and the desktop against ARGUS. The Mac's login window stands for `porter`. So the "pictures you touch" answer was a description of SpringBoard, and "a dashboard for running analyses" is a description of ChRIS_ui.
+
+An objection is that an iPad and a Mac are separate machines while ChRIS_ui and `mise` face one CUBE. The author's reply is that the machines are no longer separate in any way that matters: a current iPad Pro carries the same M-series chip as a Mac <<appleipadprom4>>, the kernel is the same one <<applexnu>>, and Apple states that unmodified iPad apps run on a Mac with Apple silicon with no porting <<appleiosappsmacos>>. What separates the two is what a process is allowed to do. That is the slide's claim about ChRIS as well: one CUBE, and the surface decides how much of it a person can reach.
+
+The author also weighed Android over Linux as the comparison. That pair shares a kernel and little else, and its apps don't cross. ChRIS resembles Apple below the line, with one kernel and one app model, and Android above it, since ChRIS_ui and `mise` share nothing but CUBE's API. The slide stays with Apple because the section is built on the iPad and because apps crossing is the property that carries over. Android is left for a spoken aside.
+
+The mapping casts ChRIS_ui as the restricted side, and the author accepts that. By the author's account ChRIS_ui is a dashboard directly over CUBE that has not been worked on in more than a year, and `mise` is its successor. The slide says only that one is the dashboard and the other the computer. Succession is a fact about ChRIS and no part of the analogy, since the iPad is not being retired for the Mac. The login row is the weakest: an iPad has a lock screen and ChRIS_ui has its own login, so login does not tell the two sides apart. Elsewhere the deck compares `porter` to `gdm`, and that comparison stands.
+
 The second half of the bridge is the one that sets up the rest of the deck. The author's iPad definition is a list of what apps are forbidden to do. ChRIS is also defined by a restrictive app model: read a directory, write a directory, exit. The two restrict in opposite directions. The iPad keeps apps apart, for isolation. ChRIS restricts apps so that they compose. The iPad forbids the pipe between apps, and ChRIS is the pipe. This hands straight over to the existing "App Contract" section, which now arrives as the answer to a question the audience has already been made to ask.
 
 === How the claims are sourced
@@ -59,7 +67,7 @@ That iOS apps may not spawn child processes is from a reply by an Apple support 
 
 === How it was built
 
-The section is a menu inside a spoke. The outline entry lands on the "What is an iPad?" menu, whose four entries are the answers a room might give, the architect's answer, and the bridge. Each opens a short run of slides and returns to the menu, so the presenter can open whichever answer the audience offers first. Advancing from the menu itself returns to the outline.
+The section is a menu inside a spoke. The outline entry lands on the "What is an iPad?" menu, whose four entries are the answers a room might give, the architect's answer, and the bridge. Each opens a short run of slides and returns to the menu, so the presenter can open whichever answer the audience offers first. Advancing from the menu itself returns to the outline. The menu slide opens on its title and question alone. The `whatis ipad` command and the four entries sit in one reveal and wait for the first Right key, so the author can put the question to the room before any answer shows.
 
 [cols="1,2,3"]
 |===
@@ -72,7 +80,8 @@ The section is a menu inside a spoke. The outline entry lands on the "What is an
 | `crippled-mac` | "It's a Crippled Mac" | The author's definition. Figure: macOS over iPadOS.
 | `crippled-mac-2` | Which Definition Survives? | The test: swap the UI and see what is still true.
 | `so-chris` | So What Is ChRIS? | Five people, five answers, and the swap between three surfaces.
-| `so-chris-2` | The Same Move, Reversed | Isolation against composition. Figure: walls beside arrows.
+| `so-chris-2` | One Kernel, Two Surfaces | The Apple platforms mapped onto ChRIS. Figure: iPadOS and macOS over Darwin, beside ChRIS_ui and `mise` over CUBE.
+| `so-chris-3` | The Same Move, Reversed | Isolation against composition. Figure: walls beside arrows.
 |===
 
 === Open points
@@ -313,6 +322,13 @@ On 2026-11-11 the author set a rule for word density: short fragments, at most f
 
 The five quoted answers are unchanged. Each now ends with the surface or object the speaker met, highlighted, in place of "They met ...". The closing line about three surfaces came off the slide.
 
+=== One Kernel, Two Surfaces (`so-chris-2`)
+
+* The same chip and the same kernel under an iPad and a Mac.
+* iPad apps run on a Mac, unmodified.
+* The difference is what you're allowed to do.
+* ChRIS_ui is the dashboard. mise is the computer.
+
 === What Is ChRIS? (`what-is`)
 
 * An open-source platform for running computation on medical data, wherever that data has to stay.
@@ -437,6 +453,8 @@ The title slide's four bullets were shortened the same way. They read: ChRIS run
 * [[[retui]]] _Re:T-UI: a phone-first guide built from the Re:T-UI wiki_. https://re-tui.pages.dev/ (read 2026-11-11).
 * [[[applexnu]]] Apple Inc. _XNU kernel source, README_. https://github.com/apple-oss-distributions/xnu (read 2026-11-11).
 * [[[appleplatformsecurity]]] Apple Inc. "Security of runtime process in iOS, iPadOS, and visionOS". _Apple Platform Security_. https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web (read 2026-11-11).
+* [[[appleiosappsmacos]]] Apple Inc. "Running your iOS apps in macOS". _Apple Developer Documentation_. https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos (read 2026-11-11).
+* [[[appleipadprom4]]] Apple Inc. "Apple unveils stunning new iPad Pro with the world's most advanced display, M4 chip, and Apple Pencil Pro". _Apple Newsroom_, 7 May 2024. https://www.apple.com/newsroom/2024/05/apple-unveils-stunning-new-ipad-pro-with-m4-chip-and-apple-pencil-pro/ (read 2026-11-11).
 * [[[appleforum747499]]] Apple Developer Technical Support. "\"fork\" is no-no but why?" Apple Developer Forums, thread 747499, February 2024. https://developer.apple.com/forums/thread/747499 (read 2026-11-11).
 * [[[pfcon]]] FNNDSC. _pfcon: a controlling service that provides a unified web API to run containerized jobs on diverse compute environments_. https://github.com/FNNDSC/pfcon (read from the author's local checkout, 2026-11-11).
 * [[[mise]]] HARBOR-Medical-AI. _mise: ChRIS presented as a POSIX-like computer_. https://github.com/HARBOR-Medical-AI/mise (read from the author's local checkout, 2026-11-11).

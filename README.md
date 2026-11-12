@@ -22,7 +22,7 @@ Running off the end of a section also returns to the outline, and visited sectio
 The deck is written in [slidedown](https://github.com/FNNDSC/slidedown) (`talk.sd`, `command-line` theme) and compiles to static HTML in `talk/`.
 
 ```bash
-# with a slidedown checkout at ~/src/slidedown, at or after commit 4651934
+# with a slidedown checkout at ~/src/slidedown, at or after commit 132c100
 uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme command-line
 cd talk && python3 -m http.server 8000      # then open http://localhost:8000
 ```
