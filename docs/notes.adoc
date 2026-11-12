@@ -206,11 +206,23 @@ The author asked why Apache Airflow kept appearing. It traced to the LaTeX TDD t
 
 "Workflows and Provenance". The line saying HARBOR's documents call the directory contract the "filesystem-bus" was replaced. That term is from the retired text. The current wording is that applications and workflows communicate through storage.
 
-"What We Need to Agree". "Policy hook points" became "App policy" and "Telemetry schema" became "Run record", to follow the changes above.
+"What We Need to Agree" (since cut, on 2026-11-12). "Policy hook points" became "App policy" and "Telemetry schema" became "Run record", to follow the changes above.
 
 === Style
 
 These slides are the first written to the author's rule for word density, set the same day: short fragments, at most four to a slide, each with one highlighted word. "The Same Move, Reversed" was converted as a sample, and the rest of the deck followed later the same day. The sentences those slides used to carry are kept at the end of this file as speaking lines.
+
+== A live chell on a slide
+
+The author wanted a working `chell` inside the presentation, reaching a session on another of the author's machines, and observed that this is what the ARGUS console already is: xterm.js in a page, a websocket, and a real `chell` under a pseudo-terminal at the far end. That reading is right. In ARGUS the far end is `calypso`, which starts `chell --remote` under `node-pty` and relays its bytes; the page only draws them and sends keystrokes back.
+
+A slide cannot take ARGUS's place against a `porter` directly. `porter` relays the session's websocket only for a browser that carries its login cookie, and the cookie is `SameSite=Lax`, so a page served from another machine does not send it. Its door tokens are for scripts, which can set an `Authorization` header; a browser cannot set one on a websocket. Loosening either for a talk would weaken the door for everyone.
+
+The slide therefore keeps the three parts and moves the middle one to the presenting machine. `ttyd` <<ttyd>> serves xterm.js on loopback and bridges it to one command under a pseudo-terminal, and that command is the author's own `chell --remote`, attached to that session. The login stays with `chell` on the presenting machine and nothing about it is in the deck. `ttyd` is bound to `127.0.0.1` and checks the origin of the websocket, so only its own page on that machine can open the terminal. Binding it to a LAN address would hand a shell to the network.
+
+The slide (`mise-live`, "A Live chell") shows a line to click. The click loads the terminal in a frame only when the deck was opened as `localhost`; on the public site or another device it prints that the live session runs on the presenting machine only. Nothing connects until the click, so no session is held open through the talk, and a visitor to the public deck triggers no request to their own machine. A click in the frame gives the terminal the keyboard and a click outside returns the arrow keys to the deck.
+
+A custom bridge, with xterm.js bundled into the deck, was the alternative. It would have been more code to trust on the day and would still have needed a pseudo-terminal library installed, and `ttyd` is one package.
 
 == How one ChRIS talks to another
 
@@ -256,13 +268,15 @@ Nothing a figure asserts is new. Each carries the same facts as the figure it re
 
 == The architecture, built up in steps
 
-"Architecture" (`architecture`) is now one slide that assembles its figure in seven steps, and a new slide, "One DAG, Many Substrates" (`architecture-2`), follows it. The author asked for both on 2026-11-11 and dictated the order of the steps.
+"Architecture" (`architecture`) is now one slide that assembles its figure in eight steps, and a new slide, "One DAG, Many Substrates" (`architecture-2`), follows it. The author asked for both on 2026-11-11 and dictated the order of the steps.
 
 The author's complaint was that the finished figure arrived all at once and ran off the page. The request was to add components a few at a time by moving quickly through slides that each show the same picture with more in it. The effect is built inside one slide instead of across six. Each step is a revealed line (`.o{}`) holding the whole figure as it stands at that step, and three rules in the deck's `css:` block collapse every step except the newest. The Right key therefore swaps one frame for the next with no slide transition and no retyped command, and Left steps back. Six separate slides would each have replayed the typed command and the zoom transition, which reads as a flicker. The collapse is done with `height: 0` and `overflow: hidden`, because slidedown sets `display` and `visibility` on a revealed line with `!important` inside a cascade layer, and an unlayered rule cannot override that.
 
 The steps, in the author's order: CUBE alone, labelled with what it records; the CUBE API with ChRIS_ui above it; `mise` as a labelled stack whose bottom layer, `cumin`, speaks the API; three entry points above `mise` (a terminal, a browser, a program); a `pfcon` on each of four compute environments (OpenShift, k8s, HPC, a VM); a double-lined box around all of it named "Trusted Domain"; and a PACS outside that box, with `pfdcm` on the way out and `oxidicom` on the way back. Every frame is drawn on the same grid, so nothing moves when a part arrives. The "one REST API over everything" bullet is gone at the author's request, since it was what pushed the old slide off the page.
 
 Three refinements came from the author after the first version. The part that has just arrived is drawn in yellow, outline and arrows included, and turns white on the next step; yellow is the takeaway bar's colour, so the deck gains none. Before that only the new part's name was coloured, and a new outline arrived unannounced. CUBE is drawn as a cube, after the one in the `mise` README figure, and its top face is the CUBE API. The clients' arrows land on that face, which saves the separate API block and costs one row more than the flat box did. The entry points sit above the Trusted Domain box and their arrows cross its double line, because the author pointed out that a terminal, a browser and a program are outside the Trusted Domain. A fourth box outside, a second `browser`, reaches ChRIS_ui the same way and arrives with it. Names that have settled are cyan, as in the deck's other figures, so the colours read yellow for new, cyan for a name, white for an outline. The entry points are the agent's reading of the author's "mise API or entry points": the ways in that "One Intent, Four Ways" teaches, less the wire. The author has not confirmed that reading.
+
+An eighth step was added on 2026-11-12 at the author's request. The figure builds one Trusted Domain, and the author judged that its closing image should not end on four compute environments side by side. In the last frame the four give way to a single `pfcon` over OpenShift, drawn across the full width of CUBE. The four-wide frame stays as step five, where it makes the point that `pfcon` presents the same contract on each kind of compute; the several-substrates case then belongs to the slide that follows. Keeping the earlier frame and adding a last one is the session's reading of "finalize with one image".
 
 The caption sits to the right of the Trusted Domain box, in space the figure leaves empty, so it costs no rows. To make room for the cube and the entry points, `calypso` and `brasa` share one row of the `mise` stack, and the step figures are set at seven tenths of the deck's figure size. At that size the last frame fits a 1280 by 720 page with the source line showing and no panning. The cube's slanted edges are plain slashes, because the box-drawing diagonal renders small in the deck's font and leaves the edges looking broken.
 
@@ -329,15 +343,26 @@ The five quoted answers are unchanged. Each now ends with the surface or object 
 * The difference is what you're allowed to do.
 * ChRIS_ui is the dashboard. mise is the computer.
 
+=== So, No Demo First (`so-chris-end`)
+
+* An iPad demo shows the launcher. The audience leaves saying "it's pictures you touch", which is the definition that does not survive a change of UI.
+* A ChRIS demo would do the same. Whichever surface is shown becomes what ChRIS is taken to be.
+* So this talk is about the design, the philosophy and the principles: the app model, and what follows from it.
+* There is a live shell near the end. By then it can be seen for what it is: one surface over the construction.
+
+The author asked on 2026-11-12 for the iPad section to close on this argument: the talk does not lead with a demonstration, for the same reason an iPad demonstration shows the wrong thing. The slide says "first" and not "none" because the deck does carry a live `chell` (`mise-live`), and a flat "no demo" would be contradicted by it. That qualification, the title and the takeaway are the session's wording.
+
 === What Is ChRIS? (`what-is`)
 
 * An open-source platform for running computation on medical data, wherever that data has to stay.
 * The name is recursive: ChRIS Research Integration Service.
-* Built at Boston Children's (FNNDSC), with Red Hat and the Mass Open Cloud.
+* It came out of Radiology at Boston Children's (FNNDSC), but the platform is generic and is not tailored to one domain. Red Hat and the Mass Open Cloud were partners along the way.
 * It runs a specific kind of program: no interaction once started, arguments on the command line, results in files.
-* That covers most of research imaging: and most of an ingestion pipeline.
+* That shape is most of scientific computing, and most of the computing in HARBOR.
 
-The acronym line moved to the slide's subtitle.
+The acronym line moved to the slide's subtitle. The author corrected two lines on 2026-11-12. The origin line had named Red Hat and the Mass Open Cloud and highlighted Red Hat, a highlight chosen only to satisfy the one-word-per-bullet rule; the author wanted Radiology named and the generality stated, so the partners moved to the spoken line. The last line had claimed "most of research imaging" and singled out ingestion, which undersold the point: the batch shape pertains to everything.
+
+"The Short Version" (the TL;DR slide, which has no id) was rewritten the same day to match the talk's present argument: the one rule, the promise that the app does not change and ChRIS carries the glue, provenance as a file system tree, and the HARBOR placement. Its former takeaway, "OpenShift governs the cluster. ChRIS makes the science on it auditable", cast ChRIS as an audit layer, which is a consequence of the contract and not the pitch; it survives as a spoken line on "Where ChRIS Sits in HARBOR". The first bullet of "Conclusions" was changed to echo the same spine.
 
 === Where It Came From (`what-is-2`)
 
@@ -346,19 +371,47 @@ The acronym line moved to the slide's subtitle.
 * 2013 v2: the ideas that stuck: feeds and plugins. Still HPC-bound.
 * 2017 v3: REST services and containers. Any cluster that runs Linux containers. (Called CHIPS in the papers of that year.)
 
-=== The App Contract (`contract`)
+=== What ChRIS Promises (`what-is-3`)
+
+* A developer writes the app the way they already do: files in, files out. Nothing in it is written for ChRIS.
+* A system developer keeps their shell. The surface leans POSIX, and the whole platform can be driven from an ordinary bash script.
+* The glue is the platform's job. Most of a developer's time goes to scripts that join tools together, and the data handling in those scripts is the part most often done badly.
+* Because the contract is only files in and files out, the same app runs unchanged on Docker, on Slurm or on OpenShift.
+
+This slide states as a thesis what the deck otherwise shows in pieces: the app contract, the shell in the mise section, and the history slide's "bash scripts as glue". The author asked for it on 2026-11-12, judging it an important idea that no slide said outright. It sits after the history slide because that slide ends on glue. The claim about where developers' time goes is the author's account from experience and carries no citation. The contract does not cover interactive programs, which the `what-is` slide already says, so "any app" is not claimed here.
+
+=== The App Contract: start with a function (`contract`)
+
+* Draw it first as mathematics: a goes into F, and b comes out. Written down, b = F(a).
+* F is a mapper, a transformer. It turns a into b.
+* a and b are materialized things. They exist, and can be looked at, before and after F runs.
+* F must produce an output. Ideally it produces the same one each time: for the same a, we always get b.
+
+The author asked on 2026-11-12 for the contract section to open this way, "almost a mathematical treatise", because the contract is the idea the rest of the talk stands on. The next slide redraws the same picture with `/input`, an app and `/output`, and labels them a, F and b so the audience sees it is one figure drawn twice. Both slides carry the title "The App Contract" so that the outline entry still names the slide it lands on. "Ideally" is on the slide on purpose: the platform records what ran, and does not by itself make a program deterministic.
+
+=== The App Contract: on a command line (`contract-2`)
 
 * A ChRIS app: a plugin: is a Linux container that reads one directory, writes another, and exits.
 * It does not know about ChRIS, the workflow it sits in, or the cluster under it.
 * A JSON descriptor declares its parameters and its limits: CPU, memory, GPU.
 * Python, R, shell, compiled code, a call out to a model service. The boundary doesn't change.
 
-=== Three Kinds of Plugin (`contract-2`)
+=== Three Kinds of Plugin (`contract-3`)
 
 * fs: feed synthesis. No input directory. Brings data in: a PACS pull, an upload, a download.
 * ds: data synthesis. Input in, output out. Nearly everything is one of these.
 * ts: topology synthesis. Reshapes the graph itself, joining branches into one node.
 * De-identification, format conversion, segmentation, embedding, a training step: all ds.
+
+=== One Contract, Not n APIs (`contract-4`)
+
+* If tools call one another directly, every pair needs its own connection. That grows as n squared.
+* A platform that reaches each tool through that tool's own API needs an adapter per tool. Its work grows with the number of tools: O(n).
+* A platform that knows one contract learns nothing new when the next app arrives. Its work is constant in the number of apps: O(1).
+* The same holds on the other side. With n apps and m kinds of compute, adapters would number n times m. With the contract between them it is n plus m.
+* Each app still needs a wrapper, so the total work is not constant. The wrapper is small, it is written once by whoever owns the tool, and the platform never changes for it.
+
+The author asked for this slide on 2026-11-12, recalling an earlier document that makes the argument. It is an unpublished position paper of the author's from January 2026, shared only with collaborators, so the slide restates the argument in the author's terms and carries no source line. The paper compares three patterns as the number of tools N grows: a mesh in which tools call one another directly (connections grow as N squared), an orchestrator that calls each tool's own API (N drivers to maintain, and the orchestrator carries the data between steps itself), and the filesystem contract, where the orchestrator's interface stays the same however many tools are added. The slide shows all three side by side; the mesh was first left as a spoken aside and the author asked for it as a third panel the same day. To keep four bullets, the line about n apps on m kinds of compute moved from the slide to the speaking lines above. Two of the paper's phrasings are deliberately not used: it calls the quadratic growth "exponential", and it puts the cost of adding a tool at "zero". The defensible claim, and the one on the slide, is a constant cost on the platform's side, with each tool still to be wrapped once. The n plus m line about substrates is the session's extension and is not in the paper. Points the paper adds that can be spoken here: large imaging data is read from a mounted volume instead of being serialised over HTTP, a crashed container leaves its data on disk, and a scientist's file-processing script is already the production code.
 
 === Wrap Before Inventing (`contract-end`)
 
@@ -367,19 +420,33 @@ The acronym line moved to the slide's subtitle.
 * What it gains: explicit I/O, recorded parameters, a pinned version, a place in a workflow.
 * Write a plugin from scratch only when nothing adequate exists, or the plugin is the research.
 
-=== Workflows and Provenance (`workflows`)
+=== Workflows and Provenance: start by linking them (`workflows`)
+
+* One app: input, app, output. That is b = F(a) again.
+* Its output is a directory, so it can be the next app's input. Add a second app and c = G(b).
+* Add a third. Nothing new was needed to make a workflow: only the contract, used again.
+* Chaining is composition: d = H(G(F(a))). The difference from mathematics is that b and c are kept on disk.
+* Keeping them is what provenance is. The next slide shows the tree those kept outputs form.
+
+The author asked on 2026-11-12 for this section to open with a drawing that builds, to show that linking follows from the contract without further machinery. The figure builds in three steps and the last one stays while the bullets arrive. The function names F, G and H, the composition line and the typewriter command are the session's additions to the author's sketch.
+
+=== Workflows and Provenance: the tree (`workflows-2`)
 
 * A workflow is a tree of plugin runs. One node's output directory is the next node's input.
 * In HARBOR's terms: apps talk through storage.
 * Every intermediate output stays where it was written, and stays inspectable.
 * A feed is one such tree, run on one dataset. A pipeline is the reusable template for it.
 
-=== Data State, Not Control Flow (`workflows-2`)
+=== Data State, Not Control Flow (`workflows-3`)
 
-* Control flow is Argo and Tekton. Data state is Make, and ChRIS.
+* Control flow is Argo and Tekton: a controller decides what runs next. Data state is Make, and ChRIS.
 * A ChRIS node is finished when its output is on disk. Not when a controller says so.
-* Gating, branching and joining are plugins in the graph: so they are in the record too.
+* A loop does not hide in a controller. It is a branch: one node per item, each with its own directory.
+* A join is a `ts` node: several parents in, one node out.
+* So control is materialized in the tree, and the record holds it along with the data.
 * The cost: patterns that are one line in Argo take an explicit step here.
+
+The author asked on 2026-11-12 for the figure to show a branch node (a loop) and a `ts` join node, as "materializations of control in the tree", and judged that clearer than the earlier figure, which set a controller over three tasks against a straight chain of directories. The new figure fans one node out to three `segment` runs and gathers them in a join; the two control nodes are drawn in yellow. The earlier contrast now rests on the first bullet and the spoken lines, and the "done when on disk" and "the cost" bullets moved from the slide to the lines above. That control behaviour is relocated into the graph as explicit plugins is argued in an unpublished note of the author's on data-state and control-flow graphs. The series example and the directory names are the session's.
 
 === The Five Questions (`workflows-end`)
 
@@ -397,7 +464,7 @@ The acronym line moved to the slide's subtitle.
 * CUBE: users, files, plugins, feeds, permissions, provenance. One REST API.
 * pfcon: runs a plugin as a job on Docker, Kubernetes, OpenShift, or SLURM.
 * pfdcm, oxidicom: the PACS bridge: query, retrieve, receive, register into CUBE.
-* The slide no longer shows these as bullets. A caption beside the figure changes with each of its seven steps.
+* The slide no longer shows these as bullets. A caption beside the figure changes with each of its eight steps.
 
 === Who Owns What (`architecture-end`)
 
@@ -429,12 +496,9 @@ The acronym line moved to the slide's subtitle.
 
 The last line became the slide's takeaway.
 
-=== What We Need to Agree (`working-end`)
+=== What We Need to Agree (cut)
 
-* Stage contracts. What exactly sits in the directory between your stage and the next one.
-* App policy. What a stage may touch beyond its two directories.
-* Run record. Status, progress and failure, readable by any client.
-* Lineage mapping. How a ChRIS run becomes OpenLineage run, job and dataset facets.
+The author cut this slide on 2026-11-12. It had been in the deck since the first commit and listed four interfaces for the consortium to settle: stage contracts, app policy, the run record and a lineage mapping. It read as a meeting agenda in a talk that had become about design and principles, and its first item, an agreement on what sits between two stages, cut against the contract slides, which say an app needs nothing negotiated with the platform. One point from it is worth keeping as a spoken line on "Working With It": the contract fixes two directories and says nothing about the files inside them, so two apps in a chain still have to share a format.
 
 === Conclusions (`conclusions`)
 
@@ -452,6 +516,7 @@ The title slide's four bullets were shortened the same way. They read: ChRIS run
 * [[[kundera1984]]] Milan Kundera. _The Unbearable Lightness of Being_. Translated by Michael Henry Heim. Harper & Row, New York, 1984.
 * [[[retui]]] _Re:T-UI: a phone-first guide built from the Re:T-UI wiki_. https://re-tui.pages.dev/ (read 2026-11-11).
 * [[[applexnu]]] Apple Inc. _XNU kernel source, README_. https://github.com/apple-oss-distributions/xnu (read 2026-11-11).
+* [[[ttyd]]] Shuanglei Tao. _ttyd: share your terminal over the web_. https://github.com/tsl0922/ttyd (read 2026-11-11).
 * [[[appleplatformsecurity]]] Apple Inc. "Security of runtime process in iOS, iPadOS, and visionOS". _Apple Platform Security_. https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web (read 2026-11-11).
 * [[[appleiosappsmacos]]] Apple Inc. "Running your iOS apps in macOS". _Apple Developer Documentation_. https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos (read 2026-11-11).
 * [[[appleipadprom4]]] Apple Inc. "Apple unveils stunning new iPad Pro with the world's most advanced display, M4 chip, and Apple Pencil Pro". _Apple Newsroom_, 7 May 2024. https://www.apple.com/newsroom/2024/05/apple-unveils-stunning-new-ipad-pro-with-m4-chip-and-apple-pencil-pro/ (read 2026-11-11).

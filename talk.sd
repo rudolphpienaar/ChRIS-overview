@@ -41,13 +41,35 @@
         margin-bottom: "0"
     ".slide .term > .snippet:has(> pre.step)":
         margin: "0"
-    ".slide .term > .snippet:has(> pre.step):is(.sl-hidden, :has(~ .snippet:not(.sl-hidden)))":
+    ".slide .term pre.fig.step.chain":
+        font-size: "0.8em"
+        margin: "0.6em 0"
+    ".slide .term > .snippet:has(> pre.step:not(.keep)):is(.sl-hidden, :has(~ .snippet:not(.sl-hidden)))":
+        height: "0"
+        min-height: "0"
+        margin: "0"
+        overflow: "hidden"
+    ".slide .term > .snippet.sl-hidden:has(> pre.step.keep)":
         height: "0"
         min-height: "0"
         margin: "0"
         overflow: "hidden"
     ".slide .term > .snippet:has(> pre.step)::after":
         content: "none"
+    ".slide .term > .snippet:has(> .live)":
+        padding-left: "0"
+        text-indent: "0"
+    ".slide .term > .snippet:has(> .live)::before":
+        display: "none"
+    ".slide .term .live":
+        color: "#858585"
+        cursor: "pointer"
+    ".slide .term .live iframe":
+        display: "block"
+        width: "100%"
+        height: "18em"
+        border: "0"
+        background: "#141414"
 }
 
 .slide{
@@ -71,13 +93,13 @@
     .h1{The Short Version}
     .term{
 .typewriter{$> chris --tldr}
-      .o{Analyses run .bf{next to the data}.}
       .o{One .bf{rule}: read a directory, write one, exit.}
-      .o{Chain them. The tree .bf{is} the provenance.}
+      .o{Your app doesn't change. ChRIS carries the .bf{glue}.}
+      .o{Chain them. Provenance is a .bf{file system} tree.}
       .o{In HARBOR: the runtime inside .bf{every} Trusted Domain.}
     }
 
-    .takeaway{OPENSHIFT GOVERNS THE CLUSTER. ChRIS MAKES THE SCIENCE ON IT AUDITABLE.}
+    .takeaway{WRITE THE SCIENCE ONCE. RUN IT WHEREVER THE DATA HAS TO STAY.}
   }
 }
 
@@ -300,6 +322,22 @@
 }
 
 .slide{
+  .id{so-chris-end}
+  .title{So, No Demo First}
+  .body{
+    .h1{So, No Demo First}
+    .term{
+.typewriter{$> demo --defer}
+      .o{A demo shows one .bf{surface}.}
+      .o{You'd define ChRIS by its .bf{pictures}.}
+      .o{So this talk: design, .bf{principles}, the app model.}
+      .o{A live shell comes .bf{later}. As one surface.}
+    }
+    .takeaway{A DEMO IS THE EXPERIENCE. THIS TALK IS THE CONSTRUCTION.}
+  }
+}
+
+.slide{
   .id{what-is}
   .title{What Is ChRIS?}
   .body{
@@ -308,9 +346,9 @@
     .term{
 .typewriter{$> whatis chris}
       .o{.bf{Open-source}. Computation where the data must stay.}
-      .o{Boston Children's, .bf{Red Hat}, Mass Open Cloud.}
+      .o{From Boston Children's Radiology. Built .bf{generic}.}
       .o{Programs with no .bf{interaction}: args in, files out.}
-      .o{That is most of research imaging. And most of .bf{ingestion}.}
+      .o{Most of scientific computing. Most of .bf{HARBOR}.}
     }
     .source{FNNDSC/CHRIS_docs · Pienaar et al., IEEE EMBC 2015}
   }
@@ -334,15 +372,53 @@
 }
 
 .slide{
+  .id{what-is-3}
+  .title{What ChRIS Promises}
+  .body{
+    .h1{What ChRIS Promises}
+    .term{
+.typewriter{$> cat promises.txt}
+      .o{Your .bf{app} doesn't change. Files in, files out.}
+      .o{Your .bf{shell} doesn't change. Script the whole thing.}
+      .o{The .bf{glue} is ours. So is the data handling.}
+      .o{One contract, any .bf{executor}: Docker, Slurm, OpenShift.}
+    }
+    .takeaway{YOU WRITE THE SCIENCE. ChRIS CARRIES THE GLUE.}
+  }
+}
+
+.slide{
   .id{contract}
+  .title{The App Contract}
+  .body{
+    .h1{The App Contract}
+    .h2{Start with a function}
+    .term{
+.typewriter{$> echo 'b = F(a)'}
+      .o{<pre class="fig">
+ ┌─────────┐           ┌─────────┐           ┌─────────┐
+ │    <b>a</b>    │ ────────<u>▶</u> │    <b>F</b>    │ ────────<u>▶</u> │    <b>b</b>    │           <b>b = F(a)</b>
+ └─────────┘           └─────────┘           └─────────┘
+</pre>}
+      .o{.bf{F} maps a into b.}
+      .o{a and b are .bf{materialized}. Real things.}
+      .o{F .bf{must} produce an output.}
+      .o{Same a, same .bf{b}. Ideally, always.}
+    }
+    .takeaway{THE WHOLE CONTRACT IS ONE LINE: b = F(a).}
+  }
+}
+
+.slide{
+  .id{contract-2}
   .title{The App Contract}
   .body{
     .h1{The App Contract}
     .term{
 .typewriter{$> app [--flags] /input /output}
       .o{<pre class="fig">
-                       ┌─ <b>one container</b> ────────────────────┐
-  <b>/input</b>               │  ┌──────────────────────────────┐  │            <b>/output</b>
+                       ┌─ <i>F =</i> <b>one container</b> ────────────────┐
+<i>a =</i> <b>/input</b>             │  ┌──────────────────────────────┐  │        <i>b =</i> <b>/output</b>
  ┌─────────┐           │  │  app --flags <b>/input</b> <b>/output</b>  │  │           ┌─────────┐
  │  files  │ ────────<u>▶</u> │  └──────────────────────────────┘  │ ────────<u>▶</u> │  files  │
  └─────────┘<i>   read</i>    │  <i>runs once, then exits</i>             │<i>   write</i>   └─────────┘
@@ -359,7 +435,7 @@
 }
 
 .slide{
-  .id{contract-2}
+  .id{contract-3}
   .title{Three Kinds of Plugin}
   .body{
     .h1{Three Kinds of Plugin}
@@ -384,6 +460,31 @@
 }
 
 .slide{
+  .id{contract-4}
+  .title{One Contract, Not n APIs}
+  .body{
+    .h1{One Contract, Not n APIs}
+    .term{
+.typewriter{$> ls adapters/ | wc -l}
+      .o{<pre class="fig">
+ ┌─ <b>API mesh</b> ─ <em>O(n²)</em> ──┐  ┌─ <b>every tool's API</b> ─ <em>O(n)</em> ─┐  ┌─ <b>one contract</b> ─ <em>O(1)</em> ──────────┐
+ │  A <u>◀</u>────<u>▶</u> B         │  │  platform                 │  │  platform                      │
+ │  <u>▲</u> \    / <u>▲</u>         │  │   ├─ adapter ─<u>▶</u> A's API   │  │   └─ /in /out ─┬─<u>▶</u> app A       │
+ │  │   <i>X</i>    │         │  │   ├─ adapter ─<u>▶</u> B's API   │  │                ├─<u>▶</u> app B       │
+ │  <u>▼</u> /    \ <u>▼</u>         │  │   ├─ adapter ─<u>▶</u> C's API   │  │                ├─<u>▶</u> app C       │
+ │  C <u>◀</u>────<u>▶</u> D         │  │   └─ <i>one more per tool</i>    │  │                └─<u>▶</u> <i>app n: same</i> │
+ └─────────────────────┘  └───────────────────────────┘  └────────────────────────────────┘
+</pre>}
+      .o{Tools call each other: every .bf{pair} wired. O(n²).}
+      .o{A hub calls each API: one .bf{adapter} each. O(n).}
+      .o{One contract: the platform learns .bf{nothing} new. O(1).}
+      .o{Still one wrapper per app. .bf{Small}, and not ours.}
+    }
+    .takeaway{THE PLATFORM'S COST DOESN'T GROW WITH THE NUMBER OF APPS.}
+  }
+}
+
+.slide{
   .id{contract-end}
   .title{Wrap Before Inventing}
   .body{
@@ -401,6 +502,47 @@
 
 .slide{
   .id{workflows}
+  .title{Workflows and Provenance}
+  .body{
+    .h1{Workflows and Provenance}
+    .h2{Start by linking them}
+    .term{
+.typewriter{$> app1 /a /b && app2 /b /c && app3 /c /d}
+      .o{<pre class="fig step chain">
+     <i>a</i>            <i>F</i>                <i>b</i>         
+ ┌───────┐    ┌───────┐    ┌────────────────┐
+ │ input │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │     output     │
+ └───────┘    └───────┘    └────────────────┘
+ 
+   <b>b = F(a)</b>
+</pre>}
+      .o{<pre class="fig step chain">
+     <i>a</i>            <i>F</i>                <i>b</i>                 <i>G</i>                <i>c</i>         
+ ┌───────┐    ┌───────┐    ┌────────────────┐    ┌───────┐    ┌────────────────┐
+ │ input │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │ output <em>/ input</em> │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │     output     │
+ └───────┘    └───────┘    └────────────────┘    └───────┘    └────────────────┘
+ 
+   <b>c = G(b) = G(F(a))</b>
+</pre>}
+      .o{<pre class="fig step chain keep">
+     <i>a</i>            <i>F</i>                <i>b</i>                 <i>G</i>                <i>c</i>                 <i>H</i>                <i>d</i>         
+ ┌───────┐    ┌───────┐    ┌────────────────┐    ┌───────┐    ┌────────────────┐    ┌───────┐    ┌────────────────┐
+ │ input │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │ output <em>/ input</em> │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │ output <em>/ input</em> │ ─<u>▶</u> │  <b>app</b>  │ ─<u>▶</u> │     output     │
+ └───────┘    └───────┘    └────────────────┘    └───────┘    └────────────────┘    └───────┘    └────────────────┘
+ 
+   <b>d = H(c) = H(G(F(a)))</b>
+</pre>}
+      .o{An .bf{output} is the next input.}
+      .o{Chaining is .bf{composition}: c = G(F(a)).}
+      .o{Every intermediate is .bf{kept}: b, c, d.}
+      .o{Keep them, and that is .bf{provenance}.}
+    }
+    .takeaway{LINK THE OUTPUTS AND THE WORKFLOW DRAWS ITSELF.}
+  }
+}
+
+.slide{
+  .id{workflows-2}
   .title{Workflows and Provenance}
   .body{
     .h1{Workflows and Provenance}
@@ -426,30 +568,24 @@
 }
 
 .slide{
-  .id{workflows-2}
+  .id{workflows-3}
   .title{Data State, Not Control Flow}
   .body{
     .h1{Data State, Not Control Flow}
     .term{
-.typewriter{$> diff control-flow data-state}
+.typewriter{$> tree --control feed/}
       .o{<pre class="fig">
- ┌─ <b>control flow</b> ───────────────────────────────────────────┐
- │     ┌─────────── <b>controller</b> ──────────┐                  │   <i>a <b>controller</b> decides</i>
- │     <u>▼</u>                <u>▼</u>                <u>▼</u>                  │   <i>what runs next</i>
- │  ┌─────┐          ┌─────┐          ┌─────┐               │
- │  │  A  │ ─ ok? ─<u>▶</u> │  B  │ ─ ok? ─<u>▶</u> │  C  │               │
- │  └─────┘          └─────┘          └─────┘               │
- └──────────────────────────────────────────────────────────┘
- ┌─ <b>data state</b> ─────────────────────────────────────────────┐
- │         ┌─────┐          ┌─────┐          ┌─────┐        │   <i>every arrow leaves</i>
- │  /d0 ─<u>▶</u> │  A  │ ─<u>▶</u> /d1 ─<u>▶</u>│  B  │ ─<u>▶</u> /d2 ─<u>▶</u>│  C  │ ─<u>▶</u> /d3 │   <i>a directory behind</i>
- │         └─────┘          └─────┘          └─────┘        │
- └──────────────────────────────────────────────────────────┘
+                     ┌─<u>▶</u> <b>segment</b> ─<u>▶</u> /s1 ─┐
+ ┌────────┐          │                   │          ┌────────┐
+ │ <em>branch</em> │ ─ /d1 ───┼─<u>▶</u> <b>segment</b> ─<u>▶</u> /s2 ─┼────────<u>▶</u> │  <em>join</em>  │ ─<u>▶</u> /d2 ─<u>▶</u> <b>report</b>
+ └────────┘          │                   │          └────────┘
+  <i>ds: a loop,</i>        └─<u>▶</u> <b>segment</b> ─<u>▶</u> /s3 ─┘          <i>ts: three parents,</i>
+  <i>unrolled</i>              <i>one node per series</i>           <i>one node</i>
 </pre>}
       .o{Control flow: Argo, Tekton. Data state: .bf{Make}, ChRIS.}
-      .o{Done when the output is on .bf{disk}.}
-      .o{Gates and joins are .bf{plugins}. So they're recorded.}
-      .o{The cost: a .bf{step} where Argo needs a line.}
+      .o{A loop is a .bf{branch}: one node per item.}
+      .o{A join is a .bf{ts} node: many parents in.}
+      .o{Control is .bf{in} the tree. So it's recorded.}
     }
     .takeaway{WHAT RAN, IN WHAT ORDER AND WHY: READ IT OFF THE DATA.}
   }
@@ -668,6 +804,33 @@
  ║  └───────────┘ └───────────┘ └───────────┘ └───────────┘                       ║
  ╚════════════════════════════════════════════════════════════════════════════════╝
 </pre>}
+      .o{<pre class="fig step">
+     ┌─────────┐     ┌──────────┐ ┌─────────┐ ┌─────────┐
+     │ <b>browser</b> │     │ <b>terminal</b> │ │ <b>browser</b> │ │ <b>program</b> │      <i>entry</i> <i>points</i>
+     └────┬────┘     └─────┬────┘ └────┬────┘ └────┬────┘
+ ╔════════╪════════════════╪═══════════╪═══════════╪════════════ <b>Trusted</b> <b>Domain</b> ══╗
+ ║        │       ┌─ <b>mise</b> ─<u>▼</u>───────────<u>▼</u>───────────<u>▼</u>──────┐                       ║
+ ║        │       │ chell  ·  ARGUS      <i>surfaces</i>         │                       ║
+ ║        │       │ calypso  ·  brasa    <i>session,</i> <i>shell</i>   │                       ║
+ ║  ┌─────<u>▼</u>─────┐ │ fond  ·  salsa       <i>CUBE</i> <i>as</i> <i>a</i> <i>tree</i>   │                       ║
+ ║  │ <b>ChRIS_ui</b>  │ │ cumin                <i>CUBE's</i> <i>REST</i>      │                       ║
+ ║  └─────┬─────┘ └───┬───────────────────────────────────┘         <i>query,</i> <i>pull</i>   ║
+ ║      ┌─┼───────────┼───────────────────────────────────────┐     ┌──────────┐  ║      ┌────────┐
+ ║     /  <u>▼</u>           <u>▼</u>                                      /│────<u>▶</u>│  <b>pfdcm</b>   │──╫─────<u>▶</u>│        │
+ ║    /                      <b>CUBE</b> <b>API</b>                       / │     ├──────────┤  ║      │  <b>PACS</b>  │
+ ║   /                                                     /  │<u>◀</u>────│ <b>oxidicom</b> │<u>◀</u>─╫──────│        │
+ ║  ┌─────────────────────────────────────────────────────┐   ┘     └──────────┘  ║      └────────┘
+ ║  │                        <b>CUBE</b>                         │  /      <i>receive,</i>      ║         <i>DICOM</i>
+ ║  │              <i>users</i>  <i>·</i>  <i>files</i>  <i>·</i>  <i>feeds</i>              │ /       <i>register</i>      ║
+ ║  │          <i>apps</i>  <i>·</i>  <i>pipelines</i>  <i>·</i>  <i>provenance</i>          │/                      ║
+ ║  └──────────────────────────<em>┬</em>──────────────────────────┘                       ║
+ ║  <em>┌──────────────────────────┴──────────────────────────┐</em>                       ║
+ ║  <em>│</em>                        <em>pfcon</em>                        <em>│</em>                       ║
+ ║  <em>├─────────────────────────────────────────────────────┤</em>                       ║   <b>One</b> <b>Trusted</b> <b>Domain</b>: one pfcon,
+ ║  <em>│</em>                      <em>OpenShift</em>                      <em>│</em>                       ║   on <b>OpenShift</b>.
+ ║  <em>└─────────────────────────────────────────────────────┘</em>                       ║
+ ╚════════════════════════════════════════════════════════════════════════════════╝
+</pre>}
     }
     .source{FNNDSC/CHRIS_docs · FNNDSC/pfcon · FNNDSC/pfdcm · FNNDSC/oxidicom · HARBOR-Medical-AI/mise}
   }
@@ -785,6 +948,7 @@
       .div{.jump{.target{mise-intent} One Intent, Four Ways}}
       .div{.jump{.target{mise-session} One Session, Many Surfaces}}
       .div{.jump{.target{mise-door} The Door and the Berth}}
+      .div{.jump{.target{mise-live} A Live chell}}
     }
     }
     .source{github.com/HARBOR-Medical-AI/mise}
@@ -1099,6 +1263,19 @@ async function directoryNames_list(path: string): Promise<string[]> {
 }
 
 .slide{
+  .id{mise-live}
+  .title{A Live chell}
+  .body{
+    .h1{A Live chell}
+    .term{
+.typewriter{$> chell --remote}
+      .o{<div class="live" onclick="event.stopPropagation(); var h=location.hostname; var here=(h=='localhost'||h=='127.0.0.1'); this.onclick=null; this.innerHTML = here ? '<iframe src=http://'+h+':7681/ allow=clipboard-read;clipboard-write></iframe>' : 'The live session runs on the presenting machine only.'; here ? this.firstChild.focus() : 0;">[ click to open the live session ]</div>}
+    }
+    .source{xterm.js in the slide · ttyd on the presenting machine · chell --remote to the session}
+  }
+}
+
+.slide{
   .id{clinic}
   .title{ChRIS in the Clinic}
   .body{
@@ -1358,22 +1535,6 @@ async function directoryNames_list(path: string): Promise<string[]> {
 }
 
 .slide{
-  .id{working-end}
-  .title{What We Need to Agree}
-  .body{
-    .h1{What We Need to Agree}
-    .term{
-.typewriter{$> harbor --interfaces --open}
-      .o{.bf{Stage contracts}: what sits between two stages.}
-      .o{.bf{App policy}: what a stage may touch.}
-      .o{.bf{Run record}: status, progress, failure.}
-      .o{.bf{Lineage mapping}: a run as OpenLineage.}
-    }
-    .takeaway{AGREE THE DIRECTORIES AND THE EVENTS. THE REST CAN CHANGE UNDERNEATH.}
-  }
-}
-
-.slide{
   .id{conclusions}
   .title{Conclusions}
   .body{
@@ -1381,7 +1542,7 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .term{
 .typewriter{$> exit
 > questions?}
-      .o{A .bf{workflow runtime}. Provenance is the tree it leaves.}
+      .o{b = F(a), chained. The .bf{tree} on disk is the provenance.}
       .o{Clinical AI at Boston Children's, .bf{today}.}
       .o{In HARBOR: repeatable and auditable in every .bf{TD}.}
       .o{Next: one ChRIS as a .bf{peer} of another.}
