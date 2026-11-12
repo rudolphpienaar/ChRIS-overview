@@ -27,8 +27,6 @@ uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme co
 cd talk && python3 -m http.server 8000      # then open http://localhost:8000
 ```
 
-The "A Live chell" slide shows a working `chell` when `ttyd` is running on the same machine and the deck is opened as `localhost`. Start it with `scripts/chell-live`, followed by the `chell` command to run if it is not plain `chell --remote`. Everywhere else the slide says the session is live on the presenting machine only.
-
 The `command-line` theme, slide labels and the `.term{}`, `.takeaway{}` and `.source{}` blocks arrived with FNNDSC/slidedown#3 through #7. An older checkout will fail with an unknown theme.
 
 ## Deployment

@@ -27,6 +27,10 @@
     ".slide .term pre.fig i":
         color: "#858585"
         font-style: "normal"
+    ".slide .term pre.fig.tight":
+        line-height: "1.15"
+        margin-top: "0"
+        margin-bottom: "0.4em"
     ".slide .term pre.fig.wide":
         font-size: "0.72em"
         line-height: "1.2"
@@ -60,20 +64,6 @@
         overflow: "hidden"
     ".slide .term > .snippet:has(> pre.step)::after":
         content: "none"
-    ".slide .term > .snippet:has(> .live)":
-        padding-left: "0"
-        text-indent: "0"
-    ".slide .term > .snippet:has(> .live)::before":
-        display: "none"
-    ".slide .term .live":
-        color: "#858585"
-        cursor: "pointer"
-    ".slide .term .live iframe":
-        display: "block"
-        width: "100%"
-        height: "18em"
-        border: "0"
-        background: "#141414"
 }
 
 .slide{
@@ -123,7 +113,7 @@
       .div{.jump{.target{mise} mise: ChRIS as a Computer}}
       .div{.jump{.target{clinic} ChRIS in the Clinic}}
       .div{.jump{.target{harbor} Where ChRIS Sits in HARBOR}}
-      .div{.jump{.target{roadmap} What HARBOR Adds to ChRIS}}
+      .div{.jump{.target{roadmap} What HARBOR Asks of ChRIS}}
       .div{.jump{.target{working} Working With It}}
       .div{.jump{.target{conclusions} Conclusions}}
     }
@@ -308,7 +298,7 @@
       .o{Everyone defines an iPad by its .bf{interface}.}
       .o{That misses what it is. And it .bf{biases} you.}
       .o{So this talk starts at the .bf{bottom}: design, principles.}
-      .o{A live shell comes .bf{later}. As one surface.}
+      .o{The surfaces come .bf{last}. As views of it.}
     }
     .takeaway{A DEMO IS THE EXPERIENCE. THIS TALK IS THE CONSTRUCTION.}
   }
@@ -577,17 +567,20 @@
     .h1{Data State, Not Control Flow}
     .term{
 .typewriter{$> tree --control feed/}
-      .o{<pre class="fig">
-                     ┌─<u>▶</u> <b>segment</b> ─<u>▶</u> /s1 ─┐
- ┌────────┐          │                   │          ┌────────┐
- │ <em>branch</em> │ ─ /d1 ───┼─<u>▶</u> <b>segment</b> ─<u>▶</u> /s2 ─┼────────<u>▶</u> │  <em>join</em>  │ ─<u>▶</u> /d2 ─<u>▶</u> <b>report</b>
- └────────┘          │                   │          └────────┘
-  <i>ds: a loop,</i>        └─<u>▶</u> <b>segment</b> ─<u>▶</u> /s3 ─┘          <i>ts: three parents,</i>
-  <i>unrolled</i>              <i>one node per series</i>           <i>one node</i>
+      .o{<pre class="fig tight">
+                ┌───────────┐
+             ┌─<u>▶</u>│  <b>segment</b>  │──┐
+             │  └───────────┘  │      ┌────────┐
+ ┌────────┐  │  ┌───────────┐  └────<u>▶</u> │        │      ┌────────┐
+ │ <em>branch</em> │──┼─<u>▶</u>│  <b>segment</b>  │───────<u>▶</u> │  <em>join</em>  │ ───<u>▶</u> │ <b>report</b> │
+ └────────┘  │  └───────────┘  ┌────<u>▶</u> │        │      └────────┘
+ <i>ds: a loop,</i> │  ┌───────────┐  │      └────────┘
+ <i>unrolled</i>    └─<u>▶</u>│  <b>segment</b>  │──┘      <i>ts: three</i>
+                └───────────┘         <i>parents in</i>
 </pre>}
-      .o{Control flow: Argo, Tekton. Data state: .bf{Make}, ChRIS.}
-      .o{A loop is a .bf{branch}: one node per item.}
-      .o{A join is a .bf{ts} node: many parents in.}
+      .o{Control flow: Argo, .bf{Tekton}.}
+      .o{Data state: .bf{make}, ChRIS.}
+      .o{A loop is a .bf{branch}. A join is a ts node.}
       .o{Control is .bf{in} the tree. So it's recorded.}
     }
     .takeaway{WHAT RAN, IN WHAT ORDER AND WHY: READ IT OFF THE DATA.}
@@ -849,7 +842,7 @@
       .o{<pre class="fig step">
  ┌─ <em>CUBE</em> ───────────────────────────────────────────────────────────────────────────────────┐
  │            <em>┌─────────┐</em>                                     <em>┌─────────┐</em>      <em>┌─────────┐</em>  │
- │            <em>│</em>  <em>de-id</em>  <em>│──────────────────┬─────────────────</em><u><em>▶</em></u><em>│</em> <em>segment</em> <em>│─────</em><u><em>▶</em></u><em>│</em> <em>measure</em> <em>│</em>  │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │            <em>│</em>  <em>de-id</em>  <em>│──────────────────┬─────────────────</em><u><em>▶</em></u><em>│</em> <em>segment</em> <em>│─────</em><u><em>▶</em></u><em>│</em> <em>measure</em> <em>│</em>  │   <em>meaning</em><i>:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
  │            <em>└─────────┘</em>                  <em>│</em>                  <em>└─────────┘</em>      <em>└─────────┘</em>  │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
  │                                    <em>┌────</em><u><em>▼</em></u><em>────┐</em>                                           │
  │                                    <em>│</em>  <em>embed</em>  <em>│</em>                                           │
@@ -869,7 +862,7 @@
       .o{<pre class="fig step">
  ┌─ <b>CUBE</b> ───────────────────────────────────────────────────────────────────────────────────┐
  │            ┌─────────┐                                     ┌─────────┐      ┌─────────┐  │
- │            │  de-id  │──────────────────┬─────────────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │  │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │            │  de-id  │──────────────────┬─────────────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │  │   <b>meaning</b><i>:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
  │            └────<em>┬</em>────┘                  │                  └────<em>┬</em>────┘      └────<em>┬</em>────┘  │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
  │                 <em>┆</em>                  ┌────<u>▼</u>────┐                  <em>┆</em>                <em>┆</em>       │
  │                 <em>┆</em>                  │  embed  │                  <em>┆</em>                <em>┆</em>       │
@@ -877,8 +870,8 @@
  └─────────────────<em>┼</em>───────────────────────<em>┼</em>───────────────────────<em>┼</em>────────────────<em>┼</em>───────┘
                    <em>┆</em>                       <em>┆</em>                       <em>┆</em>                <em>┆</em>
    ┌───────────────<em>┼</em>─────┐ ┌───────────────<em>┼</em>─────┐ ┌───────────────<em>┼</em>────────────────<em>┼</em>─────┐
-   │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em>        <em>┌───</em><u><em>▼</em></u><em>───┐</em> │     <i>one</i> <i>pfcon</i> <i>per</i> <i>substrate</i>
-   │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em> │ │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em> │ │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em>        <em>│</em>  <em>job</em>  <em>│</em> │     <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+   │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em>        <em>┌───</em><u><em>▼</em></u><em>───┐</em> │     <em>mapping</em><i>:</i> <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+   │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em> │ │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em> │ │ <em>pfcon</em>     <em>│</em>  <em>job</em>  <em>│</em>        <em>│</em>  <em>job</em>  <em>│</em> │     <i>one</i> <i>pfcon</i> <i>per</i> <i>substrate</i>
    │           <em>└───────┘</em> │ │           <em>└───────┘</em> │ │           <em>└───────┘</em>        <em>└───────┘</em> │     <i>no</i> <i>pfcon</i> <i>sees</i> <i>the</i> <i>DAG</i>
    ├─────────────────────┤ ├─────────────────────┤ ├──────────────────────────────────────┤
    │                     │ │                     │ │                                      │
@@ -889,7 +882,7 @@
       .o{<pre class="fig step">
  ┌─ <b>CUBE</b> ───────────────────────────────────────────────────────────────────────────────────┐
  │            ┌─────────┐                                     ┌─────────┐      ┌─────────┐  │
- │            │  de-id  │──────────────────┬─────────────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │  │   <i>logical:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
+ │            │  de-id  │──────────────────┬─────────────────<u>▶</u>│ segment │─────<u>▶</u>│ measure │  │   <b>meaning</b><i>:</i> <i>the</i> <i>DAG</i> <i>of</i> <i>a</i> <i>feed</i>
  │            └────┬────┘                  │                  └────┬────┘      └────┬────┘  │   <i>each</i> <i>node</i> <i>reads</i> <i>its</i> <i>parent</i>
  │                 ┆                  ┌────<u>▼</u>────┐                  ┆                ┆       │
  │                 ┆                  │  embed  │                  ┆                ┆       │
@@ -897,39 +890,15 @@
  └─────────────────┼───────────────────────┼───────────────────────┼────────────────┼───────┘
                    ┆                       ┆                       ┆                ┆
    ┌───────────────┼─────┐ ┌───────────────┼─────┐ ┌───────────────┼────────────────┼─────┐
-   │           ┌───<u>▼</u>───┐ │ │           ┌───<u>▼</u>───┐ │ │           ┌───<u>▼</u>───┐        ┌───<u>▼</u>───┐ │     <i>one</i> <i>pfcon</i> <i>per</i> <i>substrate</i>
-   │ <b>pfcon</b>     │  job  │ │ │ <b>pfcon</b>     │  job  │ │ │ <b>pfcon</b>     │  job  │        │  job  │ │     <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+   │           ┌───<u>▼</u>───┐ │ │           ┌───<u>▼</u>───┐ │ │           ┌───<u>▼</u>───┐        ┌───<u>▼</u>───┐ │     <b>mapping</b><i>:</i> <i>one</i> <i>job</i> <i>per</i> <i>node</i>
+   │ <b>pfcon</b>     │  job  │ │ │ <b>pfcon</b>     │  job  │ │ │ <b>pfcon</b>     │  job  │        │  job  │ │     <i>one</i> <i>pfcon</i> <i>per</i> <i>substrate</i>
    │           └───<em>┬</em>───┘ │ │           └───<em>┬</em>───┘ │ │           └───<em>┬</em>───┘        └───<em>┬</em>───┘ │     <i>no</i> <i>pfcon</i> <i>sees</i> <i>the</i> <i>DAG</i>
    ├───────────────<em>┼</em>─────┤ ├───────────────<em>┼</em>─────┤ ├───────────────<em>┼</em>────────────────<em>┼</em>─────┤
    │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em> │ │           <em>┌───</em><u><em>▼</em></u><em>───┐</em>        <em>┌───</em><u><em>▼</em></u><em>───┐</em> │
-   │ <em>OpenShift</em> <em>│</em>  <em>pod</em>  <em>│</em> │ │ <em>Slurm</em>     <em>│sbatch</em> <em>│</em> │ │ <em>k8s</em>       <em>│</em>  <em>pod</em>  <em>│</em>        <em>│</em>  <em>pod</em>  <em>│</em> │     <i>physical:</i> <i>a</i> <i>pod</i> <i>or</i> <i>a</i> <i>batch</i> <i>job</i>
+   │ <em>OpenShift</em> <em>│</em>  <em>pod</em>  <em>│</em> │ │ <em>Slurm</em>     <em>│sbatch</em> <em>│</em> │ │ <em>k8s</em>       <em>│</em>  <em>pod</em>  <em>│</em>        <em>│</em>  <em>pod</em>  <em>│</em> │     <em>execution</em><i>:</i> <i>a</i> <i>pod</i> <i>or</i> <i>a</i> <i>batch</i> <i>job</i>
    │           <em>└───────┘</em> │ │           <em>└───────┘</em> │ │           <em>└───────┘</em>        <em>└───────┘</em> │     <i>each</i> <i>substrate</i> <i>runs</i> <i>its</i> <i>own</i> <i>way</i>
    └─────────────────────┘ └─────────────────────┘ └──────────────────────────────────────┘
 </pre>}
-    }
-    .takeaway{ONE LOGICAL DAG. MANY KINDS OF COMPUTE UNDER IT.}
-  }
-}
-
-.slide{
-  .id{architecture-end}
-  .title{Who Owns What}
-  .body{
-    .h1{Who Owns What}
-    .term{
-.typewriter{$> chris --layers}
-      .o{<pre class="fig">
- ┌──────────────────────────────────────────┐
- │                   <b>CUBE</b>                   │   <i><b>meaning</b>: which app, which directory,</i>
- └─────┬────────────────────────────────────┤   <i>which parameters</i>
-       │               <b>pfcon</b>                │   <i><b>mapping</b>: that run, on this backend</i>
-       └─────┬──────────────────────────────┤
-             │           <b>cluster</b>            │   <i><b>execution</b>: pods, storage, policy</i>
-             └──────────────────────────────┘
-</pre>}
-      .o{CUBE owns .bf{meaning}. pfcon maps it. The cluster runs it.}
-      .o{One CUBE, several .bf{compute} environments.}
-      .o{The lock-in test: does it run .bf{without} Kubernetes?}
     }
     .takeaway{REPLACE MECHANISMS FREELY. DON'T REPLACE THE MEANING OF THE WORKFLOW.}
   }
@@ -947,11 +916,9 @@
       .div{.jump{.target{mise-machine} A Machine, Not an Endpoint}}
       .div{.jump{.target{mise-layers} Above CUBE}}
       .div{.jump{.target{mise-stack} The Whole Stack}}
-      .div{.jump{.target{mise-kernel} The Intent Kernel}}
-      .div{.jump{.target{mise-intent} One Intent, Four Ways}}
+      .div{.jump{.target{mise-intent} Intention}}
       .div{.jump{.target{mise-session} One Session, Many Surfaces}}
       .div{.jump{.target{mise-door} The Door and the Berth}}
-      .div{.jump{.target{mise-live} A Live chell}}
     }
     }
     .source{github.com/HARBOR-Medical-AI/mise}
@@ -986,23 +953,24 @@ finishedSuccessfully}}
   .title{Above CUBE}
   .body{
     .h1{Above CUBE}
+    .h2{mise is the whole stack, not one layer of it}
     .term{
 .typewriter{$> mise --layers}
       .o{<pre class="fig">
-             ┌─────────────┬──────────────┐
-             │    <b>chell</b>    │    <b>argus</b>     │   <i><b>how you look</b>: a terminal, a browser</i>
-       ┌─────┴─────────────┴──────────────┤
-       │             <b>calypso</b>              │   <i><b>who is there</b>: one login, one live session</i>
- ┌─────┴──────────────────────────────────┤
- │                  <b>mise</b>                  │   <i><b>where things are</b>: /home  /bin  /proc</i>
- ├────────────────────────────────────────┤
+ ┌─ <b>mise</b> ────────────────────────────────┐
+ │  chell  ·  ARGUS                       │   <i><b>how you look</b>: a terminal, a browser</i>
+ │  porter  ·  calypso                    │   <i><b>who is there</b>: one login, one live session</i>
+ │  brasa                                 │   <i><b>what you may ask</b>: the shell engine</i>
+ │  fond  ·  salsa  ·  cumin              │   <i><b>where things are</b>: /home  /bin  /proc</i>
+ └───────────────────┬────────────────────┘
+ ┌───────────────────┴────────────────────┐
  │                  <b>CUBE</b>                  │   <i><b>what is true</b>: the objects and their laws</i>
  └────────────────────────────────────────┘
 </pre>}
       .o{Below CUBE, swap the .bf{cluster}.}
       .o{Above CUBE, swap the .bf{surface}.}
     }
-    .takeaway{CUBE SAYS WHAT IS TRUE. mise SAYS WHERE THINGS ARE.}
+    .takeaway{CUBE SAYS WHAT IS TRUE. mise IS HOW YOU REACH IT.}
     .source{github.com/HARBOR-Medical-AI/mise}
   }
 }
@@ -1075,34 +1043,21 @@ finishedSuccessfully}}
 }
 
 .slide{
-  .id{mise-kernel}
-  .title{The Intent Kernel}
+  .id{mise-intent}
+  .title{Intention}
   .body{
-    .h1{The Intent Kernel}
+    .h1{Intention}
     .term{
 .typewriter{$> brasa --contract}
-      .o{<pre class="fig">
+      .o{<pre class="fig tight">
  ┌───────┐   ─── <b>intent</b> ────<u>▶</u>   ┌─────────┐   ─── <i>validated actions</i> ───<u>▶</u>    ┌────────┐
  │  you  │                      │  <b>brasa</b>  │                                 │  <b>CUBE</b>  │
  └───────┘   <u>◀</u>── <b>receipt</b> ────   └─────────┘   <u>◀</u>── <i>what really happened</i> ──   └────────┘
 </pre>}
       .o{Say .bf{what} you want, not how.}
-      .o{A .bf{bounded} vocabulary. No arbitrary API calls.}
+      .o{A .bf{bounded} vocabulary. No raw API.}
       .o{The engine writes the .bf{receipt}, not the caller.}
-      .o{No loops, no .bf{if}. Those stay in your script.}
-    }
-    .takeaway{NO SURFACE TOUCHES THE RAW API.}
-    .source{github.com/HARBOR-Medical-AI/mise · docs/intent-kernel.adoc}
-  }
-}
-
-.slide{
-  .id{mise-intent}
-  .title{One Intent, Four Ways}
-  .body{
-    .h1{One Intent, Four Ways}
-    .h2{List one directory under your uploads}
-    .term{
+    .o{
 .typewriter{$> ls ~/uploads/SAG-anon --from=everywhere}
     .nexus{.id{intent-ways}
       .div{.jump{.target{intent-shell} From the Shell}}
@@ -1111,7 +1066,8 @@ finishedSuccessfully}}
       .div{.jump{.target{intent-raw} Without mise}}
     }
     }
-    .source{harbor-medical-ai.github.io/mise}
+    }
+    .source{github.com/HARBOR-Medical-AI/mise · docs/intent-kernel.adoc}
   }
 }
 
@@ -1266,19 +1222,6 @@ async function directoryNames_list(path: string): Promise<string[]> {
 }
 
 .slide{
-  .id{mise-live}
-  .title{A Live chell}
-  .body{
-    .h1{A Live chell}
-    .term{
-.typewriter{$> chell --remote}
-      .o{<div class="live" onclick="event.stopPropagation(); var h=location.hostname; var here=(h=='localhost'||h=='127.0.0.1'); this.onclick=null; this.innerHTML = here ? '<iframe src=http://'+h+':7681/ allow=clipboard-read;clipboard-write></iframe>' : 'The live session runs on the presenting machine only.'; here ? this.firstChild.focus() : 0;">[ click to open the live session ]</div>}
-    }
-    .source{xterm.js in the slide · ttyd on the presenting machine · chell --remote to the session}
-  }
-}
-
-.slide{
   .id{clinic}
   .title{ChRIS in the Clinic}
   .body{
@@ -1286,15 +1229,42 @@ async function directoryNames_list(path: string): Promise<string[]> {
     .h2{Leg-length discrepancy at Boston Children's}
     .term{
 .typewriter{$> chris feed --from=pacs --run=lld}
-      .o{<pre class="fig">
-            ┌─ <b>one ChRIS feed</b> ──────────────────────────────────────────┐
- ┌──────┐   │ ┌──────┐   ┌───────────┐   ┌─────────┐   ┌──────────────┐ │   ┌──────┐
- │ <b>PACS</b> │──<u>▶</u>│ │ pull │──<u>▶</u>│ <b>LLD model</b> │──<u>▶</u>│ measure │──<u>▶</u>│ DICOM report │ │──<u>▶</u>│ <b>PACS</b> │
- └──────┘   │ └──────┘   └───────────┘   └─────────┘   └──────────────┘ │   └──────┘
-            └───────────────────────────────────────────────────────────┘
-                                                                            <i>reading room</i>
+      .o{<pre class="fig step full">
+ <em>┌────────┐</em>       <em>┌─</em> <em>one</em><b> </b><em>ChRIS</em><b> </b><em>feed</em> <em>───────────────────────────────────────────┐</em>
+ <em>│</em>        <em>│</em>       <em>│</em> <em>┌──────┐</em>                                                   <em>│</em>
+ <em>│</em>        <em>│─────▶</em> <em>│</em> <em>│</em> <em>pull</em> <em>│</em>                                                   <em>│</em>
+ <em>│</em>  <em>PACS</em>  <em>│</em>       <em>│</em> <em>└──────┘</em>                                                   <em>│</em>
+ <em>│</em>        <em>│</em>       <em>└────────────────────────────────────────────────────────────┘</em>
+ <em>│</em>        <em>│</em>
+ <em>└────────┘</em>
 </pre>}
-      .o{A study lands. A .bf{workflow} runs. DICOM goes back.}
+      .o{<pre class="fig step full">
+ ┌────────┐       ┌─ <b>one ChRIS feed</b> ───────────────────────────────────────────┐
+ │        │       │ ┌──────┐   <em>┌───────────┐</em>   <em>┌─────────┐</em>                     │
+ │        │─────<u>▶</u> │ │ pull │<em>──▶│</em> <em>LLD</em><b> </b><em>model</em> <em>│──▶│</em> <em>measure</em> <em>│</em>                     │
+ │  <b>PACS</b>  │       │ └──────┘   <em>└───────────┘</em>   <em>└─────────┘</em>                     │
+ │        │       └────────────────────────────────────────────────────────────┘
+ │        │
+ └────────┘
+</pre>}
+      .o{<pre class="fig step full">
+ ┌────────┐       ┌─ <b>one ChRIS feed</b> ───────────────────────────────────────────┐
+ │        │       │ ┌──────┐   ┌───────────┐   ┌─────────┐   <em>┌──────────────┐</em>  │
+ │        │─────<u>▶</u> │ │ pull │──<u>▶</u>│ <b>LLD model</b> │──<u>▶</u>│ measure │<em>──▶│</em> <em>DICOM</em> <em>report</em> <em>│</em>  │
+ │  <b>PACS</b>  │       │ └──────┘   └───────────┘   └─────────┘   <em>└──────────────┘</em>  │
+ │        │       └────────────────────────────────────────────────────────────┘
+ │        │
+ └────────┘
+</pre>}
+      .o{<pre class="fig step full keep">
+ ┌────────┐       ┌─ <b>one ChRIS feed</b> ───────────────────────────────────────────┐
+ │        │       │ ┌──────┐   ┌───────────┐   ┌─────────┐   ┌──────────────┐  │
+ │        │─────<u>▶</u> │ │ pull │──<u>▶</u>│ <b>LLD model</b> │──<u>▶</u>│ measure │──<u>▶</u>│ DICOM report │  │
+ │  <b>PACS</b>  │       │ └──────┘   └───────────┘   └─────────┘   └───────<em>┬</em>──────┘  │
+ │        │       └──────────────────────────────────────────────────<em>┼</em>─────────┘
+ │        │<em>◀─────────────────────────────────────────────────────────┘</em>
+ └────────┘   <i>DICOM, back into the reading room</i>
+</pre>}
       .o{The same .bf{container} as on the bench.}
       .o{.bf{Shadow} trial first. Then a clinical trial.}
       .o{The next model .bf{reuses} the plumbing.}
@@ -1398,9 +1368,9 @@ async function directoryNames_list(path: string): Promise<string[]> {
 
 .slide{
   .id{roadmap}
-  .title{What HARBOR Adds to ChRIS}
+  .title{What HARBOR Asks of ChRIS}
   .body{
-    .h1{What HARBOR Adds to ChRIS}
+    .h1{What HARBOR Asks of ChRIS}
     .term{
 .typewriter{$> chris --gaps --scale=federation}
       .o{<pre class="fig">

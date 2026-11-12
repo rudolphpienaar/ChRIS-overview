@@ -200,7 +200,7 @@ The author asked why Apache Airflow kept appearing. It traced to the LaTeX TDD t
 
 "Ingestion as Apps", formerly "Ingestion as Plugins". The authority says "app". "Quarantine" is not its word: invalid images are rejected with a report, so the figure's failure branch now says that. A named embedding model and the phrase "three health systems" were removed, the first because it is now only an early benchmark and the second because it is not in the authority. The order of work is also reversed from what the slide said: the stages are composed into one workflow first and each app matures afterwards.
 
-"What HARBOR Adds to ChRIS". The old slide said today's runtime is synchronous and that the funded work is asynchronous execution for workflows of thousands of nodes. None of that is in the current authority. What is there: dispatch from the Hub to a named Spoke, telemetry with one record per run, handling of a Spoke that fails or stalls, and a baseline measured first and re-measured at volume. The figure's top layer is now the Hub. The takeaway changed from throughput to running the contract across a federation. A bullet the agent had added earlier that day about `chell` under cron was removed, because the authority says nothing about `mise`.
+"What HARBOR Asks of ChRIS" (titled "What HARBOR Adds to ChRIS" until 2026-11-12; the author renamed it because the slide lists what the programme requires of ChRIS, and the work is ChRIS's to do). The old slide said today's runtime is synchronous and that the funded work is asynchronous execution for workflows of thousands of nodes. None of that is in the current authority. What is there: dispatch from the Hub to a named Spoke, telemetry with one record per run, handling of a Spoke that fails or stalls, and a baseline measured first and re-measured at volume. The figure's top layer is now the Hub. The takeaway changed from throughput to running the contract across a federation. A bullet the agent had added earlier that day about `chell` under cron was removed, because the authority says nothing about `mise`.
 
 "Governance and Standards". Data use agreements and quotas at the orchestration layer were removed: agreement rules live with security and compliance, and quotas are not in the authority. The lineage line now says "OpenLineage-compatible export", which is the authority's weaker wording. The three DICOMweb services are still right but belong to a different section of the document than the slide used to cite.
 
@@ -212,23 +212,15 @@ The author asked why Apache Airflow kept appearing. It traced to the LaTeX TDD t
 
 These slides are the first written to the author's rule for word density, set the same day: short fragments, at most four to a slide, each with one highlighted word. "The Same Move, Reversed" was converted as a sample, and the rest of the deck followed later the same day. The sentences those slides used to carry are kept at the end of this file as speaking lines.
 
-== A live chell on a slide
+== A live chell on a slide (dropped)
 
-The author wanted a working `chell` inside the presentation, reaching a session on another of the author's machines, and observed that this is what the ARGUS console already is: xterm.js in a page, a websocket, and a real `chell` under a pseudo-terminal at the far end. That reading is right. In ARGUS the far end is `calypso`, which starts `chell --remote` under `node-pty` and relays its bytes; the page only draws them and sends keystrokes back.
-
-A slide cannot take ARGUS's place against a `porter` directly. `porter` relays the session's websocket only for a browser that carries its login cookie, and the cookie is `SameSite=Lax`, so a page served from another machine does not send it. Its door tokens are for scripts, which can set an `Authorization` header; a browser cannot set one on a websocket. Loosening either for a talk would weaken the door for everyone.
-
-The slide therefore keeps the three parts and moves the middle one to the presenting machine. `ttyd` <<ttyd>> serves xterm.js on loopback and bridges it to one command under a pseudo-terminal, and that command is the author's own `chell --remote`, attached to that session. The login stays with `chell` on the presenting machine and nothing about it is in the deck. `ttyd` is bound to `127.0.0.1` and checks the origin of the websocket, so only its own page on that machine can open the terminal. Binding it to a LAN address would hand a shell to the network.
-
-The slide (`mise-live`, "A Live chell") shows a line to click. The click loads the terminal in a frame only when the deck was opened as `localhost`; on the public site or another device it prints that the live session runs on the presenting machine only. Nothing connects until the click, so no session is held open through the talk, and a visitor to the public deck triggers no request to their own machine. A click in the frame gives the terminal the keyboard and a click outside returns the arrow keys to the deck.
-
-A custom bridge, with xterm.js bundled into the deck, was the alternative. It would have been more code to trust on the day and would still have needed a pseudo-terminal library installed, and `ttyd` is one package.
+For part of 2026-11-12 the mise section ended on a slide that embedded a working `chell`: xterm.js in a frame, served on loopback by `ttyd` on the presenting machine, running the author's own `chell --remote`. The author dropped it the same day. The talk had by then been framed as an argument from the design upward, with no demonstration, and the slide sat against that. The slide, its script and its notes are in the history at commit `8a3e510`.
 
 == How one ChRIS talks to another
 
 === What it is
 
-Three slides added to the "What HARBOR Adds to ChRIS" section on 2026-11-11, between its opening slide and "Governance and Standards": "One ChRIS to Another", "The Gaps Between Them" and "From Client to Peer". The last line of the deck's "Conclusions" slide was changed to name the same point.
+Three slides added to the "What HARBOR Asks of ChRIS" section on 2026-11-11, between its opening slide and "Governance and Standards": "One ChRIS to Another", "The Gaps Between Them" and "From Client to Peer". The last line of the deck's "Conclusions" slide was changed to name the same point.
 
 === Why
 
@@ -256,13 +248,13 @@ The first set was drawn small: a few labels and arrows on five to eight rows, wi
 
 === How the new figures follow that
 
-Every component is a box, and a group of components sits in a titled box. Layers are stacked with shared edges, as steps where one layer is narrower than the next: "Who Owns What" and "Above CUBE" are drawn this way. A Spoke's trust boundary is a double line, on "Where ChRIS Sits in HARBOR" and "What HARBOR Adds to ChRIS". Two things compared sit side by side on a shared base when they share one, as macOS and iPadOS do over one kernel. Notes are dimmed and sit to the right. Component names are highlighted.
+Every component is a box, and a group of components sits in a titled box. Layers are stacked with shared edges, as steps where one layer is narrower than the next: "Who Owns What" and "Above CUBE" are drawn this way. A Spoke's trust boundary is a double line, on "Where ChRIS Sits in HARBOR" and "What HARBOR Asks of ChRIS". Two things compared sit side by side on a shared base when they share one, as macOS and iPadOS do over one kernel. Notes are dimmed and sit to the right. Component names are highlighted.
 
 Three figures were left as they were. "The Whole Stack" is the `mise` figure itself. "One ChRIS to Another" was drawn the same day and already had boxes. "Without mise" is a list of six requests and is a table, not a drawing.
 
 The figures were generated by a short script that builds each box to a checked width, because hand-aligned box drawing was the source of two misaligned figures earlier in the day. The script was a working tool and is not in the repository. The figures in `talk.sd` are the record.
 
-Several slides are now taller than the page: "Data State, Not Control Flow", "Where ChRIS Sits in HARBOR" and "What HARBOR Adds to ChRIS" among them. The author accepted this in advance, with Up and Down moving the window, which slidedown does from `4651934`.
+Several slides are now taller than the page: "Data State, Not Control Flow", "Where ChRIS Sits in HARBOR" and "What HARBOR Asks of ChRIS" among them. The author accepted this in advance, with Up and Down moving the window, which slidedown does from `4651934`.
 
 Nothing a figure asserts is new. Each carries the same facts as the figure it replaces, and the sourcing recorded elsewhere in this file stands.
 
@@ -351,9 +343,9 @@ The five quoted answers are unchanged. Each now ends with the surface or object 
 * Ask anyone what an iPad is and they describe its interface. It is what nearly everyone would do.
 * That answer misses fundamental points about what the thing is, and it biases whoever holds it.
 * Knowing that, this talk deliberately goes from the bottom up: the design, the philosophy and the principles first.
-* A demonstration would show one surface, and that surface would become what ChRIS is taken to be. There is a live shell near the end; by then it can be seen as one surface over the construction.
+* A demonstration would show one surface, and that surface would become what ChRIS is taken to be. The surfaces come last in the talk, where they can be seen as views of the construction.
 
-The author asked on 2026-11-12 for the iPad section to close on this argument, and later the same day restated the section's purpose in the terms above: defining a familiar object by its interface misses the point and biases the person, so the talk moves from the bottom up on purpose. The slide was first titled "So, No Demo First" and was retitled to follow that statement. It says the live shell comes "later" because the deck does carry a live `chell` (`mise-live`), and a flat "no demo" would be contradicted by it.
+The author asked on 2026-11-12 for the iPad section to close on this argument, and later the same day restated the section's purpose in the terms above: defining a familiar object by its interface misses the point and biases the person, so the talk moves from the bottom up on purpose. The slide was first titled "So, No Demo First" and was retitled to follow that statement. Its last bullet first promised a live shell later in the talk; when the live `chell` slide was dropped, the bullet became "The surfaces come last. As views of it."
 
 "The Same Move, Reversed" (`so-chris-3`) was cut at the same time. It set the iPad's forbidding of shared data against ChRIS's requirement to hand data on, and the author judged it to belabour a metaphor nobody had asked for. Its takeaway, that the app model is the definition and the UI is one way to meet it, remains available as a spoken line.
 
@@ -451,7 +443,7 @@ The author asked on 2026-11-12 for this section to open with a drawing that buil
 * So control is materialized in the tree, and the record holds it along with the data.
 * The cost: patterns that are one line in Argo take an explicit step here.
 
-The author asked on 2026-11-12 for the figure to show a branch node (a loop) and a `ts` join node, as "materializations of control in the tree", and judged that clearer than the earlier figure, which set a controller over three tasks against a straight chain of directories. The new figure fans one node out to three `segment` runs and gathers them in a join; the two control nodes are drawn in yellow. The earlier contrast now rests on the first bullet and the spoken lines, and the "done when on disk" and "the cost" bullets moved from the slide to the lines above. That control behaviour is relocated into the graph as explicit plugins is argued in an unpublished note of the author's on data-state and control-flow graphs. The series example and the directory names are the session's.
+The author asked on 2026-11-12 for the figure to show a branch node (a loop) and a `ts` join node, as "materializations of control in the tree", and judged that clearer than the earlier figure, which set a controller over three tasks against a straight chain of directories. The new figure fans one node out to three `segment` runs and gathers them in a join; the two control nodes are drawn in yellow. The earlier contrast now rests on the first bullet and the spoken lines, and the "done when on disk" and "the cost" bullets moved from the slide to the lines above. That control behaviour is relocated into the graph as explicit plugins is argued in an unpublished note of the author's on data-state and control-flow graphs. The first version of this figure labelled a directory on every arrow and drew the three `segment` runs as bare names. The author found the directory labels confusing and beside the point, and asked for each run in its own box with its own line into the join. The figure now has no directory names, and three separate arrows enter the join box. The loop and join bullets were merged into one so that the taller figure fits the page. The example of three `segment` runs is the session's.
 
 === The Five Questions (`workflows-end`)
 
@@ -471,11 +463,17 @@ The author asked on 2026-11-12 for the figure to show a branch node (a loop) and
 * pfdcm, oxidicom: the PACS bridge: query, retrieve, receive, register into CUBE.
 * The slide no longer shows these as bullets. A caption beside the figure changes with each of its eight steps.
 
-=== Who Owns What (`architecture-end`)
+=== Who Owns What (cut, folded into `architecture-2`)
 
-* CUBE owns meaning. pfcon materialises it. The cluster executes.
-* One CUBE can drive several compute environments: a workstation, an HPC, a cloud.
-* The lock-in test: can the same workflow still run somewhere without Kubernetes?
+The author cut this slide on 2026-11-12, judging it a poorer redraw of "One DAG, Many Substrates": three nested boxes for the same three layers that the DAG slide shows with jobs moving through them. What it added was folded into that slide. Its three words now head the DAG figure's side notes: CUBE holds the meaning (which app, which directory, which parameters), `pfcon` does the mapping (that run, on this backend) and the substrate does the execution. Its takeaway, "Replace mechanisms freely. Don't replace the meaning of the workflow", replaced the DAG slide's "One logical DAG. Many kinds of compute under it", which the figure already says. One line remains to be spoken there:
+
+* The lock-in test: can the same workflow still run somewhere without Kubernetes? The Slurm stack in the figure is the answer.
+
+=== Above CUBE and Intention (`mise-layers`, `mise-intent`)
+
+The author corrected two things in the mise section on 2026-11-12. "Above CUBE" had drawn `mise` as one layer, with `chell`, ARGUS and `calypso` stacked above it. That is wrong: `mise` is all of those and more. The figure now draws `mise` as one box holding its layers (surfaces, the login and session, the shell engine, the tree and its driver) over CUBE, so that it reads as the simplified form of "The Whole Stack", which follows it. The takeaway changed from "mise says where things are", which described one layer, to "mise is how you reach it".
+
+"The Intent Kernel" and "One Intent, Four Ways" were merged into one slide, "Intention": the intent and receipt figure, three bullets, then the menu of four ways to state the same intent. One bullet left the slide and is to be spoken: brasa has no loops and no conditionals, and those stay in the caller's script.
 
 === ChRIS in the Clinic (`clinic`)
 
@@ -483,6 +481,8 @@ The author asked on 2026-11-12 for the figure to show a branch node (a loop) and
 * The model is a Docker container. The same one that ran on the research bench.
 * Validated prospectively: a shadow trial first, then a clinical trial.
 * No bespoke integration per algorithm. The next model reuses the plumbing.
+
+The figure was redrawn on 2026-11-12 at the author's request: a tall PACS on the left, the feed to its right, and the end of the feed returning to the same PACS, where the earlier figure had a small PACS at each end. It builds in four clicks (the study is pulled, the model and the measurement run, the DICOM report is made, the report goes back), with the newest part in yellow. The first bullet, which said the same in words, left the slide and stays as the first speaking line above.
 
 === Where It Has Run (`clinic-end`)
 
@@ -521,7 +521,6 @@ The title slide's four bullets were shortened the same way. They read: ChRIS run
 * [[[kundera1984]]] Milan Kundera. _The Unbearable Lightness of Being_. Translated by Michael Henry Heim. Harper & Row, New York, 1984.
 * [[[retui]]] _Re:T-UI: a phone-first guide built from the Re:T-UI wiki_. https://re-tui.pages.dev/ (read 2026-11-11).
 * [[[applexnu]]] Apple Inc. _XNU kernel source, README_. https://github.com/apple-oss-distributions/xnu (read 2026-11-11).
-* [[[ttyd]]] Shuanglei Tao. _ttyd: share your terminal over the web_. https://github.com/tsl0922/ttyd (read 2026-11-11).
 * [[[appleplatformsecurity]]] Apple Inc. "Security of runtime process in iOS, iPadOS, and visionOS". _Apple Platform Security_. https://support.apple.com/guide/security/security-of-runtime-process-sec15bfe098e/web (read 2026-11-11).
 * [[[appleiosappsmacos]]] Apple Inc. "Running your iOS apps in macOS". _Apple Developer Documentation_. https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos (read 2026-11-11).
 * [[[appleipadprom4]]] Apple Inc. "Apple unveils stunning new iPad Pro with the world's most advanced display, M4 chip, and Apple Pencil Pro". _Apple Newsroom_, 7 May 2024. https://www.apple.com/newsroom/2024/05/apple-unveils-stunning-new-ipad-pro-with-m4-chip-and-apple-pencil-pro/ (read 2026-11-11).
