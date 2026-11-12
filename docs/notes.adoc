@@ -77,11 +77,11 @@ The section is a menu inside a spoke. The outline entry lands on the "What is an
 | `mobile-os` | "It's a Mobile OS" | A category is offered in place of a definition.
 | `pictures` | "It's Pictures You Touch" | The definition by experience, stated fairly.
 | `pictures-2` | Now Change the UI | Re:T-UI breaks it. Figure: icon grid beside a prompt.
-| `crippled-mac` | "It's a Crippled Mac" | The author's definition. Figure: macOS over iPadOS.
-| `crippled-mac-2` | Which Definition Survives? | The test: swap the UI and see what is still true.
+| `bespoke-mac` | "It's a Bespoke Mac" | The author's definition. Figure: macOS over iPadOS.
+| `bespoke-mac-2` | Which Definition Survives? | The test: swap the UI and see what is still true.
 | `so-chris` | So What Is ChRIS? | Five people, five answers, and the swap between three surfaces.
 | `so-chris-2` | One Kernel, Two Surfaces | The Apple platforms mapped onto ChRIS. Figure: iPadOS and macOS over Darwin, beside ChRIS_ui and `mise` over CUBE.
-| `so-chris-3` | The Same Move, Reversed | Isolation against composition. Figure: walls beside arrows.
+| `so-chris-end` | So: From the Bottom Up | Why the talk starts from the design and not from a demonstration.
 |===
 
 === Open points
@@ -310,14 +310,17 @@ On 2026-11-11 the author set a rule for word density: short fragments, at most f
 * Same hardware, same apps underneath.
 * By the pictures definition it stopped being a phone. It didn't.
 
-=== It's a Crippled Mac (`crippled-mac`)
+=== It's a Bespoke Mac (`bespoke-mac`)
 
 * A computer, running a close relative of macOS.
-* With an app model that fights the OS underneath it: no fork, no pipes between apps, no shared filesystem.
-* For the sake of security: a crippled macOS behind a very restrictive UI.
+* It is a macOS rebuilt with security first.
+* That choice is where the restrictions come from: no fork, no pipes between apps, no shared filesystem.
+* It is safer for it, and the price is convenience. Things a Mac user does without thinking are not possible.
 * This is subjective too. It's how an architect meets the thing.
 
-=== Which Definition Survives? (`crippled-mac-2`)
+The slide was titled "It's a Crippled Mac" until 2026-11-12, when the author asked for "bespoke" and for the bullets to say that a security-first design is what costs the convenience. "Crippled" was a verdict; "bespoke" describes the construction, which is what this section argues a definition should do. The trade also sets up the later comparison: ChRIS is strict in its own way and pays in convenience too, an explicit step where a controller would need a line. The slide ids changed with the title.
+
+=== Which Definition Survives? (`bespoke-mac-2`)
 
 * Swap the launcher. "Pictures you touch" is now false.
 * "Sandboxed apps, no pipes, no shared files" is still true.
@@ -343,14 +346,16 @@ The five quoted answers are unchanged. Each now ends with the surface or object 
 * The difference is what you're allowed to do.
 * ChRIS_ui is the dashboard. mise is the computer.
 
-=== So, No Demo First (`so-chris-end`)
+=== So: From the Bottom Up (`so-chris-end`)
 
-* An iPad demo shows the launcher. The audience leaves saying "it's pictures you touch", which is the definition that does not survive a change of UI.
-* A ChRIS demo would do the same. Whichever surface is shown becomes what ChRIS is taken to be.
-* So this talk is about the design, the philosophy and the principles: the app model, and what follows from it.
-* There is a live shell near the end. By then it can be seen for what it is: one surface over the construction.
+* Ask anyone what an iPad is and they describe its interface. It is what nearly everyone would do.
+* That answer misses fundamental points about what the thing is, and it biases whoever holds it.
+* Knowing that, this talk deliberately goes from the bottom up: the design, the philosophy and the principles first.
+* A demonstration would show one surface, and that surface would become what ChRIS is taken to be. There is a live shell near the end; by then it can be seen as one surface over the construction.
 
-The author asked on 2026-11-12 for the iPad section to close on this argument: the talk does not lead with a demonstration, for the same reason an iPad demonstration shows the wrong thing. The slide says "first" and not "none" because the deck does carry a live `chell` (`mise-live`), and a flat "no demo" would be contradicted by it. That qualification, the title and the takeaway are the session's wording.
+The author asked on 2026-11-12 for the iPad section to close on this argument, and later the same day restated the section's purpose in the terms above: defining a familiar object by its interface misses the point and biases the person, so the talk moves from the bottom up on purpose. The slide was first titled "So, No Demo First" and was retitled to follow that statement. It says the live shell comes "later" because the deck does carry a live `chell` (`mise-live`), and a flat "no demo" would be contradicted by it.
+
+"The Same Move, Reversed" (`so-chris-3`) was cut at the same time. It set the iPad's forbidding of shared data against ChRIS's requirement to hand data on, and the author judged it to belabour a metaphor nobody had asked for. Its takeaway, that the app model is the definition and the UI is one way to meet it, remains available as a spoken line.
 
 === What Is ChRIS? (`what-is`)
 

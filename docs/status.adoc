@@ -36,7 +36,7 @@ uv run --project ~/src/slidedown slidedown . talk --inputFile talk.sd --theme co
 cd talk && python3 -m http.server 8000
 ----
 
-The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-12 that count is 53. slidedown `main` is at `3e22e35` and the Pages workflow pins that same commit. An older slidedown checkout either fails with an unknown theme or builds the deck without the behaviour below, so pull it first.
+The build is the test: an unresolved menu target is a build error, and a successful build reports the slide count. As of 2026-11-12 that count is 52. slidedown `main` is at `3e22e35` and the Pages workflow pins that same commit. An older slidedown checkout either fails with an unknown theme or builds the deck without the behaviour below, so pull it first.
 
 Code and API payloads on a slide are syntax coloured. The author set this rule on 2026-11-11. Use slidedown's own `.code{.syntax{language=...}}` block for it, not hand-marked HTML. It works inside a terminal window and inside a reveal. Fenced Markdown blocks are not processed there, and the `http` language mis-colours bare request lines, so a list of REST calls is better drawn as a figure with the verbs marked.
 

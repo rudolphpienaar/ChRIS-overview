@@ -139,7 +139,7 @@
     .nexus{.id{ipad-answers}
       .div{.jump{.target{mobile-os} "It's a Mobile OS"}}
       .div{.jump{.target{pictures} "It's Pictures You Touch"}}
-      .div{.jump{.target{crippled-mac} "It's a Crippled Mac"}}
+      .div{.jump{.target{bespoke-mac} "It's a Bespoke Mac"}}
       .div{.jump{.target{so-chris} So What Is ChRIS?}}
     }
     }
@@ -204,10 +204,10 @@
 }
 
 .slide{
-  .id{crippled-mac}
-  .title{It's a Crippled Mac}
+  .id{bespoke-mac}
+  .title{It's a Bespoke Mac}
   .body{
-    .h1{"It's a Crippled Mac"}
+    .h1{"It's a Bespoke Mac"}
     .h2{The architect's answer}
     .term{
 .typewriter{$> describe --by=construction ipad}
@@ -223,16 +223,16 @@
  └─────────────────────────────────────────────────────────────────────┘
 </pre>}
       .o{A close .bf{relative} of macOS.}
-      .o{No .bf{fork}. No pipes. No shared files.}
-      .o{For security: a .bf{crippled} Mac.}
-      .o{Subjective too. An .bf{architect's} view.}
+      .o{Rebuilt .bf{security} first.}
+      .o{So: no .bf{fork}. No pipes. No shared files.}
+      .o{Safer. The price is .bf{convenience}.}
     }
     .source{Apple Platform Security, "Security of runtime process in iOS, iPadOS, and visionOS" · apple-oss-distributions/xnu · Apple Developer Forums thread 747499}
   }
 }
 
 .slide{
-  .id{crippled-mac-2}
+  .id{bespoke-mac-2}
   .title{Which Definition Survives?}
   .body{
     .h1{Which Definition Survives?}
@@ -295,42 +295,15 @@
 }
 
 .slide{
-  .id{so-chris-3}
-  .title{The Same Move, Reversed}
-  .body{
-    .h1{The Same Move, Reversed}
-    .term{
-.typewriter{$> diff ipad chris --app-model}
-      .o{<pre class="fig">
- ┌─ <b>iPad</b> ────────────────────────────────┐
- │ ┌───────┐     ┌───────┐     ┌───────┐ │   <i>walls between apps</i>
- │ │  app  │  ║  │  app  │  ║  │  app  │ │   <i>isolation</i>
- │ └───────┘     └───────┘     └───────┘ │
- ├─ <b>ChRIS</b> ───────────────────────────────┤
- │ ┌───────┐     ┌───────┐     ┌───────┐ │   <i>a directory handed on</i>
- │ │  app  │ ──<u>▶</u> │  app  │ ──<u>▶</u> │  app  │ │   <i>composition</i>
- │ └───────┘     └───────┘     └───────┘ │
- └───────────────────────────────────────┘
-</pre>}
-      .o{iPad: apps .bf{forbidden} to share.}
-      .o{ChRIS: apps .bf{required} to hand on.}
-      .o{Same strictness. Opposite .bf{direction}.}
-      .o{ChRIS .bf{is} the pipe.}
-    }
-    .takeaway{THE APP MODEL IS THE DEFINITION. THE UI IS ONE WAY TO MEET IT.}
-  }
-}
-
-.slide{
   .id{so-chris-end}
-  .title{So, No Demo First}
+  .title{So: From the Bottom Up}
   .body{
-    .h1{So, No Demo First}
+    .h1{So: From the Bottom Up}
     .term{
-.typewriter{$> demo --defer}
-      .o{A demo shows one .bf{surface}.}
-      .o{You'd define ChRIS by its .bf{pictures}.}
-      .o{So this talk: design, .bf{principles}, the app model.}
+.typewriter{$> talk --from=bottom}
+      .o{Everyone defines an iPad by its .bf{interface}.}
+      .o{That misses what it is. And it .bf{biases} you.}
+      .o{So this talk starts at the .bf{bottom}: design, principles.}
       .o{A live shell comes .bf{later}. As one surface.}
     }
     .takeaway{A DEMO IS THE EXPERIENCE. THIS TALK IS THE CONSTRUCTION.}
