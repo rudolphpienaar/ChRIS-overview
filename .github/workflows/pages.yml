@@ -21,18 +21,18 @@ jobs:
       - name: Checkout deck
         uses: actions/checkout@v4
 
-      # Pinned deliberately. 132c100 = main on 2026-11-11: everything up to
+      # Pinned deliberately. 3e22e35 = main on 2026-11-11: everything up to
       # FNNDSC/slidedown#7 (theme, labels, .bars{}, .term/.takeaway/.source),
       # plus terminal typewriters that type only the command, code styled for a
       # terminal window, Up/Down panning on a slide taller than the page, and
-      # Fira Code shipped with the theme. The deck needs the last four: without
-      # the shipped font the figures lose their alignment on some devices.
-      # Bump on purpose.
+      # Fira Code shipped with the theme and named on pre blocks. The deck
+      # needs the last five: without the font on pre the figures lose their
+      # alignment on Android. Bump on purpose.
       - name: Checkout slidedown
         uses: actions/checkout@v4
         with:
           repository: FNNDSC/slidedown
-          ref: 132c100be8f87de31867954693d7c1016060183e
+          ref: 3e22e35b2ac739b651b8b7f55d94a56fda2b197e
           path: .slidedown
 
       - name: Setup Python
