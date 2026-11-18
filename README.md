@@ -2,6 +2,8 @@
 
 Slides introducing ChRIS to the HARBOR consortium. The deck says what ChRIS is, why it is built around one small contract, and where it sits inside a HARBOR Trusted Domain.
 
+View the deck: <https://rudolphpienaar.github.io/ChRIS-overview/>
+
 The argument in one line: a ChRIS app is a container that reads a directory, writes a directory and exits, and a chain of those apps leaves behind a directory tree that is the provenance record. OpenShift governs the cluster. ChRIS makes the science that runs on it auditable.
 
 ## Presenting
@@ -31,7 +33,7 @@ The `command-line` theme, slide labels and the `.term{}`, `.takeaway{}` and `.so
 
 ## Deployment
 
-`.github/workflows/pages.yml` builds the deck on every push to `master` and deploys `talk/` to GitHub Pages. slidedown is pinned to commit `4651934` so an upstream change can't break the deck unannounced. Bump the pin on purpose.
+`.github/workflows/pages.yml` builds the deck on every push to `master` and deploys `talk/` to GitHub Pages. slidedown is pinned to commit `3e22e35` so an upstream change can't break the deck unannounced. Bump the pin on purpose.
 
 ## Layout
 
